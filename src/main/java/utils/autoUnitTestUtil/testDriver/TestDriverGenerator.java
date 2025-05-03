@@ -14,7 +14,7 @@ public final class TestDriverGenerator {
 
         result.append(generatePreSetup());
 
-        result.append("public class TestDriver {\n");
+        result.append("public class TestDriver {\n\n");
         result.append(generateUtilities(method, coverage));
         result.append(generateTestRunner(method.getName().toString(), testData));
         result.append("}");
@@ -26,15 +26,16 @@ public final class TestDriverGenerator {
         StringBuilder result = new StringBuilder();
         result.append("package utils.autoUnitTestUtil.testDriver;\n");
         result.append("import java.io.FileWriter;\n");
+        result.append("\n");
         return result.toString();
     }
 
     private static String generateTestRunner(String methodName, Object[] testData) {
         StringBuilder result = new StringBuilder();
-        result.append("public static void main(String[] args) {\n");
-        result.append("writeDataToFile(\"\", \"core-engine/cfg/src/main/java/data/testDriverData/runTestDriverData.txt\", false);\n");
-        result.append("long startRunTestTime = System.nanoTime();\n");
-        result.append("Object output = ").append(methodName).append("(");
+        result.append("    public static void main(String[] args) {\n");
+        result.append("        writeDataToFile(\"\", \"core-engine/cfg/src/main/java/data/testDriverData/runTestDriverData.txt\", false);\n\n");
+        result.append("        long startRunTestTime = System.nanoTime();\n\n");
+        result.append("        Object output = ").append(methodName).append("(");
         for(int i = 0; i < testData.length; i++) {
             if(testData[i] instanceof Character) {
                 result.append("'").append(testData[i]).append("'");
@@ -43,11 +44,11 @@ public final class TestDriverGenerator {
             }
             if(i != testData.length - 1) result.append(", ");
         }
-        result.append(");\n");
-        result.append("long endRunTestTime = System.nanoTime();\n");
-        result.append("double runTestDuration = (endRunTestTime - startRunTestTime) / 1000000.0;\n");
-        result.append("writeDataToFile(runTestDuration + \"===\" + output, \"src/main/java/utils/autoUnitTestUtil/concreteExecuteResult.txt\", true);\n");
-        result.append("}\n");
+        result.append("        );\n");
+        result.append("        long endRunTestTime = System.nanoTime();\n\n");
+        result.append("        double runTestDuration = (endRunTestTime - startRunTestTime) / 1000000.0;\n\n");
+        result.append("        writeDataToFile(runTestDuration + \"===\" + output, \"src/main/java/utils/autoUnitTestUtil/concreteExecuteResult.txt\", true);\n\n");
+        result.append("    }\n");
         return result.toString();
     }
 
@@ -56,28 +57,30 @@ public final class TestDriverGenerator {
 
         // Generate mark method
         result.append(
-                "private static boolean mark(String statement, boolean isTrueCondition, boolean isFalseCondition) {\n" +
-                        "StringBuilder markResult = new StringBuilder();\n" +
-                        "markResult.append(statement).append(\"===\");\n" +
-                        "markResult.append(isTrueCondition).append(\"===\");\n" +
-                        "markResult.append(isFalseCondition).append(\"---end---\");\n" +
-                        "writeDataToFile(markResult.toString(), \"src/main/java/utils/autoUnitTestUtil/concreteExecuteResult.txt\", true);\n" +
-                        "if (!isTrueCondition && !isFalseCondition) return true;\n" +
-                        "return !isFalseCondition;\n" +
-                        "}\n"
+                "    private static boolean mark(String statement, boolean isTrueCondition, boolean isFalseCondition) {\n" +
+                        "       StringBuilder markResult = new StringBuilder();\n\n" +
+                        "       markResult.append(statement).append(\"===\");\n\n" +
+                        "       markResult.append(isTrueCondition).append(\"===\");\n\n" +
+                        "       markResult.append(isFalseCondition).append(\"---end---\");\n\n" +
+                        "       writeDataToFile(markResult.toString(), \"src/main/java/utils/autoUnitTestUtil/concreteExecuteResult.txt\", true);\n\n" +
+                        "       if (!isTrueCondition && !isFalseCondition)\n" +
+                        "          return true;\n\n" +
+                        "       return !isFalseCondition;\n\n" +
+                        "    }\n"
         );
 
         // Generate writeDataToFile method
         result.append(
-                "private static void writeDataToFile(String data, String path, boolean append) {\n" +
-                        "try {\n" +
-                        "FileWriter writer = new FileWriter(path, append);\n" +
-                        "writer.write(data);\n" +
-                        "writer.close();\n" +
-                        "} catch(Exception e) {\n" +
-                        "e.printStackTrace();\n" +
-                        "}\n" +
-                        "}\n"
+                "    private static void writeDataToFile(String data, String path, boolean append) {\n" +
+                        "       try {\n" +
+                        "          FileWriter writer = new FileWriter(path, append);\n" +
+                        "          writer.write(data);\n" +
+                        "          writer.close();\n" +
+                        "       }\n" +
+                        "       catch(Exception e) {\n" +
+                        "          e.printStackTrace();\n" +
+                        "       }\n" +
+                        "    }\n"
         );
 
         // Generate testing method with instruments
@@ -89,7 +92,7 @@ public final class TestDriverGenerator {
     private static String createCloneMethod(MethodDeclaration method, ASTHelper.Coverage coverage) {
         StringBuilder cloneMethod = new StringBuilder();
 
-        cloneMethod.append("public static ").append(method.getReturnType2()).append(" ").append(method.getName()).append("(");
+        cloneMethod.append("    public static ").append(method.getReturnType2()).append(" ").append(method.getName()).append("(");
         List<ASTNode> parameters = method.parameters();
         for (int i = 0; i < parameters.size(); i++) {
             cloneMethod.append(parameters.get(i));
@@ -127,11 +130,11 @@ public final class TestDriverGenerator {
         StringBuilder result = new StringBuilder();
         List<ASTNode> statements = block.statements();
 
-        result.append("{\n");
+        result.append("    {\n");
         for (int i = 0; i < statements.size(); i++) {
-            result.append(generateCodeForOneStatement(statements.get(i), ";", coverage));
+            result.append("        " + generateCodeForOneStatement(statements.get(i), ";", coverage));
         }
-        result.append("}\n");
+        result.append("    }\n");
 
         return result.toString();
     }
@@ -139,15 +142,15 @@ public final class TestDriverGenerator {
     private static String generateCodeForIfStatement(IfStatement ifStatement, ASTHelper.Coverage coverage) {
         StringBuilder result = new StringBuilder();
 
-        result.append("if (").append(generateCodeForCondition(ifStatement.getExpression(), coverage)).append(")\n");
-        result.append("{\n");
-        result.append(generateCodeForOneStatement(ifStatement.getThenStatement(), ";", coverage));
-        result.append("}\n");
+        result.append("    if (").append(generateCodeForCondition(ifStatement.getExpression(), coverage)).append(")\n");
+        result.append("    {\n");
+        result.append("        " + generateCodeForOneStatement(ifStatement.getThenStatement(), ";", coverage));
+        result.append("    }\n");
 
 
         String elseCode = generateCodeForOneStatement(ifStatement.getElseStatement(), ";", coverage);
         if (!elseCode.equals("")) {
-            result.append("else {\n").append(elseCode).append("}\n");
+            result.append("    else {\n").append(elseCode).append("}\n");
         }
 
         return result.toString();
@@ -161,7 +164,7 @@ public final class TestDriverGenerator {
         for (ASTNode initializer : initializers) {
             result.append(generateCodeForMarkMethod(initializer, ";"));
         }
-        result.append("for (");
+        result.append("    for (");
         for (int i = 0; i < initializers.size(); i++) {
             result.append(initializers.get(i));
             if (i != initializers.size() - 1) result.append(", ");
@@ -169,7 +172,7 @@ public final class TestDriverGenerator {
 
         // Condition
         result.append("; ");
-        result.append(generateCodeForCondition(forStatement.getExpression(), coverage));
+        result.append("" + generateCodeForCondition(forStatement.getExpression(), coverage));
 
         // Updaters
         result.append("; ");
@@ -180,9 +183,9 @@ public final class TestDriverGenerator {
         }
 
         // Body
-        result.append(") {\n");
-        result.append(generateCodeForOneStatement(forStatement.getBody(), ";", coverage));
-        result.append("}\n");
+        result.append("    ) {\n\n");
+        result.append("        " + generateCodeForOneStatement(forStatement.getBody(), ";", coverage));
+        result.append("    }\n\n");
 
         return result.toString();
     }
@@ -191,12 +194,12 @@ public final class TestDriverGenerator {
         StringBuilder result = new StringBuilder();
 
         // Condition
-        result.append("while (");
+        result.append("    while (");
         result.append(generateCodeForCondition(whileStatement.getExpression(), coverage));
-        result.append(") {\n");
+        result.append(") {\n\n");
 
-        result.append(generateCodeForOneStatement(whileStatement.getBody(), ";", coverage));
-        result.append("}\n");
+        result.append("        " + generateCodeForOneStatement(whileStatement.getBody(), ";", coverage));
+        result.append("    }\n\n");
 
         return result.toString();
     }

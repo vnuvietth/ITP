@@ -38,4 +38,26 @@ public class ChooseToolController {
         stage.show();
     }
 
+    @FXML
+    void chooseConcolic4ITPButtonClicked(MouseEvent event) throws IOException {
+        root = FXMLLoader.load(getClass().getResource("/fxml/Concolic4ITPScene.fxml"));
+        stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+        scene = new Scene(root);
+        stage.setResizable(false);
+        stage.setTitle("Concolic4ITP");
+        stage.setScene(scene);
+        stage.show();
+    }
+
+    @FXML
+    void chooseITP4JavaButtonClicked(MouseEvent event) throws IOException {
+        root = FXMLLoader.load(getClass().getResource("/fxml/ITP4JavaScene.fxml"));
+        stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+        scene = new Scene(root);
+        stage.setResizable(false);
+        stage.setTitle("ITP4Java");
+        stage.setScene(scene);
+        stage.show();
+    }
+
 }
