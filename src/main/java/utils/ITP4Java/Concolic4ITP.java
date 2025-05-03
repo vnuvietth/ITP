@@ -1,8 +1,7 @@
 package utils.ITP4Java;
 
 import controller.Concolic4ITPController;
-import controller.ConcolicAUTController;
-import controller.ITP4JavaController;
+import controller.NTDAUTController;
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.Block;
 import org.eclipse.jdt.core.dom.CompilationUnit;
@@ -29,6 +28,7 @@ import utils.uploadUtil.ConcolicUploadUtil;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
@@ -51,11 +51,8 @@ public class Concolic4ITP {
     private static long totalUsedMem = 0;
     private static long tickCount = 0;
 
-    public static ConcolicTestResult runFullConcolic(String path, String methodName, String className,
-                                                     Concolic4ITPController.Coverage coverage)
-            throws IOException, NoSuchMethodException, InvocationTargetException,
-            IllegalAccessException, ClassNotFoundException, NoSuchFieldException,
-            InterruptedException {
+    public static ConcolicTestResult runFullConcolic(String path, String methodName, String className, 
+                                                     Concolic4ITPController.Coverage coverage) throws IOException, NoSuchMethodException, InvocationTargetException, IllegalAccessException, ClassNotFoundException, NoSuchFieldException, InterruptedException {
 
         setup(path, className, methodName);
         setupCfgTree(coverage);
@@ -88,9 +85,7 @@ public class Concolic4ITP {
         return result;
     }
 
-    private static ConcolicTestResult startGenerating(Concolic4ITPController.Coverage coverage)
-            throws InvocationTargetException, IllegalAccessException, ClassNotFoundException,
-                NoSuchFieldException, IOException, InterruptedException {
+    private static ConcolicTestResult startGenerating(Concolic4ITPController.Coverage coverage) throws InvocationTargetException, IllegalAccessException, ClassNotFoundException, NoSuchFieldException, IOException, InterruptedException {
         ConcolicTestResult testResult = new ConcolicTestResult();
         int testCaseID = 1;
         Object[] evaluatedValues = utils.autoUnitTestUtil.testDriver.Utils.createRandomTestData(parameterClasses);

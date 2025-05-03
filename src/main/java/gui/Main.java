@@ -18,7 +18,7 @@ public class Main extends Application {
         setUp();
         Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/fxml/ChooseToolScene.fxml")));        Scene scene = new Scene(root);
         stage.setResizable(false);
-        stage.setTitle("NTD-AUT tool");
+        stage.setTitle("ITP4Java");
         stage.setScene(scene);
         stage.show();
     }

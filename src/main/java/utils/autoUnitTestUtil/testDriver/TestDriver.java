@@ -30,42 +30,22 @@ public class TestDriver {
           e.printStackTrace();
        }
     }
-    public static int getNumOfDays(int month, boolean isLeapYear)
+    public static int getLength(int n)
     {
-        mark("int numOfDays=0;\n", false, false);
-int numOfDays=0;
-        mark("int i=1", false, false);
-    for (int i=1; ((i < month) && mark("i < month", true, false)) || mark("i < month", false, true); mark("i++", false, false),
-i++    ) {
+        mark("int count=0;\n", false, false);
+int count=0;
+            while (((n > 0) && mark("n > 0", true, false)) || mark("n > 0", false, true)) {
 
             {
-            if (((i == 2) && mark("i == 2", true, false)) || mark("i == 2", false, true))
-    {
-            {
-            if (((isLeapYear) && mark("isLeapYear", true, false)) || mark("isLeapYear", false, true))
-    {
-            {
-        mark("numOfDays+=daysInMonth.get(i - 1) + 1;\n", false, false);
-numOfDays+=daysInMonth.get(i - 1) + 1;
-    }
-    }
-    else {
-mark("numOfDays+=daysInMonth.get(i - 1);\n", false, false);
-numOfDays+=daysInMonth.get(i - 1);
-}
-    }
-    }
-    else {
-    {
-        mark("numOfDays+=daysInMonth.get(i - 1);\n", false, false);
-numOfDays+=daysInMonth.get(i - 1);
-    }
-}
+        mark("n/=10;\n", false, false);
+n/=10;
+        mark("count++;\n", false, false);
+count++;
     }
     }
 
-        mark("return numOfDays;\n", false, false);
-return numOfDays;
+        mark("return count;\n", false, false);
+return count;
     }
 
     public static void main(String[] args) {
@@ -73,7 +53,7 @@ return numOfDays;
 
         long startRunTestTime = System.nanoTime();
 
-        Object output = getNumOfDays(8, false        );
+        Object output = getLength(8        );
         long endRunTestTime = System.nanoTime();
 
         double runTestDuration = (endRunTestTime - startRunTestTime) / 1000000.0;
