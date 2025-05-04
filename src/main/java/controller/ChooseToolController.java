@@ -24,6 +24,7 @@ public class ChooseToolController {
         stage.setResizable(false);
         stage.setTitle("Concolic-AUT");
         stage.setScene(scene);
+        scene.getWindow().centerOnScreen();
         stage.show();
     }
 
@@ -35,6 +36,7 @@ public class ChooseToolController {
         stage.setResizable(false);
         stage.setTitle("NTD-AUT");
         stage.setScene(scene);
+        scene.getWindow().centerOnScreen();
         stage.show();
     }
 
@@ -46,6 +48,7 @@ public class ChooseToolController {
         stage.setResizable(false);
         stage.setTitle("Concolic4ITP");
         stage.setScene(scene);
+        scene.getWindow().centerOnScreen();
         stage.show();
     }
 
@@ -57,6 +60,7 @@ public class ChooseToolController {
         stage.setResizable(false);
         stage.setTitle("ITP4Java");
         stage.setScene(scene);
+        scene.getWindow().centerOnScreen();
         stage.show();
     }
 
