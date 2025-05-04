@@ -23,8 +23,10 @@ import utils.cloneProjectUtil.projectTreeObjects.Folder;
 import utils.cloneProjectUtil.projectTreeObjects.JavaFile;
 import utils.cloneProjectUtil.projectTreeObjects.ProjectTreeObject;
 import utils.cloneProjectUtil.projectTreeObjects.Unit;
+import utils.uploadUtil.ConcolicUploadUtil;
 import utils.uploadUtil.NTDUploadUtil;
 
+import java.io.Console;
 import java.io.File;
 import java.net.URL;
 import java.util.List;
@@ -141,7 +143,7 @@ public class Concolic4ITPController implements Initializable {
             String javaDirPath = CloneProjectUtil.getJavaDirPath(FilePath.uploadedProjectPath);
             if (javaDirPath.equals("")) throw new RuntimeException("Invalid project");
 
-            Folder folder = CloneProjectUtil.cloneProject(javaDirPath, FilePath.clonedProjectPath);
+            Folder folder = ConcolicUploadUtil.createProjectTree(javaDirPath);
 
             long endTime = System.nanoTime();
             double duration = (endTime - startTime) / 1000000.0;
@@ -250,13 +252,14 @@ public class Concolic4ITPController implements Initializable {
     void generateButtonClicked(MouseEvent event) {
         resetTestCaseDetailVBox();
         resetGeneratedTestCasesInfo();
-        alertLabel.setText("");
+        alertLabel.setText("processing");
 
         ConcolicTestResult result;
         try {
             result = Concolic4ITP.runFullConcolic(choseUnit.getPath(), choseUnit.getMethodName(),
                     choseUnit.getClassName(), choseCoverage);
         } catch (Exception e) {
+            e.printStackTrace();
             alertLabel.setTextFill(Paint.valueOf("red"));
             alertLabel.setText("Examined unit contains cases we haven't handle yet!");
             return;
