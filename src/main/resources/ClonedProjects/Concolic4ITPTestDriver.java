@@ -38,22 +38,27 @@ public class TestDriverTemplate {
 
     //Start testing method
 
-    public static int getNthPowerSum(int n, int p)
+        public static int getNthPowerSum(int n, int p)
     {
         mark("int sum=0;\n", false, false);
-        int sum=0;
-        while (((n > 0) && mark("n > 0", true, false)) || mark("n > 0", false, true)) {
-            mark("int temp=n % 10;\n", false, false);
-            int temp=n % 10;
-            mark("n/=10;\n", false, false);
-            n/=10;
-            mark("sum+=(int)Math.pow(temp,p);\n", false, false);
-            sum+=(int)Math.pow(temp,p);
-        }
+int sum=0;
+            while (((n > 0) && mark("n > 0", true, false)) || mark("n > 0", false, true)) {
+
+            {
+        mark("int temp=n % 10;\n", false, false);
+int temp=n % 10;
+        mark("n/=10;\n", false, false);
+n/=10;
+        mark("sum+=(int)Math.pow(temp,p);\n", false, false);
+sum+=(int)Math.pow(temp,p);
+    }
+    }
 
         mark("return sum;\n", false, false);
-        return sum;
+return sum;
     }
+
+
 
     //End testing method
 
@@ -65,7 +70,10 @@ public class TestDriverTemplate {
 
         //Start function calling
 
-        Object output = getNthPowerSum(8, 8);
+        //Object output = getNthPowerSum(8, 8);
+
+                Object output = getNthPowerSum(8, 8        );
+
 
         //Start function calling
 

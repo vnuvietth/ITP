@@ -109,6 +109,9 @@ public class Concolic4ITPController implements Initializable {
         allTestCasesCoverageLabel.setDisable(true);
         testingTimeLabel.setDisable(true);
         usedMemoryLabel.setDisable(true);
+        uploadFileButton.setDisable(false);
+
+        filePreview.setText("D:\\QG25.09\\Code.VietTH\\NTD-Paper\\sample\\Units-From-Leetcode-Java-Solutions.zip");
 
         testCaseListView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<ConcolicTestData>() {
             @Override
@@ -138,7 +141,8 @@ public class Concolic4ITPController implements Initializable {
             long startTime = System.nanoTime();
 
             CloneProjectUtil.deleteFilesInDirectory(FilePath.uploadedProjectPath);
-            NTDUploadUtil.javaUnzipFile(choseFile.getPath(), FilePath.uploadedProjectPath);
+//            NTDUploadUtil.javaUnzipFile(choseFile.getPath(), FilePath.uploadedProjectPath);
+            NTDUploadUtil.javaUnzipFile(filePreview.getText(), FilePath.uploadedProjectPath);
 
             String javaDirPath = CloneProjectUtil.getJavaDirPath(FilePath.uploadedProjectPath);
             if (javaDirPath.equals("")) throw new RuntimeException("Invalid project");
@@ -252,7 +256,6 @@ public class Concolic4ITPController implements Initializable {
     void generateButtonClicked(MouseEvent event) {
         resetTestCaseDetailVBox();
         resetGeneratedTestCasesInfo();
-        alertLabel.setText("processing");
 
         ConcolicTestResult result;
         try {
