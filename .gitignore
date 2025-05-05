@@ -48,3 +48,7 @@ src/main/java/clonedProject/*
 src/main/uploadedProject/*
 *.txt
 ```
+/src/main/resources/ClonedProjects/concolic4ITPTestDriver.class
+/src/main/resources/ClonedProjects/concolic4ITPTestDriver.java
+/src/main/resources/ClonedProjects/concreteExecuteResult.txt
+/src/main/resources/ClonedProjects/runTestDriverData.txt

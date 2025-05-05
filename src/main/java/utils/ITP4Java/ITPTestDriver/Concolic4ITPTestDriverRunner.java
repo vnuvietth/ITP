@@ -1,12 +1,10 @@
 package utils.ITP4Java.ITPTestDriver;
 
 import utils.FilePath;
+import utils.ITP4Java.common.constants;
 import utils.autoUnitTestUtil.dataStructure.MarkedStatement;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,22 +16,31 @@ public final class Concolic4ITPTestDriverRunner {
 
     public static List<MarkedStatement> runTestDriver() throws IOException, InterruptedException {
 
-
-        executeCommand("javac " + FilePath.testDriverPath);
-        executeCommand("java " + FilePath.testDriverPath);
+//        executeCommand("cd " + constants.CONCOLIC_TEST_DRIVER_FOLDER);
+//        executeCommand(constants.CONCOLIC_TEST_DRIVER_ROOT_DRIVE);
+        executeCommand("javac " + constants.CONCOLIC_TEST_DRIVER_PATH);
+        executeCommand("java " + constants.CONCOLIC_BUILT_TEST_DRIVER_PATH);
 
         return getMarkedStatement();
     }
 
     private static void executeCommand(String command) throws IOException, InterruptedException {
-        Process p = Runtime.getRuntime().exec(command);
+        Process p = Runtime.getRuntime().exec(command, null, new File(constants.CONCOLIC_TEST_DRIVER_FOLDER));
+
         p.waitFor();
+
+        if (p.exitValue() != 0)
+        {
+            String result = new String(p.getErrorStream().readAllBytes());
+            System.out.println("Executing test driver, result = " + result);
+        }
+
     }
 
     private static List<MarkedStatement> getMarkedStatement() {
         List<MarkedStatement> result = new ArrayList<>();
 
-        String markedData = getDataFromFile(FilePath.concreteExecuteResultPath);
+        String markedData = getDataFromFile(constants.CONCOLIC_EXECUTE_RESULT_PATH);
         String[] markedStatements = markedData.split("---end---");
         for (int i = 0; i < markedStatements.length; i++) {
             String[] markedStatementData = markedStatements[i].split("===");

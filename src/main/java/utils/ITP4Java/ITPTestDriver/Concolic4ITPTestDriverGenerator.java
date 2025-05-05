@@ -31,7 +31,7 @@ public final class Concolic4ITPTestDriverGenerator {
 
         result.append(templateWithUnitCalling);
 
-        ITPUtils.writeToFile(String.valueOf(result), constants.CONCOLIC_TEST_DRIVER_PATH, false);
+        ITPUtils.writeToFile(String.valueOf(result), constants.CONCOLIC_TEST_DRIVER_FOLDER + "/" + constants.CONCOLIC_TEST_DRIVER_PATH, false);
 
     }
 

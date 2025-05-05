@@ -1,7 +1,7 @@
 import java.io.FileWriter;
 //import ClonedProjects.*;
 
-public class TestDriverTemplate {
+public class concolic4ITPTestDriver {
 
     public static final String PATH_RESULT = "concreteExecuteResult.txt";
     public static final String PATH_DATA = "runTestDriverData.txt";
