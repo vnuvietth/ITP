@@ -14,7 +14,7 @@ import javafx.scene.paint.Paint;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import utils.FilePath;
-import utils.ITP4Java.Concolic4ITP;
+import utils.ITP4Java.ITP4JavaV0;
 import utils.ITP4Java.common.constants;
 import utils.autoUnitTestUtil.concolicResult.ConcolicParameterData;
 import utils.autoUnitTestUtil.concolicResult.ConcolicTestData;
@@ -24,16 +24,14 @@ import utils.cloneProjectUtil.projectTreeObjects.Folder;
 import utils.cloneProjectUtil.projectTreeObjects.JavaFile;
 import utils.cloneProjectUtil.projectTreeObjects.ProjectTreeObject;
 import utils.cloneProjectUtil.projectTreeObjects.Unit;
-import utils.uploadUtil.ConcolicUploadUtil;
 import utils.uploadUtil.NTDUploadUtil;
 
-import java.io.Console;
 import java.io.File;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public class Concolic4ITPController implements Initializable {
+public class ITP4JavaV0Controller implements Initializable {
 
     private FileChooser fileChooser = new FileChooser();
     private File choseFile;
@@ -110,9 +108,10 @@ public class Concolic4ITPController implements Initializable {
         allTestCasesCoverageLabel.setDisable(true);
         testingTimeLabel.setDisable(true);
         usedMemoryLabel.setDisable(true);
-        uploadFileButton.setDisable(false);
 
         filePreview.setText(constants.TEST_FOLDER);
+
+        uploadFileButton.setDisable(false);
 
         testCaseListView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<ConcolicTestData>() {
             @Override
@@ -148,7 +147,7 @@ public class Concolic4ITPController implements Initializable {
             String javaDirPath = CloneProjectUtil.getJavaDirPath(FilePath.uploadedProjectPath);
             if (javaDirPath.equals("")) throw new RuntimeException("Invalid project");
 
-            Folder folder = ConcolicUploadUtil.createProjectTree(javaDirPath);
+            Folder folder = CloneProjectUtil.cloneProject(javaDirPath, FilePath.clonedProjectPath);
 
             long endTime = System.nanoTime();
             double duration = (endTime - startTime) / 1000000.0;
@@ -257,13 +256,14 @@ public class Concolic4ITPController implements Initializable {
     void generateButtonClicked(MouseEvent event) {
         resetTestCaseDetailVBox();
         resetGeneratedTestCasesInfo();
+        alertLabel.setText("");
 
         ConcolicTestResult result;
         try {
-            result = Concolic4ITP.runFullConcolic(choseUnit.getPath(), choseUnit.getMethodName(),
+            result = ITP4JavaV0.runFullConcolic(choseUnit.getPath(), choseUnit.getMethodName(),
                     choseUnit.getClassName(), choseCoverage);
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println("Exception: " + e.getMessage() + ";\n" + e.getStackTrace());
             alertLabel.setTextFill(Paint.valueOf("red"));
             alertLabel.setText("Examined unit contains cases we haven't handle yet!");
             return;

@@ -16,6 +16,7 @@ import javafx.stage.Stage;
 import utils.FilePath;
 import utils.ITP4Java.Concolic4ITP;
 import utils.ITP4Java.ITP4Java;
+import utils.ITP4Java.common.constants;
 import utils.autoUnitTestUtil.autoTesting.NTDTesting;
 import utils.autoUnitTestUtil.concolicResult.ConcolicParameterData;
 import utils.autoUnitTestUtil.concolicResult.ConcolicTestData;
@@ -110,6 +111,10 @@ public class ITP4JavaController implements Initializable {
         testingTimeLabel.setDisable(true);
         usedMemoryLabel.setDisable(true);
 
+        filePreview.setText(constants.TEST_FOLDER);
+
+        uploadFileButton.setDisable(false);
+
         testCaseListView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<ConcolicTestData>() {
             @Override
             public void changed(ObservableValue<? extends ConcolicTestData> observableValue, ConcolicTestData concolicTestData, ConcolicTestData t1) {
@@ -138,7 +143,8 @@ public class ITP4JavaController implements Initializable {
             long startTime = System.nanoTime();
 
             CloneProjectUtil.deleteFilesInDirectory(FilePath.uploadedProjectPath);
-            NTDUploadUtil.javaUnzipFile(choseFile.getPath(), FilePath.uploadedProjectPath);
+//            NTDUploadUtil.javaUnzipFile(choseFile.getPath(), FilePath.uploadedProjectPath);
+            NTDUploadUtil.javaUnzipFile(filePreview.getText(), FilePath.uploadedProjectPath);
 
             String javaDirPath = CloneProjectUtil.getJavaDirPath(FilePath.uploadedProjectPath);
             if (javaDirPath.equals("")) throw new RuntimeException("Invalid project");

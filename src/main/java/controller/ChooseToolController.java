@@ -64,4 +64,16 @@ public class ChooseToolController {
         stage.show();
     }
 
+    @FXML
+    void chooseITP4JavaV0ButtonClicked(MouseEvent event) throws IOException {
+        root = FXMLLoader.load(getClass().getResource("/fxml/ITP4JavaV0Scene.fxml"));
+        stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+        scene = new Scene(root);
+        stage.setResizable(false);
+        stage.setTitle("ITP4Java v0");
+        stage.setScene(scene);
+        scene.getWindow().centerOnScreen();
+        stage.show();
+    }
+
 }

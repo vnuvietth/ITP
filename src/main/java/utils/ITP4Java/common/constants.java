@@ -1,6 +1,8 @@
 package utils.ITP4Java.common;
 
 public interface constants {
+    String TEST_FOLDER = "D:\\QG25.09\\Code.VietTH\\NTD-Paper\\sample\\Units-From-Leetcode-Java-Solutions.zip";
+
     String INSTRUMENTED_TESTING_UNIT_PLACEHOLDER = "%%INSTRUMENTED_TESTING_UNIT_PLACEHOLDER%%";
     String UNIT_CALLING_PLACEHOLDER = "%%UNIT_CALLING_PLACEHOLDER%%";
 

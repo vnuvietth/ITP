@@ -15,5 +15,6 @@
       <Button fx:id="btnConcolicAUT" layoutX="231.0" layoutY="68.0" mnemonicParsing="false" onMouseClicked="#chooseConcolicToolButtonClicked" text="Concolic-AUT" />
       <Button fx:id="btnConcolic4ITP" layoutX="23.0" layoutY="110.0" mnemonicParsing="false" onMouseClicked="#chooseConcolic4ITPButtonClicked" prefHeight="25.0" prefWidth="95.0" text="Concolic4ITP" />
       <Button fx:id="btnITP4Java" layoutX="231.0" layoutY="110.0" mnemonicParsing="false" onMouseClicked="#chooseITP4JavaButtonClicked" prefHeight="25.0" prefWidth="89.0" text="ITP4Java" />
+      <Button fx:id="btnITP4JavaV0" layoutX="138.0" layoutY="110.0" mnemonicParsing="false" onMouseClicked="#chooseITP4JavaV0ButtonClicked" prefHeight="25.0" prefWidth="78.0" text="ITP4JavaV0" />
    </children>
 </AnchorPane>
