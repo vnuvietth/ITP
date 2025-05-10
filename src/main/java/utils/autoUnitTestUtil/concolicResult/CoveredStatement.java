@@ -29,15 +29,22 @@ public class CoveredStatement {
 
         for (MarkedStatement markedStatement : markedStatements) {
             CfgNode cfgNode = markedStatement.getCfgNode();
-            CoveredStatement coveredStatement = new CoveredStatement(cfgNode.getContent(), cfgNode.getLineNumber());
 
-            if (markedStatement.isTrueConditionalStatement()) {
-                coveredStatement.conditionStatus = "true";
-            } else if (markedStatement.isFalseConditionalStatement()) {
-                coveredStatement.conditionStatus = "false";
+            if (cfgNode == null)
+            {
+                System.out.println("cfgNode == null");
             }
+            else {
+                CoveredStatement coveredStatement = new CoveredStatement(cfgNode.getContent(), cfgNode.getLineNumber());
 
-            coveredStatements.add(coveredStatement);
+                if (markedStatement.isTrueConditionalStatement()) {
+                    coveredStatement.conditionStatus = "true";
+                } else if (markedStatement.isFalseConditionalStatement()) {
+                    coveredStatement.conditionStatus = "false";
+                }
+
+                coveredStatements.add(coveredStatement);
+            }
         }
 
         return coveredStatements;
