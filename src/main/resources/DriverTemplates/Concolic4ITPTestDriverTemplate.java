@@ -44,7 +44,7 @@ public class concolic4ITPTestDriver {
 
     public static void main(String[] args) {
 
-        writeDataToFile("", PATH_DATA, false);
+        writeDataToFile("", PATH_RESULT, false);
 
         long startRunTestTime = System.nanoTime();
 
