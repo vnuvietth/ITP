@@ -45,4 +45,10 @@ public class MarkedStatement {
     public void setCfgNode(CfgNode cfgNode) {
         this.cfgNode = cfgNode;
     }
+
+    @Override
+    public String toString()
+    {
+        return statement;
+    }
 }
