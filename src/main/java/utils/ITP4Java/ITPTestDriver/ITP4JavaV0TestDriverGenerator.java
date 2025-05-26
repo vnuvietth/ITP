@@ -23,9 +23,13 @@ public final class ITP4JavaV0TestDriverGenerator {
 
         String templateContent = testDriverTemplateContent.replace(constants.INSTRUMENTED_TESTING_UNIT_PLACEHOLDER, clonedMethod);
 
+        String testDataCallingString = generateTestDataReader(method, testData);
+
+        String templateContentWithTestDataReading = templateContent.replace(constants.TEST_DATA_READING_PLACEHOLDER,testDataCallingString);
+
         String unitCalling = generateTestRunner(method.getName().toString(), testData);
 
-        String templateWithUnitCalling = templateContent.replace(constants.UNIT_CALLING_PLACEHOLDER, unitCalling);
+        String templateWithUnitCalling = templateContentWithTestDataReading.replace(constants.UNIT_CALLING_PLACEHOLDER, unitCalling);
 
         result.append(templateWithUnitCalling);
 
@@ -36,10 +40,38 @@ public final class ITP4JavaV0TestDriverGenerator {
     private static String readTestDriverTemplate() {
         try
         {
-            return Files.readString(Path.of(constants.CONCOLIC_TEST_DRIVER_TEMPLATE_PATH));
+            return Files.readString(Path.of(constants.ITP4JAVA_V0_TEST_DRIVER_TEMPLATE_PATH));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private static String generateTestDataReader(MethodDeclaration method, Object[] testData) {
+        StringBuilder result = new StringBuilder();
+
+//        result.append("Object output = ").append(methodName).append("(");
+        for(int i = 0; i < method.parameters().size(); i++) {
+//            if(testData[i] instanceof Character) {
+
+                String param = "String param" + i + " = (String) jsonObject.get(\"" + ((SingleVariableDeclaration)(method.parameters().get(i))).getName() + "\");";
+
+                if (i == 0) {
+                    result.append(param + "\n");
+                }
+                else {
+                    result.append("        " + param + "\n");
+                }
+
+                result.append("        System.out.println(\"" + ((SingleVariableDeclaration)(method.parameters().get(i))).getName() + " = \" " + " + param" + i + ");\n");
+
+//            } else {
+//                result.append(testData[i]);
+//            }
+//            if(i != testData.length - 1) result.append(", ");
+        }
+        result.append("\n");
+
+        return result.toString();
     }
 
     private static String generateTestRunner(String methodName, Object[] testData) {
@@ -47,7 +79,7 @@ public final class ITP4JavaV0TestDriverGenerator {
 //        result.append("    public static void main(String[] args) {\n");
 //        result.append("        writeDataToFile(\"\", \"core-engine/cfg/src/main/java/data/testDriverData/runTestDriverData.txt\", false);\n\n");
 //        result.append("        long startRunTestTime = System.nanoTime();\n\n");
-        result.append("        Object output = ").append(methodName).append("(");
+        result.append("Object output = ").append(methodName).append("(");
         for(int i = 0; i < testData.length; i++) {
             if(testData[i] instanceof Character) {
                 result.append("'").append(testData[i]).append("'");
@@ -56,7 +88,7 @@ public final class ITP4JavaV0TestDriverGenerator {
             }
             if(i != testData.length - 1) result.append(", ");
         }
-        result.append("        );\n");
+        result.append(");\n");
 //        result.append("        long endRunTestTime = System.nanoTime();\n\n");
 //        result.append("        double runTestDuration = (endRunTestTime - startRunTestTime) / 1000000.0;\n\n");
 //        result.append("        writeDataToFile(runTestDuration + \"===\" + output, \"src/main/java/utils/autoUnitTestUtil/concreteExecuteResult.txt\", true);\n\n");

@@ -5,11 +5,15 @@ public interface constants {
 
     String INSTRUMENTED_TESTING_UNIT_PLACEHOLDER = "%%INSTRUMENTED_TESTING_UNIT_PLACEHOLDER%%";
     String UNIT_CALLING_PLACEHOLDER = "%%UNIT_CALLING_PLACEHOLDER%%";
+    String TEST_DATA_READING_PLACEHOLDER = "%%TEST_DATA_READING_PLACEHOLDER%%";
 
     String CONCOLIC_TEST_DRIVER_FOLDER = "\\src\\main\\resources\\ClonedProjects";
     String CONCOLIC_TEST_DRIVER_ROOT_DRIVE = "E:\\IdeaProjects\\NTD-Paper";
 
     String CONCOLIC_TEST_DRIVER_TEMPLATE_PATH = "src/main/resources/DriverTemplates/Concolic4ITPTestDriverTemplate.java";
+    String ITP4JAVA_V0_TEST_DRIVER_TEMPLATE_PATH = "src/main/resources/DriverTemplates/Concolic4ITP_V0_TestDriverTemplate.java";
+
+
     String CONCOLIC_TEST_DRIVER_PATH = "concolic4ITPTestDriver.java";
     String CONCOLIC_BUILT_TEST_DRIVER_PATH = "concolic4ITPTestDriver";
 
