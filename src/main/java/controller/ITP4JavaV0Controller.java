@@ -110,7 +110,7 @@ public class ITP4JavaV0Controller implements Initializable {
         testingTimeLabel.setDisable(true);
         usedMemoryLabel.setDisable(true);
 
-        filePreview.setText(constants.TEST_FOLDER);
+        filePreview.setText(constants.CONCOLIC_TEST_DRIVER_ROOT_DRIVE + constants.TEST_FOLDER);
 
         uploadFileButton.setDisable(false);
 

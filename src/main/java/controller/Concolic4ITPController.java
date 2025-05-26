@@ -112,7 +112,7 @@ public class Concolic4ITPController implements Initializable {
         usedMemoryLabel.setDisable(true);
         uploadFileButton.setDisable(false);
 
-        filePreview.setText(constants.TEST_FOLDER);
+        filePreview.setText(constants.CONCOLIC_TEST_DRIVER_ROOT_DRIVE + constants.TEST_FOLDER);
 
         testCaseListView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<ConcolicTestData>() {
             @Override

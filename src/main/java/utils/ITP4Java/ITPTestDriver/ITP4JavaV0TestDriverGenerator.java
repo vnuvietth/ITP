@@ -29,7 +29,7 @@ public final class ITP4JavaV0TestDriverGenerator {
 
         result.append(templateWithUnitCalling);
 
-        ITPUtils.writeToFile(String.valueOf(result), constants.CONCOLIC_TEST_DRIVER_FOLDER + "/" + constants.CONCOLIC_TEST_DRIVER_PATH, false);
+        ITPUtils.writeToFile(String.valueOf(result), constants.CONCOLIC_TEST_DRIVER_ROOT_DRIVE + constants.CONCOLIC_TEST_DRIVER_FOLDER + "/" + constants.CONCOLIC_TEST_DRIVER_PATH, false);
 
     }
 

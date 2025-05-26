@@ -25,7 +25,7 @@ public final class Concolic4ITPTestDriverRunner {
     }
 
     private static void executeCommand(String command) throws IOException, InterruptedException {
-        Process p = Runtime.getRuntime().exec(command, null, new File(constants.CONCOLIC_TEST_DRIVER_FOLDER));
+        Process p = Runtime.getRuntime().exec(command, null, new File(constants.CONCOLIC_TEST_DRIVER_ROOT_DRIVE + constants.CONCOLIC_TEST_DRIVER_FOLDER));
 
         p.waitFor();
 
