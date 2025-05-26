@@ -49,25 +49,17 @@ public final class ITP4JavaV0TestDriverGenerator {
     private static String generateTestDataReader(MethodDeclaration method, Object[] testData) {
         StringBuilder result = new StringBuilder();
 
-//        result.append("Object output = ").append(methodName).append("(");
         for(int i = 0; i < method.parameters().size(); i++) {
-//            if(testData[i] instanceof Character) {
+            String param = "String param" + i + " = (String) jsonObject.get(\"" + ((SingleVariableDeclaration)(method.parameters().get(i))).getName() + "\");";
 
-                String param = "String param" + i + " = (String) jsonObject.get(\"" + ((SingleVariableDeclaration)(method.parameters().get(i))).getName() + "\");";
+            if (i == 0) {
+                result.append(param + "\n");
+            }
+            else {
+                result.append("        " + param + "\n");
+            }
 
-                if (i == 0) {
-                    result.append(param + "\n");
-                }
-                else {
-                    result.append("        " + param + "\n");
-                }
-
-                result.append("        System.out.println(\"" + ((SingleVariableDeclaration)(method.parameters().get(i))).getName() + " = \" " + " + param" + i + ");\n");
-
-//            } else {
-//                result.append(testData[i]);
-//            }
-//            if(i != testData.length - 1) result.append(", ");
+            result.append("        System.out.println(\"" + ((SingleVariableDeclaration)(method.parameters().get(i))).getName() + " = \" " + " + param" + i + ");\n");
         }
         result.append("\n");
 
@@ -76,9 +68,6 @@ public final class ITP4JavaV0TestDriverGenerator {
 
     private static String generateTestRunner(String methodName, Object[] testData) {
         StringBuilder result = new StringBuilder();
-//        result.append("    public static void main(String[] args) {\n");
-//        result.append("        writeDataToFile(\"\", \"core-engine/cfg/src/main/java/data/testDriverData/runTestDriverData.txt\", false);\n\n");
-//        result.append("        long startRunTestTime = System.nanoTime();\n\n");
         result.append("Object output = ").append(methodName).append("(");
         for(int i = 0; i < testData.length; i++) {
             if(testData[i] instanceof Character) {
@@ -89,10 +78,6 @@ public final class ITP4JavaV0TestDriverGenerator {
             if(i != testData.length - 1) result.append(", ");
         }
         result.append(");\n");
-//        result.append("        long endRunTestTime = System.nanoTime();\n\n");
-//        result.append("        double runTestDuration = (endRunTestTime - startRunTestTime) / 1000000.0;\n\n");
-//        result.append("        writeDataToFile(runTestDuration + \"===\" + output, \"src/main/java/utils/autoUnitTestUtil/concreteExecuteResult.txt\", true);\n\n");
-//        result.append("    }\n");
         return result.toString();
     }
 
@@ -136,7 +121,7 @@ public final class ITP4JavaV0TestDriverGenerator {
     private static String createCloneMethod(MethodDeclaration method, ASTHelper.Coverage coverage) {
         StringBuilder cloneMethod = new StringBuilder();
 
-        cloneMethod.append("    public static ").append(method.getReturnType2()).append(" ").append(method.getName()).append("(");
+        cloneMethod.append("public static ").append(method.getReturnType2()).append(" ").append(method.getName()).append("(");
         List<ASTNode> parameters = method.parameters();
         for (int i = 0; i < parameters.size(); i++) {
             cloneMethod.append(parameters.get(i));
@@ -238,7 +223,7 @@ public final class ITP4JavaV0TestDriverGenerator {
         StringBuilder result = new StringBuilder();
 
         // Condition
-        result.append("    while (");
+        result.append("while (");
         result.append(generateCodeForCondition(whileStatement.getExpression(), coverage));
         result.append(") {\n\n");
 
@@ -267,7 +252,7 @@ public final class ITP4JavaV0TestDriverGenerator {
     private static String generateCodeForNormalStatement(ASTNode statement, String markMethodSeparator) {
         StringBuilder result = new StringBuilder();
 
-        result.append(generateCodeForMarkMethod(statement, markMethodSeparator));
+        result.append("        " + generateCodeForMarkMethod(statement, markMethodSeparator));
         result.append(statement);
 
         return result.toString();
