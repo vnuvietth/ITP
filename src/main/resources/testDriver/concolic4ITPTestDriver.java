@@ -1,3 +1,5 @@
+package testDriver;
+
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -45,7 +47,27 @@ public class concolic4ITPTestDriver {
 
     //Start testing method
 
-    %%INSTRUMENTED_TESTING_UNIT_PLACEHOLDER%%
+    public static int getNthPowerSum(int n, int p)
+    {
+                mark("int sum=0;\n", false, false);
+int sum=0;
+        while (((n > 0) && mark("n > 0", true, false)) || mark("n > 0", false, true)) {
+
+            {
+                mark("int temp=n % 10;\n", false, false);
+int temp=n % 10;
+                mark("n/=10;\n", false, false);
+n/=10;
+                mark("sum+=(int)Math.pow(temp,p);\n", false, false);
+sum+=(int)Math.pow(temp,p);
+    }
+    }
+
+                mark("return sum;\n", false, false);
+return sum;
+    }
+
+
 
     //End testing method
 
@@ -61,13 +83,19 @@ public class concolic4ITPTestDriver {
         JSONParser parser = new JSONParser();
         JSONObject jsonObject = (JSONObject) parser.parse(new FileReader("E:\\IdeaProjects\\NTD-Paper\\src\\main\\resources\\ClonedProjects\\TestData.json"));
 
-        %%TEST_DATA_READING_PLACEHOLDER%%
+        String param0 = (String) jsonObject.get("n");
+        System.out.println("n = "  + param0);
+        String param1 = (String) jsonObject.get("p");
+        System.out.println("p = "  + param1);
+
+
 
         //End test data file reading
 
         //Start function calling
 
-        %%UNIT_CALLING_PLACEHOLDER%%
+        Object output = getNthPowerSum(8, 8);
+
 
 //        System.out.println("output = " + output);
 

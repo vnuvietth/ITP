@@ -18,7 +18,7 @@ public final class Concolic4ITPTestDriverRunner {
 
 //        executeCommand("cd " + constants.CONCOLIC_TEST_DRIVER_FOLDER);
 //        executeCommand(constants.CONCOLIC_TEST_DRIVER_ROOT_DRIVE);
-        executeCommand("javac " + constants.CONCOLIC_TEST_DRIVER_PATH);
+        executeCommand("javac -cp \"json-simple-1.1.1.jar\" " + constants.CONCOLIC_TEST_DRIVER_PATH);
         executeCommand("java " + constants.CONCOLIC_BUILT_TEST_DRIVER_PATH);
 
         return getMarkedStatement();
