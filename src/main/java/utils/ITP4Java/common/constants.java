@@ -33,8 +33,8 @@ public interface constants {
             constants.CONCOLIC_4ITP_BUILT_TEST_DRIVER_PATH;
 
 
-    String CONCOLIC_TEST_DRIVER_PATH = "concolic4ITPTestDriver.java";
-    String CONCOLIC_BUILT_TEST_DRIVER_PATH = "concolic4ITPTestDriver";
+//    String CONCOLIC_TEST_DRIVER_PATH = "concolic4ITPTestDriver.java";
+//    String CONCOLIC_BUILT_TEST_DRIVER_PATH = "concolic4ITPTestDriver";
 
     //ITP v0
     String ITP_V0_TEST_DATA_FILE_PATH_PLACEHOLDER = "%%TEST_DATA_FILE_PATH%%";
