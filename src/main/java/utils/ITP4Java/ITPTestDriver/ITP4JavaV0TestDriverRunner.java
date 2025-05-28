@@ -15,23 +15,31 @@ public final class ITP4JavaV0TestDriverRunner {
 
     public static List<MarkedStatement> runTestDriver() throws IOException, InterruptedException {
 
-//        executeCommand("cd " + constants.CONCOLIC_TEST_DRIVER_FOLDER);
-//        executeCommand(constants.CONCOLIC_TEST_DRIVER_ROOT_DRIVE);
-        executeCommand("javac " + constants.CONCOLIC_TEST_DRIVER_PATH);
-        executeCommand("java " + constants.CONCOLIC_BUILT_TEST_DRIVER_PATH);
+        String buildCommand = constants.ITP_V0_BUILD_COMMAND;
+
+        System.out.println(buildCommand);
+
+        executeCommand(buildCommand);
+
+        String runCommand = constants.ITP_V0_RUN_COMMAND;
+
+        System.out.println(runCommand);
+
+        executeCommand(runCommand);
 
         return getMarkedStatement();
     }
 
     private static void executeCommand(String command) throws IOException, InterruptedException {
-        Process p = Runtime.getRuntime().exec(command, null, new File(constants.CONCOLIC_TEST_DRIVER_ROOT_DRIVE + constants.CONCOLIC_TEST_DRIVER_FOLDER));
+        Process p = Runtime.getRuntime().exec(command, null, new File(constants.TEST_DRIVER_FOLDER));
 
         p.waitFor();
 
         if (p.exitValue() != 0)
         {
             String result = new String(p.getErrorStream().readAllBytes());
-            System.out.println("Executing test driver, result = " + result);
+            System.out.println("Executing command: " + command);
+            System.out.println(" result = " + result);
         }
 
     }
@@ -39,7 +47,7 @@ public final class ITP4JavaV0TestDriverRunner {
     private static List<MarkedStatement> getMarkedStatement() {
         List<MarkedStatement> result = new ArrayList<>();
 
-        String markedData = getDataFromFile(constants.CONCOLIC_EXECUTE_RESULT_PATH);
+        String markedData = getDataFromFile(constants.EXECUTION_RESULT_PATH);
         String[] markedStatements = markedData.split("---end---");
         for (int i = 0; i < markedStatements.length; i++) {
             String[] markedStatementData = markedStatements[i].split("===");

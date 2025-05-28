@@ -3,8 +3,7 @@ import java.io.FileWriter;
 
 public class concolic4ITPTestDriver {
 
-    public static final String PATH_RESULT = "concreteExecuteResult.txt";
-    public static final String PATH_DATA = "runTestDriverData.txt";
+    public static final String PATH_RESULT = "%%EXECUTION_RESULT_PATH_PLACEHOLDER%%";
     //Start utilities
     private static boolean mark(String statement, boolean isTrueCondition, boolean isFalseCondition) {
        StringBuilder markResult = new StringBuilder();

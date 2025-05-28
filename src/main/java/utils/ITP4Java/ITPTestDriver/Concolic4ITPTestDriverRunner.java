@@ -1,6 +1,5 @@
 package utils.ITP4Java.ITPTestDriver;
 
-import utils.FilePath;
 import utils.ITP4Java.common.constants;
 import utils.autoUnitTestUtil.dataStructure.MarkedStatement;
 
@@ -18,14 +17,25 @@ public final class Concolic4ITPTestDriverRunner {
 
 //        executeCommand("cd " + constants.CONCOLIC_TEST_DRIVER_FOLDER);
 //        executeCommand(constants.CONCOLIC_TEST_DRIVER_ROOT_DRIVE);
-        executeCommand("javac -cp \"json-simple-1.1.1.jar\" " + constants.CONCOLIC_TEST_DRIVER_PATH);
-        executeCommand("java " + constants.CONCOLIC_BUILT_TEST_DRIVER_PATH);
+
+        String buildCommand = "javac " + " -d " + constants.TEST_DRIVER_CLASSPATH_FOLDER + " "
+                + constants.TEST_DRIVER_FOLDER + "\\" + constants.CONCOLIC_4ITP_TEST_DRIVER_PATH; //-cp "json-simple-1.1.1.jar"
+
+        System.out.println(buildCommand);
+
+        executeCommand(buildCommand);
+
+        String runCommand = "java " + " -cp " + constants.TEST_DRIVER_CLASSPATH_FOLDER + " " + constants.TEST_DRIVER_FOLDER + "\\" + constants.CONCOLIC_4ITP_BUILT_TEST_DRIVER_PATH;
+
+        System.out.println(runCommand);
+
+        executeCommand(runCommand);
 
         return getMarkedStatement();
     }
 
     private static void executeCommand(String command) throws IOException, InterruptedException {
-        Process p = Runtime.getRuntime().exec(command, null, new File(constants.CONCOLIC_TEST_DRIVER_ROOT_DRIVE + constants.CONCOLIC_TEST_DRIVER_FOLDER));
+        Process p = Runtime.getRuntime().exec(command, null, new File(constants.TEST_DRIVER_FOLDER));
 
         p.waitFor();
 
@@ -40,7 +50,7 @@ public final class Concolic4ITPTestDriverRunner {
     private static List<MarkedStatement> getMarkedStatement() {
         List<MarkedStatement> result = new ArrayList<>();
 
-        String markedData = getDataFromFile(constants.CONCOLIC_EXECUTE_RESULT_PATH);
+        String markedData = getDataFromFile(constants.EXECUTION_RESULT_PATH);
         String[] markedStatements = markedData.split("---end---");
         for (int i = 0; i < markedStatements.length; i++) {
             String[] markedStatementData = markedStatements[i].split("===");

@@ -10,8 +10,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 
-import static utils.ITP4Java.common.constants.UNIT_CALLING_PLACEHOLDER;
-
 public final class Concolic4ITPTestDriverGenerator {
     private Concolic4ITPTestDriverGenerator() {
     }
@@ -23,7 +21,8 @@ public final class Concolic4ITPTestDriverGenerator {
 
         String clonedMethod = createCloneMethod(method, coverage);
 
-        String templateContent = testDriverTemplateContent.replace(constants.INSTRUMENTED_TESTING_UNIT_PLACEHOLDER, clonedMethod);
+        String templateContent = testDriverTemplateContent.replace(constants.INSTRUMENTED_TESTING_UNIT_PLACEHOLDER, clonedMethod)
+                .replace(constants.EXECUTION_RESULT_PATH_PLACEHOLDER, constants.EXECUTION_RESULT_PATH);
 
         String unitCalling = generateTestRunner(method.getName().toString(), testData);
 
@@ -31,14 +30,14 @@ public final class Concolic4ITPTestDriverGenerator {
 
         result.append(templateWithUnitCalling);
 
-        ITPUtils.writeToFile(String.valueOf(result), constants.CONCOLIC_TEST_DRIVER_ROOT_DRIVE + constants.CONCOLIC_TEST_DRIVER_FOLDER + "/" + constants.CONCOLIC_TEST_DRIVER_PATH, false);
+        ITPUtils.writeToFile(String.valueOf(result), constants.ITP_V0_TEST_DRIVER_PATH, false);
 
     }
 
     private static String readTestDriverTemplate() {
         try
         {
-            return Files.readString(Path.of(constants.CONCOLIC_TEST_DRIVER_TEMPLATE_PATH));
+            return Files.readString(Path.of(constants.PROJECT_ROOT_DRIVE + "\\" +  constants.CONCOLIC_4ITP_TEST_DRIVER_TEMPLATE_FILENAME));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

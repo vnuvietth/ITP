@@ -14,10 +14,8 @@ import javafx.scene.paint.Paint;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import utils.FilePath;
-import utils.ITP4Java.Concolic4ITP;
 import utils.ITP4Java.ITP4Java;
 import utils.ITP4Java.common.constants;
-import utils.autoUnitTestUtil.autoTesting.NTDTesting;
 import utils.autoUnitTestUtil.concolicResult.ConcolicParameterData;
 import utils.autoUnitTestUtil.concolicResult.ConcolicTestData;
 import utils.autoUnitTestUtil.concolicResult.ConcolicTestResult;
@@ -111,7 +109,7 @@ public class ITP4JavaController implements Initializable {
         testingTimeLabel.setDisable(true);
         usedMemoryLabel.setDisable(true);
 
-        filePreview.setText(constants.CONCOLIC_TEST_DRIVER_ROOT_DRIVE + constants.TEST_FOLDER);
+        filePreview.setText(constants.PROJECT_ROOT_DRIVE + constants.TEST_FOLDER);
 
         uploadFileButton.setDisable(false);
 

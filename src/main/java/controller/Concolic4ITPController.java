@@ -27,7 +27,6 @@ import utils.cloneProjectUtil.projectTreeObjects.Unit;
 import utils.uploadUtil.ConcolicUploadUtil;
 import utils.uploadUtil.NTDUploadUtil;
 
-import java.io.Console;
 import java.io.File;
 import java.net.URL;
 import java.util.List;
@@ -112,7 +111,7 @@ public class Concolic4ITPController implements Initializable {
         usedMemoryLabel.setDisable(true);
         uploadFileButton.setDisable(false);
 
-        filePreview.setText(constants.CONCOLIC_TEST_DRIVER_ROOT_DRIVE + constants.TEST_FOLDER);
+        filePreview.setText(constants.PROJECT_ROOT_DRIVE + constants.TEST_FOLDER);
 
         testCaseListView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<ConcolicTestData>() {
             @Override

@@ -80,7 +80,7 @@ public class concolic4ITPTestDriver {
         //Start function calling
 
         JSONParser parser = new JSONParser();
-//        JSONArray a = (JSONArray) parser.parse(new FileReader("C:\\Users\\HP\\IdeaProjects\\TestDriver\\src\\TestData.json"));
+//        JSONArray a = (JSONArray) parser.parse(new FileReader("C:\\Users\\HP\\IdeaProjects\\TestDriver\\src\\SampleTestDataFile.json"));
 
         JSONObject jsonObject = (JSONObject) parser.parse(new FileReader("C:\\Users\\HP\\IdeaProjects\\TestDriver\\src\\TestData.json"));
 

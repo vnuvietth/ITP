@@ -1,6 +1,3 @@
-package testDriver;
-
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -10,10 +7,9 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-public class concolic4ITPTestDriver {
+public class ITP_V0_TestDriver {
 
-    public static final String PATH_RESULT = "concreteExecuteResult.txt";
-    public static final String PATH_DATA = "runTestDriverData.txt";
+    public static final String PATH_RESULT = "E:\\IdeaProjects\\testDriver\\concreteExecuteResult.txt";
     //Start utilities
     private static boolean mark(String statement, boolean isTrueCondition, boolean isFalseCondition) {
         StringBuilder markResult = new StringBuilder();
@@ -81,7 +77,7 @@ return sum;
 
         //Start test data file reading
         JSONParser parser = new JSONParser();
-        JSONObject jsonObject = (JSONObject) parser.parse(new FileReader("E:\\IdeaProjects\\NTD-Paper\\src\\main\\resources\\ClonedProjects\\TestData.json"));
+        JSONObject jsonObject = (JSONObject) parser.parse(new FileReader("E:\\IdeaProjects\\testDriver\\TestData.json"));
 
         String param0 = (String) jsonObject.get("n");
         System.out.println("n = "  + param0);

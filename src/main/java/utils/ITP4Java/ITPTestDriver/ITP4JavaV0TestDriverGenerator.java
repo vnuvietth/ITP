@@ -21,7 +21,9 @@ public final class ITP4JavaV0TestDriverGenerator {
 
         String clonedMethod = createCloneMethod(method, coverage);
 
-        String templateContent = testDriverTemplateContent.replace(constants.INSTRUMENTED_TESTING_UNIT_PLACEHOLDER, clonedMethod);
+        String templateContent = testDriverTemplateContent.replace(constants.INSTRUMENTED_TESTING_UNIT_PLACEHOLDER, clonedMethod)
+                .replace(constants.ITP_V0_TEST_DATA_FILE_PATH_PLACEHOLDER, constants.ITP_V0_TEST_DATA_FILE_PATH_FOR_TEST_DRIVER)
+                .replace(constants.EXECUTION_RESULT_PATH_PLACEHOLDER, constants.EXECUTION_RESULT_PATH);
 
         String testDataCallingString = generateTestDataReader(method, testData);
 
@@ -33,14 +35,14 @@ public final class ITP4JavaV0TestDriverGenerator {
 
         result.append(templateWithUnitCalling);
 
-        ITPUtils.writeToFile(String.valueOf(result), constants.CONCOLIC_TEST_DRIVER_ROOT_DRIVE + constants.CONCOLIC_TEST_DRIVER_FOLDER + "/" + constants.CONCOLIC_TEST_DRIVER_PATH, false);
+        ITPUtils.writeToFile(String.valueOf(result), constants.ITP_V0_TEST_DRIVER_PATH, false);
 
     }
 
     private static String readTestDriverTemplate() {
         try
         {
-            return Files.readString(Path.of(constants.ITP4JAVA_V0_TEST_DRIVER_TEMPLATE_PATH));
+            return Files.readString(Path.of(constants.ITP_V0_TEST_DRIVER_TEMPLATE_PATH));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
