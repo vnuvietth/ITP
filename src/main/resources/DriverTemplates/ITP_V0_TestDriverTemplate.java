@@ -101,7 +101,7 @@ return sum;
 
         double runTestDuration = (endRunTestTime - startRunTestTime) / 1000000.0;
 
-//        writeDataToFile(runTestDuration + "===" + output, PATH_RESULT, true);
+        writeDataToFile(runTestDuration + "===" + output, PATH_RESULT, true);
 
         System.out.println("Concolic4ITPTestDriver ends...");
 

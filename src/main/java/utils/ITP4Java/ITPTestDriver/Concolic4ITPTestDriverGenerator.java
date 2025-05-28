@@ -30,14 +30,14 @@ public final class Concolic4ITPTestDriverGenerator {
 
         result.append(templateWithUnitCalling);
 
-        ITPUtils.writeToFile(String.valueOf(result), constants.ITP_V0_TEST_DRIVER_PATH, false);
+        ITPUtils.writeToFile(String.valueOf(result), constants.CONCOLIC_4ITP_TEST_DRIVER_PATH, false);
 
     }
 
     private static String readTestDriverTemplate() {
         try
         {
-            return Files.readString(Path.of(constants.PROJECT_ROOT_DRIVE + "\\" +  constants.CONCOLIC_4ITP_TEST_DRIVER_TEMPLATE_FILENAME));
+            return Files.readString(Path.of(constants.CONCOLIC_4ITP_TEST_DRIVER_TEMPLATE_PATH));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

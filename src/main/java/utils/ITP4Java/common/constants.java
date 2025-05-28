@@ -24,9 +24,17 @@ public interface constants {
     String TEST_DRIVER_TEMPLATE_FOLDER = PROJECT_ROOT_DRIVE + "\\src\\main\\resources\\DriverTemplates";
 
     //Concolic 4ITP
-    String CONCOLIC_4ITP_TEST_DRIVER_TEMPLATE_FILENAME = "Concolic4ITPTestDriverTemplate.java";
-    String CONCOLIC_4ITP_TEST_DRIVER_PATH = "concolic4ITPTestDriver.java";
+    String CONCOLIC_4ITP_TEST_DRIVER_TEMPLATE_PATH = TEST_DRIVER_TEMPLATE_FOLDER + "\\Concolic4ITPTestDriverTemplate.java";
+    String CONCOLIC_4ITP_TEST_DRIVER_PATH = TEST_DRIVER_FOLDER + "\\concolic4ITPTestDriver.java";
     String CONCOLIC_4ITP_BUILT_TEST_DRIVER_PATH = "concolic4ITPTestDriver.java";
+    String CONCOLIC_4ITP_BUILD_COMMAND = "javac " + " -d \"" + constants.TEST_DRIVER_CLASSPATH_FOLDER + "\" "
+            + "\"" + constants.CONCOLIC_4ITP_TEST_DRIVER_PATH + "\"";
+    String CONCOLIC_4ITP_RUN_COMMAND = "java " + " -cp \"" + constants.TEST_DRIVER_CLASSPATH_FOLDER + "\" " +
+            constants.CONCOLIC_4ITP_BUILT_TEST_DRIVER_PATH;
+
+
+    String CONCOLIC_TEST_DRIVER_PATH = "concolic4ITPTestDriver.java";
+    String CONCOLIC_BUILT_TEST_DRIVER_PATH = "concolic4ITPTestDriver";
 
     //ITP v0
     String ITP_V0_TEST_DATA_FILE_PATH_PLACEHOLDER = "%%TEST_DATA_FILE_PATH%%";
@@ -47,10 +55,6 @@ public interface constants {
 
     String ITP_V0_RUN_COMMAND = "java " + constants.ITP_V0_TEST_DRIVER_CLASSPATH_RUN_PARAMETERS +
             constants.ITP_V0_BUILT_TEST_DRIVER_PATH;
-
-    //Concolic method
-    String CONCOLIC_TEST_DRIVER_PATH = "concolic4ITPTestDriver.java";
-    String CONCOLIC_BUILT_TEST_DRIVER_PATH = "concolic4ITPTestDriver";
 
 
 }

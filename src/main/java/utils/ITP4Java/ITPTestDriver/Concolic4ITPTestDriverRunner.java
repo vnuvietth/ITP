@@ -18,14 +18,13 @@ public final class Concolic4ITPTestDriverRunner {
 //        executeCommand("cd " + constants.CONCOLIC_TEST_DRIVER_FOLDER);
 //        executeCommand(constants.CONCOLIC_TEST_DRIVER_ROOT_DRIVE);
 
-        String buildCommand = "javac " + " -d " + constants.TEST_DRIVER_CLASSPATH_FOLDER + " "
-                + constants.TEST_DRIVER_FOLDER + "\\" + constants.CONCOLIC_4ITP_TEST_DRIVER_PATH; //-cp "json-simple-1.1.1.jar"
+        String buildCommand = constants.CONCOLIC_4ITP_BUILD_COMMAND;
 
         System.out.println(buildCommand);
 
         executeCommand(buildCommand);
 
-        String runCommand = "java " + " -cp " + constants.TEST_DRIVER_CLASSPATH_FOLDER + " " + constants.TEST_DRIVER_FOLDER + "\\" + constants.CONCOLIC_4ITP_BUILT_TEST_DRIVER_PATH;
+        String runCommand = constants.CONCOLIC_4ITP_RUN_COMMAND;
 
         System.out.println(runCommand);
 
