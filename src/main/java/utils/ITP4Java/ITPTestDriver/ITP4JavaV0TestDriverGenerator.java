@@ -3,6 +3,8 @@ package utils.ITP4Java.ITPTestDriver;
 import org.eclipse.jdt.core.dom.*;
 import utils.ITP4Java.common.ITPUtils;
 import utils.ITP4Java.common.constants;
+import utils.autoUnitTestUtil.dataStructure.KeyValuePair;
+import utils.autoUnitTestUtil.dataStructure.TestData;
 import utils.autoUnitTestUtil.parser.ASTHelper;
 
 import java.io.IOException;
@@ -14,7 +16,7 @@ public final class ITP4JavaV0TestDriverGenerator {
     private ITP4JavaV0TestDriverGenerator() {
     }
 
-    public static void generateTestDriver(MethodDeclaration method, Object[] testData, ASTHelper.Coverage coverage) {
+    public static void generateTestDriver(MethodDeclaration method, TestData testData, ASTHelper.Coverage coverage) {
         StringBuilder result = new StringBuilder();
 
         String testDriverTemplateContent = readTestDriverTemplate();
@@ -25,7 +27,7 @@ public final class ITP4JavaV0TestDriverGenerator {
                 .replace(constants.ITP_V0_TEST_DATA_FILE_PATH_PLACEHOLDER, constants.ITP_V0_TEST_DATA_FILE_PATH_FOR_TEST_DRIVER)
                 .replace(constants.EXECUTION_RESULT_PATH_PLACEHOLDER, constants.EXECUTION_RESULT_PATH);
 
-        String testDataCallingString = generateTestDataReader(method, testData);
+        String testDataCallingString = generateTestDataReader(method);
 
         String templateContentWithTestDataReading = templateContent.replace(constants.TEST_DATA_READING_PLACEHOLDER,testDataCallingString);
 
@@ -48,7 +50,7 @@ public final class ITP4JavaV0TestDriverGenerator {
         }
     }
 
-    private static String generateTestDataReader(MethodDeclaration method, Object[] testData) {
+    private static String generateTestDataReader(MethodDeclaration method) {
         StringBuilder result = new StringBuilder();
 
         for(int i = 0; i < method.parameters().size(); i++) {
@@ -68,16 +70,21 @@ public final class ITP4JavaV0TestDriverGenerator {
         return result.toString();
     }
 
-    private static String generateTestRunner(String methodName, Object[] testData) {
+    private static String generateTestRunner(String methodName, TestData testData) {
         StringBuilder result = new StringBuilder();
         result.append("Object output = ").append(methodName).append("(");
-        for(int i = 0; i < testData.length; i++) {
-            if(testData[i] instanceof Character) {
-                result.append("'").append(testData[i]).append("'");
+
+        List<KeyValuePair> paramList = testData.getParamList();
+
+        for(int i = 0; i < paramList.size(); i++) {
+            KeyValuePair param = paramList.get(i);
+
+            if(param.getValue() instanceof Character) {
+                result.append("'").append(param.getValue()).append("'");
             } else {
-                result.append(testData[i]);
+                result.append(param.getValue());
             }
-            if(i != testData.length - 1) result.append(", ");
+            if(i != paramList.size() - 1) result.append(", ");
         }
         result.append(");\n");
         return result.toString();

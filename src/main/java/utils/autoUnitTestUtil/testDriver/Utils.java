@@ -1,7 +1,10 @@
 package utils.autoUnitTestUtil.testDriver;
 
+import jdk.jshell.execution.Util;
 import org.eclipse.jdt.core.dom.*;
 import utils.FilePath;
+import utils.autoUnitTestUtil.dataStructure.KeyValuePair;
+import utils.autoUnitTestUtil.dataStructure.TestData;
 
 import javax.tools.JavaCompiler;
 import javax.tools.ToolProvider;
@@ -63,6 +66,35 @@ public final class Utils {
             }
         }
         return names;
+    }
+
+    public static Class<?> getParameterClass(ASTNode param) {
+
+        if (param instanceof SingleVariableDeclaration) {
+            SingleVariableDeclaration declaration = (SingleVariableDeclaration) param;
+            Type type = declaration.getType();
+            return getTypeClass(type);
+        } else if (param instanceof VariableDeclarationFragment) {
+            VariableDeclarationFragment declaration = (VariableDeclarationFragment) param;
+            Type type = (Type) declaration.resolveBinding().getType();
+            return getTypeClass(type);
+        } else {
+            throw new RuntimeException("Unsupported parameter: " + param.getClass());
+        }
+    }
+
+    public static String getParameterName(ASTNode param) {
+        if (param instanceof SingleVariableDeclaration) {
+            SingleVariableDeclaration declaration = (SingleVariableDeclaration) param;
+
+            return declaration.getName().getIdentifier();
+        } else if (param instanceof VariableDeclarationFragment) {
+            VariableDeclarationFragment declaration = (VariableDeclarationFragment) param;
+
+            return declaration.getName().getIdentifier();
+        } else {
+            throw new RuntimeException("Unsupported parameter: " + param.getClass());
+        }
     }
 
     /**
@@ -134,6 +166,57 @@ public final class Utils {
             throw new RuntimeException("Class not found: " + className, e);
         }
     }
+    public static TestData getParameterValue4ITP(List<ASTNode> parameters) {
+
+        List<KeyValuePair> paramList = new ArrayList<>();
+
+        Scanner scanner;
+        try {
+            scanner = new Scanner(new File(FilePath.generatedTestDataPath));
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+
+        for (int i = 0; i < parameters.size(); i++) {
+
+            String key = Utils.getParameterName(parameters.get(i));
+            Object value = null;
+
+            if (!scanner.hasNext()) {
+                value = createRandomVariableData(Utils.getParameterClass(parameters.get(i)));
+                continue;
+            }
+
+            String className = Utils.getParameterClass(parameters.get(i)).getName();
+
+            if ("int".equals(className)) {
+                value = scanner.nextInt();
+            } else if ("boolean".equals(className)) {
+                value = scanner.nextBoolean();
+            } else if ("byte".equals(className)) {
+                value = scanner.nextByte();
+            } else if ("short".equals(className)) {
+                value = scanner.nextShort();
+            } else if ("char".equals(className)) {
+                value = (char) scanner.nextInt();
+            } else if ("long".equals(className)) {
+                value = scanner.nextLong();
+            } else if ("float".equals(className)) {
+                value = scanner.nextFloat();
+            } else if ("double".equals(className)) {
+                value = scanner.nextDouble();
+            } else if ("void".equals(className)) {
+                value = null;
+            } else {
+                throw new RuntimeException("Unsupported type: " + className);
+            }
+
+            KeyValuePair pair = new KeyValuePair(key, value);
+            paramList.add(pair);
+        }
+
+        return new TestData(paramList);
+    }
 
     public static Object[] getParameterValue(Class<?>[] parameterClasses) {
         Object[] result = new Object[parameterClasses.length];
@@ -188,6 +271,88 @@ public final class Utils {
         return result;
     }
 
+    public static TestData createRandomTestData4ITP(List<ASTNode> parameters) {
+
+        List<KeyValuePair> parameterPairs = new ArrayList<>();
+
+        for (int i = 0; i < parameters.size(); i++) {
+
+            Class typeClass = getParameterClass(parameters.get(i));
+
+            Object object = createRandomVariableData4ITP(typeClass);
+
+            KeyValuePair pair = new KeyValuePair(Utils.getParameterName(parameters.get(i)), object);
+
+            parameterPairs.add(pair);
+        }
+
+        TestData testData = new TestData(parameterPairs);
+
+        return testData;
+    }
+
+    private static Object createRandomVariableData4ITP(Class<?> parameterClass) {
+        String className = parameterClass.getName();
+        Random random = new Random();
+
+        if ("int".equals(className)) {
+//            return random.nextInt();
+            return 8;
+        } else if ("boolean".equals(className)) {
+            return random.nextInt() % 2 == 0;
+        } else if ("byte".equals(className)) {
+            return (byte) ((Math.random() * (127 - (-128)) + (-128)));
+        } else if ("short".equals(className)) {
+            return (short) ((Math.random() * (32767 - (-32768)) + (-32768)));
+        } else if ("char".equals(className)) {
+//            return (char) random.nextInt();
+            return 'X';
+        } else if ("long".equals(className)) {
+//            return random.nextLong();
+            return 16;
+        } else if ("float".equals(className)) {
+//            return random.nextFloat();
+            return 8.0;
+        } else if ("double".equals(className)) {
+//            return random.nextDouble();
+            return 8.0;
+        } else if ("void".equals(className)) {
+            return "null";
+        }
+        throw new RuntimeException("Unsupported type: " + className);
+    }
+
+    private static Object createRandomVariableData4ITP(String className) {
+
+        Random random = new Random();
+
+        if ("int".equals(className)) {
+//            return random.nextInt();
+            return 8;
+        } else if ("boolean".equals(className)) {
+            return random.nextInt() % 2 == 0;
+        } else if ("byte".equals(className)) {
+            return (byte) ((Math.random() * (127 - (-128)) + (-128)));
+        } else if ("short".equals(className)) {
+            return (short) ((Math.random() * (32767 - (-32768)) + (-32768)));
+        } else if ("char".equals(className)) {
+//            return (char) random.nextInt();
+            return 'X';
+        } else if ("long".equals(className)) {
+//            return random.nextLong();
+            return 16;
+        } else if ("float".equals(className)) {
+//            return random.nextFloat();
+            return 8.0;
+        } else if ("double".equals(className)) {
+//            return random.nextDouble();
+            return 8.0;
+        } else if ("void".equals(className)) {
+            return "null";
+        }
+        throw new RuntimeException("Unsupported type: " + className);
+    }
+
     private static Object createRandomVariableData(Class<?> parameterClass) {
         String className = parameterClass.getName();
         Random random = new Random();
@@ -214,7 +379,7 @@ public final class Utils {
 //            return random.nextDouble();
             return 8.0;
         } else if ("void".equals(className)) {
-            return null;
+            return "null";
         }
         throw new RuntimeException("Unsupported type: " + className);
     }
