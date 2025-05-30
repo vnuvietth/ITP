@@ -1,6 +1,5 @@
 package utils.ITP4Java;
 
-import controller.Concolic4ITPController;
 import controller.ITP4JavaController;
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.Block;
@@ -22,6 +21,7 @@ import utils.autoUnitTestUtil.parser.ASTHelper;
 import utils.autoUnitTestUtil.parser.ProjectParser;
 import utils.autoUnitTestUtil.testDriver.TestDriverGenerator;
 import utils.autoUnitTestUtil.testDriver.TestDriverRunner;
+import utils.autoUnitTestUtil.testDriver.Utils4TestDriver;
 import utils.autoUnitTestUtil.utils.Utils;
 import utils.uploadUtil.ConcolicUploadUtil;
 
@@ -92,7 +92,7 @@ public class ITP4Java {
                 NoSuchFieldException, IOException, InterruptedException {
         ConcolicTestResult testResult = new ConcolicTestResult();
         int testCaseID = 1;
-        Object[] evaluatedValues = utils.autoUnitTestUtil.testDriver.Utils.createRandomTestData(parameterClasses);
+        Object[] evaluatedValues = Utils4TestDriver.createRandomTestData(parameterClasses);
 
         writeDataToFile("", FilePath.concreteExecuteResultPath, false);
 
@@ -120,7 +120,7 @@ public class ITP4Java {
                 break;
             }
 
-            evaluatedValues = utils.autoUnitTestUtil.testDriver.Utils.getParameterValue(parameterClasses);
+            evaluatedValues = Utils4TestDriver.getParameterValue(parameterClasses);
 
             writeDataToFile("", FilePath.concreteExecuteResultPath, false);
 
@@ -217,8 +217,8 @@ public class ITP4Java {
 
     private static void setupParameters(String methodName) throws ClassNotFoundException, NoSuchMethodException {
         parameters = ((MethodDeclaration) testFunc).parameters();
-        parameterClasses = utils.autoUnitTestUtil.testDriver.Utils.getParameterClasses(parameters);
-        parameterNames = utils.autoUnitTestUtil.testDriver.Utils.getParameterNames(parameters);
+        parameterClasses = Utils4TestDriver.getParameterClasses(parameters);
+        parameterNames = Utils4TestDriver.getParameterNames(parameters);
 //        method = Class.forName(fullyClonedClassName).getDeclaredMethod(methodName, parameterClasses);
     }
 

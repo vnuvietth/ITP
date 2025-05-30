@@ -56,5 +56,9 @@ public interface constants {
     String ITP_V0_RUN_COMMAND = "java " + constants.ITP_V0_TEST_DRIVER_CLASSPATH_RUN_PARAMETERS +
             constants.ITP_V0_BUILT_TEST_DRIVER_PATH;
 
+    int MAX_RANDOM_NUMBER = 1000;
+    int MIN_RANDOM_NUMBER = 1;
 
+    int MAX_RANDOM_CHAR = 127;
+    int MIN_RANDOM_CHAR = 33;
 }

@@ -3,7 +3,7 @@ package utils.ITP4Java.ITPTestDriver;
 import org.eclipse.jdt.core.dom.*;
 import utils.ITP4Java.common.ITPUtils;
 import utils.ITP4Java.common.constants;
-import utils.autoUnitTestUtil.dataStructure.KeyValuePair;
+import utils.autoUnitTestUtil.dataStructure.ParamTestData;
 import utils.autoUnitTestUtil.dataStructure.TestData;
 import utils.autoUnitTestUtil.parser.ASTHelper;
 
@@ -74,10 +74,10 @@ public final class ITP4JavaV0TestDriverGenerator {
         StringBuilder result = new StringBuilder();
         result.append("Object output = ").append(methodName).append("(");
 
-        List<KeyValuePair> paramList = testData.getParamList();
+        List<ParamTestData> paramList = testData.getParamList();
 
         for(int i = 0; i < paramList.size(); i++) {
-            KeyValuePair param = paramList.get(i);
+            ParamTestData param = paramList.get(i);
 
             if(param.getValue() instanceof Character) {
                 result.append("'").append(param.getValue()).append("'");

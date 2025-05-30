@@ -1,7 +1,6 @@
 package utils.autoUnitTestUtil.autoTesting;
 
 import controller.ConcolicAUTController;
-import controller.NTDAUTController;
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.Block;
 import org.eclipse.jdt.core.dom.CompilationUnit;
@@ -22,13 +21,13 @@ import utils.autoUnitTestUtil.parser.ASTHelper;
 import utils.autoUnitTestUtil.parser.ProjectParser;
 import utils.autoUnitTestUtil.testDriver.TestDriverGenerator;
 import utils.autoUnitTestUtil.testDriver.TestDriverRunner;
+import utils.autoUnitTestUtil.testDriver.Utils4TestDriver;
 import utils.autoUnitTestUtil.utils.Utils;
 import utils.uploadUtil.ConcolicUploadUtil;
 
 import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
@@ -87,7 +86,7 @@ public class ConcolicTesting {
     private static ConcolicTestResult startGenerating(ConcolicAUTController.Coverage coverage) throws InvocationTargetException, IllegalAccessException, ClassNotFoundException, NoSuchFieldException, IOException, InterruptedException {
         ConcolicTestResult testResult = new ConcolicTestResult();
         int testCaseID = 1;
-        Object[] evaluatedValues = utils.autoUnitTestUtil.testDriver.Utils.createRandomTestData(parameterClasses);
+        Object[] evaluatedValues = Utils4TestDriver.createRandomTestData(parameterClasses);
 
         writeDataToFile("", FilePath.concreteExecuteResultPath, false);
 
@@ -115,7 +114,7 @@ public class ConcolicTesting {
                 break;
             }
 
-            evaluatedValues = utils.autoUnitTestUtil.testDriver.Utils.getParameterValue(parameterClasses);
+            evaluatedValues = Utils4TestDriver.getParameterValue(parameterClasses);
 
             writeDataToFile("", FilePath.concreteExecuteResultPath, false);
 
@@ -212,8 +211,8 @@ public class ConcolicTesting {
 
     private static void setupParameters(String methodName) throws ClassNotFoundException, NoSuchMethodException {
         parameters = ((MethodDeclaration) testFunc).parameters();
-        parameterClasses = utils.autoUnitTestUtil.testDriver.Utils.getParameterClasses(parameters);
-        parameterNames = utils.autoUnitTestUtil.testDriver.Utils.getParameterNames(parameters);
+        parameterClasses = Utils4TestDriver.getParameterClasses(parameters);
+        parameterNames = Utils4TestDriver.getParameterNames(parameters);
 //        method = Class.forName(fullyClonedClassName).getDeclaredMethod(methodName, parameterClasses);
     }
 

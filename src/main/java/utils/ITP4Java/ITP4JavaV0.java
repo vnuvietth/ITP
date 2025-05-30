@@ -1,6 +1,5 @@
 package utils.ITP4Java;
 
-import controller.ITP4JavaController;
 import controller.ITP4JavaV0Controller;
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.Block;
@@ -24,8 +23,8 @@ import utils.autoUnitTestUtil.dataStructure.Path;
 import utils.autoUnitTestUtil.dataStructure.TestData;
 import utils.autoUnitTestUtil.parser.ASTHelper;
 import utils.autoUnitTestUtil.parser.ProjectParser;
-import utils.autoUnitTestUtil.testDriver.TestDriverGenerator;
 import utils.autoUnitTestUtil.testDriver.TestDriverRunner;
+import utils.autoUnitTestUtil.testDriver.Utils4TestDriver;
 import utils.autoUnitTestUtil.utils.Utils;
 import utils.uploadUtil.ConcolicUploadUtil;
 
@@ -99,7 +98,9 @@ public class ITP4JavaV0 {
 
         //Object[] evaluatedValues = utils.autoUnitTestUtil.testDriver.Utils.createRandomTestData(parameterClasses);
 
-        TestData testData = utils.autoUnitTestUtil.testDriver.Utils.createRandomTestData4ITP(parameters);
+        TestData testData = Utils4TestDriver.createRandomTestData4ITP(parameters);
+
+        Utils.writeTestDataToFile(testData, constants.ITP_V0_TEST_DATA_FILE_PATH);
 
         writeDataToFile("", constants.EXECUTION_RESULT_PATH, false);
 
@@ -111,13 +112,15 @@ public class ITP4JavaV0 {
 
         List<CoveredStatement> coveredStatements = CoveredStatement.switchToCoveredStatementList(markedStatements);
 
-//        testResult.addToFullTestData(new ConcolicTestData(parameterNames, parameterClasses, testData, coveredStatements,
-//                TestDriverRunner.getOutput(), TestDriverRunner.getRuntime(), calculateRequiredCoverage(coverage), calculateFunctionCoverage(), calculateSourceCodeCoverage(), testCaseID++));
+        testResult.addToFullTestData(new ConcolicTestData(testData, coveredStatements,
+                TestDriverRunner.getOutput(), TestDriverRunner.getRuntime(), calculateRequiredCoverage(coverage), calculateFunctionCoverage(), calculateSourceCodeCoverage(), testCaseID++));
 
         boolean isTestedSuccessfully = true;
         int i = 5;
 
-        for (CfgNode uncoveredNode = findUncoverNode(cfgBeginNode, coverage); uncoveredNode != null; ) {
+        CfgNode uncoveredNode = findUncoverNode(cfgBeginNode, coverage);
+
+        while (uncoveredNode != null) {
 
             Path newPath = (new FindPath(cfgBeginNode, uncoveredNode, cfgEndNode)).getPath();
 
@@ -128,7 +131,7 @@ public class ITP4JavaV0 {
                 break;
             }
 
-            testData = utils.autoUnitTestUtil.testDriver.Utils.getParameterValue4ITP(parameters);
+            testData = Utils4TestDriver.getParameterValue4ITP(parameters);
 
             writeDataToFile("", FilePath.concreteExecuteResultPath, false);
 
@@ -139,10 +142,9 @@ public class ITP4JavaV0 {
             MarkedPath.markPathToCFGV2(cfgBeginNode, markedStatements);
             coveredStatements = CoveredStatement.switchToCoveredStatementList(markedStatements);
 
-//            testResult.addToFullTestData(new ConcolicTestData(parameterNames, parameterClasses,
-//                    evaluatedValues, coveredStatements, TestDriverRunner.getOutput(),
-//                    TestDriverRunner.getRuntime(), calculateRequiredCoverage(coverage),
-//                    calculateFunctionCoverage(), calculateSourceCodeCoverage(), testCaseID++));
+            testResult.addToFullTestData(new ConcolicTestData(testData, coveredStatements, TestDriverRunner.getOutput(),
+                    TestDriverRunner.getRuntime(), calculateRequiredCoverage(coverage),
+                    calculateFunctionCoverage(), calculateSourceCodeCoverage(), testCaseID++));
 
             uncoveredNode = findUncoverNode(cfgBeginNode, coverage);
             System.out.println("Uncovered Node: " + uncoveredNode);
@@ -231,8 +233,8 @@ public class ITP4JavaV0 {
 
     private static void setupParameters(String methodName) throws ClassNotFoundException, NoSuchMethodException {
         parameters = ((MethodDeclaration) testFunc).parameters();
-        parameterClasses = utils.autoUnitTestUtil.testDriver.Utils.getParameterClasses(parameters);
-        parameterNames = utils.autoUnitTestUtil.testDriver.Utils.getParameterNames(parameters);
+        parameterClasses = Utils4TestDriver.getParameterClasses(parameters);
+        parameterNames = Utils4TestDriver.getParameterNames(parameters);
 //        method = Class.forName(fullyClonedClassName).getDeclaredMethod(methodName, parameterClasses);
     }
 

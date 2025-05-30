@@ -1,27 +1,24 @@
 package utils.autoUnitTestUtil.testDriver;
 
-import jdk.jshell.execution.Util;
 import org.eclipse.jdt.core.dom.*;
 import utils.FilePath;
-import utils.autoUnitTestUtil.dataStructure.KeyValuePair;
+import utils.ITP4Java.common.constants;
+import utils.autoUnitTestUtil.dataStructure.ParamTestData;
 import utils.autoUnitTestUtil.dataStructure.TestData;
 
-import javax.tools.JavaCompiler;
-import javax.tools.ToolProvider;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.Array;
-import java.nio.file.Files;
-import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
+import java.util.concurrent.ThreadLocalRandom;
 
-public final class Utils {
-    private Utils() {
+public final class Utils4TestDriver {
+    private Utils4TestDriver() {
         throw new AssertionError("Utility class should not be instantiated.");
     }
 
@@ -168,7 +165,7 @@ public final class Utils {
     }
     public static TestData getParameterValue4ITP(List<ASTNode> parameters) {
 
-        List<KeyValuePair> paramList = new ArrayList<>();
+        List<ParamTestData> paramList = new ArrayList<>();
 
         Scanner scanner;
         try {
@@ -179,15 +176,15 @@ public final class Utils {
 
         for (int i = 0; i < parameters.size(); i++) {
 
-            String key = Utils.getParameterName(parameters.get(i));
+            String key = Utils4TestDriver.getParameterName(parameters.get(i));
             Object value = null;
 
             if (!scanner.hasNext()) {
-                value = createRandomVariableData(Utils.getParameterClass(parameters.get(i)));
+                value = createRandomVariableData(Utils4TestDriver.getParameterClass(parameters.get(i)));
                 continue;
             }
 
-            String className = Utils.getParameterClass(parameters.get(i)).getName();
+            String className = Utils4TestDriver.getParameterClass(parameters.get(i)).getName();
 
             if ("int".equals(className)) {
                 value = scanner.nextInt();
@@ -211,7 +208,7 @@ public final class Utils {
                 throw new RuntimeException("Unsupported type: " + className);
             }
 
-            KeyValuePair pair = new KeyValuePair(key, value);
+            ParamTestData pair = new ParamTestData(key, className, value);
             paramList.add(pair);
         }
 
@@ -273,7 +270,7 @@ public final class Utils {
 
     public static TestData createRandomTestData4ITP(List<ASTNode> parameters) {
 
-        List<KeyValuePair> parameterPairs = new ArrayList<>();
+        List<ParamTestData> parameterPairs = new ArrayList<>();
 
         for (int i = 0; i < parameters.size(); i++) {
 
@@ -281,7 +278,9 @@ public final class Utils {
 
             Object object = createRandomVariableData4ITP(typeClass);
 
-            KeyValuePair pair = new KeyValuePair(Utils.getParameterName(parameters.get(i)), object);
+            String className = typeClass.getName();
+
+            ParamTestData pair = new ParamTestData(Utils4TestDriver.getParameterName(parameters.get(i)), className, object);
 
             parameterPairs.add(pair);
         }
@@ -295,9 +294,15 @@ public final class Utils {
         String className = parameterClass.getName();
         Random random = new Random();
 
+        int bound = constants.MAX_RANDOM_NUMBER - constants.MIN_RANDOM_NUMBER + 1;
+
         if ("int".equals(className)) {
-//            return random.nextInt();
-            return 8;
+
+            int randomNumber = random.nextInt(bound) +
+                    constants.MIN_RANDOM_NUMBER;
+
+            return randomNumber;
+//            return 8;
         } else if ("boolean".equals(className)) {
             return random.nextInt() % 2 == 0;
         } else if ("byte".equals(className)) {
@@ -305,17 +310,19 @@ public final class Utils {
         } else if ("short".equals(className)) {
             return (short) ((Math.random() * (32767 - (-32768)) + (-32768)));
         } else if ("char".equals(className)) {
-//            return (char) random.nextInt();
-            return 'X';
+            return (char) (random.nextInt(constants.MAX_RANDOM_CHAR - constants.MIN_RANDOM_CHAR + 1) +
+                    constants.MIN_RANDOM_CHAR);
+//            return 'X';
         } else if ("long".equals(className)) {
-//            return random.nextLong();
-            return 16;
+//            return random.nextLong() ;
+//            return 16;
+            return ThreadLocalRandom.current().nextLong(constants.MIN_RANDOM_NUMBER, constants.MAX_RANDOM_NUMBER);
         } else if ("float".equals(className)) {
-//            return random.nextFloat();
-            return 8.0;
+            return random.nextFloat() * (constants.MAX_RANDOM_NUMBER - constants.MIN_RANDOM_NUMBER) + constants.MIN_RANDOM_NUMBER;
+//            return 8.0;
         } else if ("double".equals(className)) {
-//            return random.nextDouble();
-            return 8.0;
+            return random.nextDouble() * (constants.MAX_RANDOM_NUMBER - constants.MIN_RANDOM_NUMBER) + constants.MIN_RANDOM_NUMBER;
+//            return 8.0;
         } else if ("void".equals(className)) {
             return "null";
         }

@@ -1,5 +1,7 @@
 package utils.autoUnitTestUtil.concolicResult;
 
+import utils.autoUnitTestUtil.dataStructure.TestData;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,6 +24,27 @@ public class ConcolicTestData {
 
         for(int i = 0; i < names.size(); i++) {
             this.addToParameterDataList(new ConcolicParameterData(names.get(i), types[i].toString(), values[i].toString()));
+        }
+
+        this.coveredStatements = coveredStatements;
+        this.output = output;
+        this.executeTime = round(executeTime);
+        this.sourceCodeCoverage = round(sourceCodeCoverage);
+        this.functionCoverage = round(functionCoverage);
+        this.requiredCoverage = round(requiredCoverage);
+        this.status = "PASS";
+        this.testCaseID = testCaseID;
+    }
+
+    public ConcolicTestData(TestData testData, List<CoveredStatement> coveredStatements,
+                            Object output, double executeTime, double requiredCoverage, double functionCoverage, double sourceCodeCoverage, int testCaseID) {
+        if(testData.getParamList().size() <= 0) {
+            throw new RuntimeException("Invalid");
+        }
+
+        for(int i = 0; i < testData.getParamList().size(); i++) {
+            this.addToParameterDataList(new ConcolicParameterData(testData.getParamList().get(i).getName(),
+                    testData.getParamList().get(i).getType(), testData.getParamList().get(i).getValue().toString()));
         }
 
         this.coveredStatements = coveredStatements;

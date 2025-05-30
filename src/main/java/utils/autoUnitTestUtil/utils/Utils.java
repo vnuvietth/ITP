@@ -1,6 +1,7 @@
 package utils.autoUnitTestUtil.utils;
 
 import org.eclipse.jdt.core.dom.*;
+import utils.autoUnitTestUtil.dataStructure.TestData;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -244,5 +245,24 @@ public class Utils {
         } else {
             return inputStream;
         }
+    }
+
+    public static void writeTestDataToFile(TestData testData, String fileName) {
+
+        String content = "{\n";
+
+        for(int i = 0; i < testData.getParamList().size(); i++) {
+            if (i < testData.getParamList().size() - 1) {
+                content += "    \"" + testData.getParamList().get(i).getName() + "\" : \"" + testData.getParamList().get(i).getValue() + "\", \n";
+            }
+            else {
+                content += "    \"" + testData.getParamList().get(i).getName() + "\" : \"" + testData.getParamList().get(i).getValue() + "\"\n";
+            }
+
+        }
+
+        content += "}";
+
+        writeToFile(content,fileName);
     }
 }
