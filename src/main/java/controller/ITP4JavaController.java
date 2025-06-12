@@ -260,7 +260,7 @@ public class ITP4JavaController implements Initializable {
 
         ConcolicTestResult result;
         try {
-            result = ITP4Java.runFullConcolic(choseUnit.getPath(), choseUnit.getMethodName(),
+            result = ITP4Java.runITP4Project(choseUnit.getPath(), choseUnit.getMethodName(),
                     choseUnit.getClassName(), choseCoverage);
         } catch (Exception e) {
             alertLabel.setTextFill(Paint.valueOf("red"));

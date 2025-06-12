@@ -52,6 +52,44 @@ public class ITP4Java {
     private static long totalUsedMem = 0;
     private static long tickCount = 0;
 
+
+    public static ConcolicTestResult runITP4Project(String path, String methodName, String className,
+                                                     ITP4JavaController.Coverage coverage)
+            throws IOException, NoSuchMethodException, InvocationTargetException,
+            IllegalAccessException, ClassNotFoundException, NoSuchFieldException,
+            InterruptedException {
+
+        setup(path, className, methodName);
+        setupCfgTree(coverage);
+        setupParameters(methodName);
+
+        totalUsedMem = 0;
+        tickCount = 0;
+        Timer T = new Timer(true);
+
+        TimerTask memoryTask = new TimerTask() {
+            @Override
+            public void run() {
+                totalUsedMem += (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory());
+                tickCount += 1;
+            }
+        };
+
+        T.scheduleAtFixedRate(memoryTask, 0, 1); //0 delay and 5 ms tick
+
+        long startRunTestTime = System.nanoTime();
+        ConcolicTestResult result = startGenerating(coverage);
+        long endRunTestTime = System.nanoTime();
+
+        double runTestDuration = (endRunTestTime - startRunTestTime) / 1000000.0;
+        float usedMem = ((float) totalUsedMem) / tickCount / 1024 / 1024;
+
+        result.setTestingTime(runTestDuration);
+        result.setUsedMemory(usedMem);
+
+        return result;
+    }
+
     public static ConcolicTestResult runFullConcolic(String path, String methodName, String className,
                                                      ITP4JavaController.Coverage coverage)
             throws IOException, NoSuchMethodException, InvocationTargetException,

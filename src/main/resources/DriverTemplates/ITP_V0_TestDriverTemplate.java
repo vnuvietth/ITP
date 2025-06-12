@@ -59,16 +59,18 @@ public class ITP_V0_TestDriver {
         JSONParser parser = new JSONParser();
         JSONObject jsonObject = (JSONObject) parser.parse(new FileReader("%%TEST_DATA_FILE_PATH%%"));
 
-        String param0 = (String) jsonObject.get("n");
-        System.out.println("n = "  + param0);
-        String param1 = (String) jsonObject.get("p");
-        System.out.println("p = "  + param1);
+        %%TEST_DATA_READING_PLACEHOLDER%%
+
+//        String param0 = (String) jsonObject.get("n");
+//        System.out.println("n = "  + param0);
+//        String param1 = (String) jsonObject.get("p");
+//        System.out.println("p = "  + param1);
 
         //End test data file reading
 
         //Start function calling
 
-        %%UNIT_CALLING_PLACEHOLDER%%
+//        %%UNIT_CALLING_PLACEHOLDER%%
 
 
         System.out.println("output = " + output);

@@ -27,15 +27,15 @@ public final class ITP4JavaV0TestDriverGenerator {
                 .replace(constants.ITP_V0_TEST_DATA_FILE_PATH_PLACEHOLDER, constants.ITP_V0_TEST_DATA_FILE_PATH_FOR_TEST_DRIVER)
                 .replace(constants.EXECUTION_RESULT_PATH_PLACEHOLDER, constants.EXECUTION_RESULT_PATH);
 
-        String testDataCallingString = generateTestDataReader(method);
+        String testDataCallingString = generateTestDataReader(method, testData);
 
         String templateContentWithTestDataReading = templateContent.replace(constants.TEST_DATA_READING_PLACEHOLDER,testDataCallingString);
 
-        String unitCalling = generateTestRunner(method.getName().toString(), testData);
+//        String unitCalling = generateTestRunner(method.getName().toString(), testData);
+//
+//        String templateWithUnitCalling = templateContentWithTestDataReading.replace(constants.UNIT_CALLING_PLACEHOLDER, unitCalling);
 
-        String templateWithUnitCalling = templateContentWithTestDataReading.replace(constants.UNIT_CALLING_PLACEHOLDER, unitCalling);
-
-        result.append(templateWithUnitCalling);
+        result.append(templateContentWithTestDataReading);
 
         ITPUtils.writeToFile(String.valueOf(result), constants.ITP_V0_TEST_DRIVER_PATH, false);
 
@@ -50,24 +50,50 @@ public final class ITP4JavaV0TestDriverGenerator {
         }
     }
 
-    private static String generateTestDataReader(MethodDeclaration method) {
-        StringBuilder result = new StringBuilder();
+    private static String generateTestDataReader(MethodDeclaration method, TestData testData) {
+        StringBuilder testDataReader = new StringBuilder();
+        StringBuilder unitCaller = new StringBuilder();
+        unitCaller.append("Object output = ").append(method.getName().toString()).append("(");
+
+
+        List<ParamTestData> paramList = testData.getParamList();
 
         for(int i = 0; i < method.parameters().size(); i++) {
             String param = "String param" + i + " = (String) jsonObject.get(\"" + ((SingleVariableDeclaration)(method.parameters().get(i))).getName() + "\");";
 
             if (i == 0) {
-                result.append(param + "\n");
+                testDataReader.append(param + "\n");
             }
             else {
-                result.append("        " + param + "\n");
+                testDataReader.append("        " + param + "\n");
             }
 
-            result.append("        System.out.println(\"" + ((SingleVariableDeclaration)(method.parameters().get(i))).getName() + " = \" " + " + param" + i + ");\n");
-        }
-        result.append("\n");
+            testDataReader.append("        System.out.println(\"" + ((SingleVariableDeclaration)(method.parameters().get(i))).getName() + " = \" " + " + param" + i + ");\n");
 
-        return result.toString();
+            ParamTestData paramData = paramList.get(i);
+
+            if(paramData.getValue() instanceof Character) {
+                unitCaller.append("'").append(paramData.getValue()).append("'");
+            } else if(paramData.getValue() instanceof String) {
+                unitCaller.append(paramData.getValue());
+            } else if (paramData.getValue() instanceof Integer) {
+                unitCaller.append("Integer.parseInt(param" + i + ")");
+            } else if (paramData.getValue() instanceof Double) {
+                unitCaller.append("Double.parseDouble(param" + i + ")");
+            } else if (paramData.getValue() instanceof Boolean) {
+                unitCaller.append("Boolean.parseBoolean(param" + i + ")");
+            } else if (paramData.getValue() instanceof Long) {
+                unitCaller.append("Long.parseLong(param" + i + ")");
+            } else if (paramData.getValue() instanceof Float) {
+                unitCaller.append("Float.parseFloat(param" + i + ")");
+            }
+            if(i != paramList.size() - 1) unitCaller.append(", ");
+        }
+        testDataReader.append("\n");
+
+        unitCaller.append(");\n");
+
+        return testDataReader + "        " + unitCaller.toString();
     }
 
     private static String generateTestRunner(String methodName, TestData testData) {
