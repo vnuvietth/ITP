@@ -2,6 +2,9 @@ package utils.autoUnitTestUtil.utils;
 
 import org.eclipse.jdt.core.dom.*;
 import utils.autoUnitTestUtil.dataStructure.TestData;
+import utils.cloneProjectUtil.Parser;
+import utils.cloneProjectUtil.projectTreeObjects.Folder;
+import utils.cloneProjectUtil.projectTreeObjects.JavaFile;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -10,6 +13,27 @@ import java.util.Iterator;
 import java.util.List;
 
 public class Utils {
+
+    public static List<File> getJavaFiles(String directoryPath) {
+        List<File> javaFiles = new ArrayList<>();
+        File directory = new File(directoryPath);
+
+        if (directory.exists() && directory.isDirectory()) {
+            File[] files = directory.listFiles();
+
+            if (files != null) {
+                for (File file : files) {
+                    if (file.isFile() && file.getName().toLowerCase().endsWith(".java")) {
+                        javaFiles.add(file);
+                    }
+                }
+            }
+        } else {
+            System.out.println("Directory not found or invalid: " + directoryPath);
+        }
+
+        return javaFiles;
+    }
 
     public static List<ASTNode> getChildren(ASTNode node) {
         List<ASTNode> children = new ArrayList<>();

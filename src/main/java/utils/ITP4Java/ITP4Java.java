@@ -25,6 +25,7 @@ import utils.autoUnitTestUtil.parser.ProjectParser;
 import utils.autoUnitTestUtil.testDriver.TestDriverRunner;
 import utils.autoUnitTestUtil.testDriver.Utils4TestDriver;
 import utils.autoUnitTestUtil.utils.Utils;
+import utils.cloneProjectUtil.CloneProjectUtil;
 import utils.uploadUtil.ConcolicUploadUtil;
 
 import java.io.FileWriter;
@@ -137,7 +138,11 @@ public class ITP4Java {
 
         writeDataToFile("", FilePath.concreteExecuteResultPath, false);
 
-        ITP4JavaTestDriverGenerator.generateTestDriver((MethodDeclaration) testFunc, testData, getCoverageType(coverage));
+        String clonedJavaDirPath = CloneProjectUtil.getJavaDirPath(FilePath.clonedProjectPath);
+
+        ITP4JavaTestDriverGenerator.generateITPTestDriver(clonedJavaDirPath, getCoverageType(coverage));
+
+        ITP4JavaTestDriverGenerator.generateTestDriver( (MethodDeclaration) testFunc, testData, getCoverageType(coverage));
         List<MarkedStatement> markedStatements = ITP4JavaTestDriverRunner.runTestDriver();
 
         MarkedPath.markPathToCFGV2(cfgBeginNode, markedStatements);

@@ -6,14 +6,84 @@ import utils.ITP4Java.common.constants;
 import utils.autoUnitTestUtil.dataStructure.ParamTestData;
 import utils.autoUnitTestUtil.dataStructure.TestData;
 import utils.autoUnitTestUtil.parser.ASTHelper;
+import utils.autoUnitTestUtil.utils.Utils;
+import utils.cloneProjectUtil.Parser;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.List;
 
 public final class ITP4JavaTestDriverGenerator {
     private ITP4JavaTestDriverGenerator() {
+    }
+
+    public static void generateITPTestDriver(String clonedJavaDirPath, ASTHelper.Coverage coverage) {
+        StringBuilder result = new StringBuilder();
+
+        String testDriverTemplateContent = readTestDriverTemplate();
+
+        String templateContent = testDriverTemplateContent.replace(constants.ITP_TEST_DATA_FILE_PATH_PLACEHOLDER, constants.ITP_TEST_DATA_FILE_PATH_FOR_TEST_DRIVER)
+                .replace(constants.EXECUTION_RESULT_PATH_PLACEHOLDER, constants.EXECUTION_RESULT_PATH);
+
+        List<File> files = Utils.getJavaFiles(clonedJavaDirPath);
+
+        for (File file : files) {
+            //String clonedMethod = createCloneMethod(method, coverage);
+
+            List<ASTNode> methodList = getMethodList(file.getName());
+
+            for (ASTNode method : methodList) {
+                String testDataCallingString = generateTestDataReader((MethodDeclaration)method);
+
+                String templateContentWithTestDataReading = templateContent.replace(constants.UNIT_CALLING_BLOCK_PLACEHOLDER,testDataCallingString);
+
+                String fileName = "E:\\IdeaProjects\\NTD-Paper\\src\\main\\uploadedProject\\Units-From-Leetcode-Java-Solutions\\src\\main\\java\\ArmstrongNumber.java";
+                String methodIdentifier = "abc";
+
+                String templateWithUniCalling = templateContentWithTestDataReading.replace(constants.PASSING_PARAMETER_PLACEHOLDER, "\"" + fileName + "\", \"" + methodIdentifier + "\"");
+
+                result.append(templateWithUniCalling);
+            }
+
+        }
+
+
+
+//        String unitCalling = generateTestRunner(method.getName().toString(), testData);
+//
+//        String templateWithUnitCalling = templateContentWithTestDataReading.replace(constants.UNIT_CALLING_PLACEHOLDER, unitCalling);
+
+
+        ITPUtils.writeToFile(String.valueOf(result), constants.ITP_TEST_DRIVER_PATH, false);
+
+    }
+
+    public static List<ASTNode> getMethodList(String fileName){
+        CompilationUnit compilationUnit = null;
+        try {
+            compilationUnit = Parser.parseFileToCompilationUnit(fileName);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        List<ASTNode> methods = new ArrayList<>();
+        ASTVisitor methodsVisitor = new ASTVisitor() {
+            @Override
+            public boolean visit(TypeDeclaration node) {
+                for (MethodDeclaration method : node.getMethods()) {
+//                    if (!method.isConstructor()) {
+                    methods.add(method);
+//                    }
+                }
+                return true;
+            }
+        };
+        compilationUnit.accept(methodsVisitor);
+
+        return methods;
     }
 
     public static void generateTestDriver(MethodDeclaration method, TestData testData, ASTHelper.Coverage coverage) {
@@ -24,20 +94,26 @@ public final class ITP4JavaTestDriverGenerator {
         String clonedMethod = createCloneMethod(method, coverage);
 
         String templateContent = testDriverTemplateContent.replace(constants.INSTRUMENTED_TESTING_UNIT_PLACEHOLDER, clonedMethod)
-                .replace(constants.ITP_V0_TEST_DATA_FILE_PATH_PLACEHOLDER, constants.ITP_V0_TEST_DATA_FILE_PATH_FOR_TEST_DRIVER)
+                .replace(constants.ITP_TEST_DATA_FILE_PATH_PLACEHOLDER, constants.ITP_TEST_DATA_FILE_PATH_FOR_TEST_DRIVER)
                 .replace(constants.EXECUTION_RESULT_PATH_PLACEHOLDER, constants.EXECUTION_RESULT_PATH);
 
         String testDataCallingString = generateTestDataReader(method);
 
-        String templateContentWithTestDataReading = templateContent.replace(constants.TEST_DATA_READING_PLACEHOLDER,testDataCallingString);
+        String templateContentWithTestDataReading = templateContent.replace(constants.UNIT_CALLING_BLOCK_PLACEHOLDER,testDataCallingString);
 
-        String unitCalling = generateTestRunner(method.getName().toString(), testData);
+        String fileName = "E:\\IdeaProjects\\NTD-Paper\\src\\main\\uploadedProject\\Units-From-Leetcode-Java-Solutions\\src\\main\\java\\ArmstrongNumber.java";
+        String methodIdentifier = "abc";
 
-        String templateWithUnitCalling = templateContentWithTestDataReading.replace(constants.UNIT_CALLING_PLACEHOLDER, unitCalling);
 
-        result.append(templateWithUnitCalling);
+        String templateWithUniCalling = templateContentWithTestDataReading.replace(constants.PASSING_PARAMETER_PLACEHOLDER, "\"" + fileName + "\", \"" + methodIdentifier + "\"");
 
-        ITPUtils.writeToFile(String.valueOf(result), constants.ITP_V0_TEST_DRIVER_PATH, false);
+//        String unitCalling = generateTestRunner(method.getName().toString(), testData);
+//
+//        String templateWithUnitCalling = templateContentWithTestDataReading.replace(constants.UNIT_CALLING_PLACEHOLDER, unitCalling);
+
+        result.append(templateWithUniCalling);
+
+        ITPUtils.writeToFile(String.valueOf(result), constants.ITP_TEST_DRIVER_PATH, false);
 
     }
 
@@ -51,23 +127,59 @@ public final class ITP4JavaTestDriverGenerator {
     }
 
     private static String generateTestDataReader(MethodDeclaration method) {
-        StringBuilder result = new StringBuilder();
+        StringBuilder testDataReader = new StringBuilder();
+        StringBuilder unitCaller = new StringBuilder();
+        unitCaller.append("Object output = ").append(method.getName().toString()).append("(");
+
+
+        //List<ParamTestData> paramList = testData.getParamList();
 
         for(int i = 0; i < method.parameters().size(); i++) {
             String param = "String param" + i + " = (String) jsonObject.get(\"" + ((SingleVariableDeclaration)(method.parameters().get(i))).getName() + "\");";
 
             if (i == 0) {
-                result.append(param + "\n");
+                testDataReader.append(param + "\n");
             }
             else {
-                result.append("        " + param + "\n");
+                testDataReader.append("        " + param + "\n");
             }
 
-            result.append("        System.out.println(\"" + ((SingleVariableDeclaration)(method.parameters().get(i))).getName() + " = \" " + " + param" + i + ");\n");
-        }
-        result.append("\n");
+            testDataReader.append("        System.out.println(\"" + ((SingleVariableDeclaration)(method.parameters().get(i))).getName() + " = \" " + " + param" + i + ");\n");
 
-        return result.toString();
+            SingleVariableDeclaration paramData = (SingleVariableDeclaration)method.parameters().get(i);
+
+            System.out.println("paramData.getName() = " + paramData.getName() + "; paramData.getType() = " + paramData.getType());
+
+//            if(paramData.getType() Character) {
+//                unitCaller.append("'").append(paramData.getValue()).append("'");
+//            } else if(paramData.getValue() instanceof String) {
+//                unitCaller.append(paramData.getValue());
+//            } else if (paramData.getValue() instanceof Integer) {
+//                unitCaller.append("Integer.parseInt(param" + i + ")");
+//            } else if (paramData.getValue() instanceof Double) {
+//                unitCaller.append("Double.parseDouble(param" + i + ")");
+//            } else if (paramData.getValue() instanceof Boolean) {
+//                unitCaller.append("Boolean.parseBoolean(param" + i + ")");
+//            } else if (paramData.getValue() instanceof Long) {
+//                unitCaller.append("Long.parseLong(param" + i + ")");
+//            } else if (paramData.getValue() instanceof Float) {
+//                unitCaller.append("Float.parseFloat(param" + i + ")");
+//            }
+//            if(i != paramList.size() - 1) unitCaller.append(", ");
+        }
+        testDataReader.append("\n");
+
+        unitCaller.append(");\n");
+
+        StringBuilder unitcallingBlock = new StringBuilder();
+        unitcallingBlock.append("if (\"" + method.getName() + "\".equals(fileName) && \"" + method.getName() + "\".equals(functionName)) {");
+
+        String unitBlock = testDataReader + "        " + unitCaller.toString();
+
+        unitcallingBlock.append(unitBlock);
+        unitcallingBlock.append("}\n\n");
+
+        return unitcallingBlock.toString();
     }
 
     private static String generateTestRunner(String methodName, TestData testData) {
