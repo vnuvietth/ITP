@@ -61,4 +61,29 @@ public interface constants {
 
     int MAX_RANDOM_CHAR = 127;
     int MIN_RANDOM_CHAR = 33;
+
+    //ITP
+
+    String UNIT_CALLING_BLOCK_PLACEHOLDER = "%%UNIT_CALLING_BLOCK_PLACEHOLDER%%";
+    String PASSING_PARAMETER_PLACEHOLDER = "%%PASSING_PARAMETER_PLACEHOLDER%%";
+
+    String ITP_TEST_DATA_FILE_PATH_PLACEHOLDER = "%%TEST_DATA_FILE_PATH%%";
+    String ITP_TEST_DATA_FILE_PATH = TEST_DRIVER_FOLDER + "\\ITPTestData.json";
+    String ITP_TEST_DATA_FILE_PATH_FOR_TEST_DRIVER = TEST_DRIVER_FOLDER.replace("\\", "\\\\") + "\\\\TestData.json";
+
+    String ITP_TEST_DRIVER_TEMPLATE_PATH = TEST_DRIVER_TEMPLATE_FOLDER + "\\ITP_TestDriverTemplate.java";
+    String ITP_TEST_DRIVER_PATH = TEST_DRIVER_FOLDER + "\\ITP_TestDriver.java";
+    String ITP_BUILT_TEST_DRIVER_PATH = "ITP_TestDriver.java";
+    String ITP_TEST_DRIVER_CLASSPATH_BUILD_PARAMETERS = " -cp \"" + constants.TEST_DRIVER_CLASSPATH_FOLDER + ";" +
+            TEST_DRIVER_LIBRARY_FOLDER + "\\json-simple-1.1.1.jar;\" ";
+
+    String ITP_BUILD_COMMAND = "javac " + " -d \"" + constants.TEST_DRIVER_CLASSPATH_FOLDER + "\" "
+            + constants.ITP_TEST_DRIVER_CLASSPATH_BUILD_PARAMETERS + " \"" + constants.ITP_TEST_DRIVER_PATH + "\"";
+
+    String ITP_TEST_DRIVER_CLASSPATH_RUN_PARAMETERS = " -cp \"" + constants.TEST_DRIVER_CLASSPATH_FOLDER + ";" +
+            TEST_DRIVER_LIBRARY_FOLDER + "\\json-simple-1.1.1.jar;\" ";
+
+    String ITP_RUN_COMMAND = "java " + constants.ITP_TEST_DRIVER_CLASSPATH_RUN_PARAMETERS +
+            constants.ITP_BUILT_TEST_DRIVER_PATH;
+
 }

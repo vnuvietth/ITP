@@ -44,7 +44,7 @@ public final class ITP4JavaTestDriverGenerator {
     private static String readTestDriverTemplate() {
         try
         {
-            return Files.readString(Path.of(constants.ITP_V0_TEST_DRIVER_TEMPLATE_PATH));
+            return Files.readString(Path.of(constants.ITP_TEST_DRIVER_TEMPLATE_PATH));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

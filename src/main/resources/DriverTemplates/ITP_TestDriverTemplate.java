@@ -47,6 +47,24 @@ public class ITP_V0_TestDriver {
 
     //End testing method
 
+    public static void ITP_TEST_EXECUTION(String fileName, String functionName) {
+
+//        if ("".equals(fileName) && "func1(int,int)".equals(functionName)) {
+//            //Start test data file reading
+//            JSONParser parser = new JSONParser();
+//            JSONObject jsonObject = (JSONObject) parser.parse(new FileReader("E:\\IdeaProjects\\testDriver\\TestData.json"));
+//
+//            String param0 = (String) jsonObject.get("n");
+//            System.out.println("n = "  + param0);
+//            String param1 = (String) jsonObject.get("p");
+//            System.out.println("p = "  + param1);
+//
+//            Object output = getNthPowerSum(param0, param1);
+//        }
+
+        %%UNIT_CALLING_BLOCK_PLACEHOLDER%%
+    }
+
     public static void main(String[] args) throws IOException, ParseException {
 
         System.out.println("Concolic4ITPTestDriver starts...");
@@ -56,20 +74,21 @@ public class ITP_V0_TestDriver {
         long startRunTestTime = System.nanoTime();
 
         //Start test data file reading
-        JSONParser parser = new JSONParser();
-        JSONObject jsonObject = (JSONObject) parser.parse(new FileReader("%%TEST_DATA_FILE_PATH%%"));
-
-        String param0 = (String) jsonObject.get("n");
-        System.out.println("n = "  + param0);
-        String param1 = (String) jsonObject.get("p");
-        System.out.println("p = "  + param1);
+//        JSONParser parser = new JSONParser();
+//        JSONObject jsonObject = (JSONObject) parser.parse(new FileReader("%%TEST_DATA_FILE_PATH%%"));
+//
+//        String param0 = (String) jsonObject.get("n");
+//        System.out.println("n = "  + param0);
+//        String param1 = (String) jsonObject.get("p");
+//        System.out.println("p = "  + param1);
 
         //End test data file reading
 
         //Start function calling
 
-        %%UNIT_CALLING_PLACEHOLDER%%
+//        %%UNIT_CALLING_PLACEHOLDER%%
 
+        ITP_TEST_EXECUTION(%%PASSING_PARAMETER_PLACEHOLDER%%);
 
         System.out.println("output = " + output);
 

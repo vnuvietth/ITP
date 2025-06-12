@@ -1,0 +1,8 @@
+{
+  "testDataName": "add_int_int_random_0",
+  "sourceNode": "./lib/math.c",
+  "functionNode": "./lib/math.c/add(int,int)",
+  "returnType": "int",
+  "n":"8",
+  "p":"8"
+}
