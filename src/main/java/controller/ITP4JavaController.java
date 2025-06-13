@@ -19,6 +19,7 @@ import utils.ITP4Java.common.constants;
 import utils.autoUnitTestUtil.concolicResult.ConcolicParameterData;
 import utils.autoUnitTestUtil.concolicResult.ConcolicTestData;
 import utils.autoUnitTestUtil.concolicResult.ConcolicTestResult;
+import utils.autoUnitTestUtil.parser.ASTHelper;
 import utils.cloneProjectUtil.CloneProjectUtil;
 import utils.cloneProjectUtil.projectTreeObjects.Folder;
 import utils.cloneProjectUtil.projectTreeObjects.JavaFile;
@@ -260,8 +261,10 @@ public class ITP4JavaController implements Initializable {
 
         ConcolicTestResult result;
         try {
-            result = ITP4Java.runITP4Project(choseUnit.getPath(), choseUnit.getMethodName(),
-                    choseUnit.getClassName(), choseCoverage);
+//            result = ITP4Java.runITP4Project(choseUnit.getPath(), choseUnit.getMethodName(),
+//                    choseUnit.getClassName(), choseCoverage);
+
+            result = ITP4Java.runITP4Project(FilePath.clonedProjectPath, choseCoverage);
         } catch (Exception e) {
             alertLabel.setTextFill(Paint.valueOf("red"));
             alertLabel.setText("Examined unit contains cases we haven't handle yet!");

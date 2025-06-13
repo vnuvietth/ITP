@@ -8,6 +8,7 @@ import org.eclipse.jdt.core.dom.MethodDeclaration;
 import utils.FilePath;
 import utils.ITP4Java.ITPTestDriver.ITP4JavaTestDriverGenerator;
 import utils.ITP4Java.ITPTestDriver.ITP4JavaTestDriverRunner;
+import utils.ITP4Java.common.constants;
 import utils.autoUnitTestUtil.algorithms.FindPath;
 import utils.autoUnitTestUtil.algorithms.SymbolicExecution;
 import utils.autoUnitTestUtil.cfg.CfgBlockNode;
@@ -28,6 +29,7 @@ import utils.autoUnitTestUtil.utils.Utils;
 import utils.cloneProjectUtil.CloneProjectUtil;
 import utils.uploadUtil.ConcolicUploadUtil;
 
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -54,15 +56,14 @@ public class ITP4Java {
     private static long tickCount = 0;
 
 
-    public static ConcolicTestResult runITP4Project(String path, String methodName, String className,
-                                                     ITP4JavaController.Coverage coverage)
+    public static ConcolicTestResult runITP4Project(String path, ITP4JavaController.Coverage coverage)
             throws IOException, NoSuchMethodException, InvocationTargetException,
             IllegalAccessException, ClassNotFoundException, NoSuchFieldException,
             InterruptedException {
 
-        setup(path, className, methodName);
-        setupCfgTree(coverage);
-        setupParameters(methodName);
+//        setup(path, className, methodName);
+//        setupCfgTree(coverage);
+//        setupParameters(methodName);
 
         totalUsedMem = 0;
         tickCount = 0;
@@ -79,16 +80,51 @@ public class ITP4Java {
         T.scheduleAtFixedRate(memoryTask, 0, 1); //0 delay and 5 ms tick
 
         long startRunTestTime = System.nanoTime();
-        ConcolicTestResult result = startGenerating(coverage);
+//        ConcolicTestResult result = startGenerating(coverage);
+
+        generateTestDataForProject(path, coverage);
+
         long endRunTestTime = System.nanoTime();
 
         double runTestDuration = (endRunTestTime - startRunTestTime) / 1000000.0;
         float usedMem = ((float) totalUsedMem) / tickCount / 1024 / 1024;
 
-        result.setTestingTime(runTestDuration);
-        result.setUsedMemory(usedMem);
+//        result.setTestingTime(runTestDuration);
+//        result.setUsedMemory(usedMem);
 
-        return result;
+//        return result;
+        return null;
+    }
+
+
+    private static void generateTestDataForProject(String path, ITP4JavaController.Coverage coverage)
+    {
+        ITP4JavaTestDriverGenerator.generateITPTestDriver(path, coverage);
+
+        List<File> files = Utils.getJavaFiles(path);
+
+        for (File file : files) {
+            //String clonedMethod = createCloneMethod(method, coverage);
+
+            List<ASTNode> methodList = ITP4JavaTestDriverGenerator.getMethodList(file.getName());
+
+            for (ASTNode method : methodList) {
+//                String testDataCallingString = generateTestDataReader((MethodDeclaration)method);
+//
+//                String templateContentWithTestDataReading = templateContent.replace(constants.UNIT_CALLING_BLOCK_PLACEHOLDER,testDataCallingString);
+//
+//                String fileName = "E:\\IdeaProjects\\NTD-Paper\\src\\main\\uploadedProject\\Units-From-Leetcode-Java-Solutions\\src\\main\\java\\ArmstrongNumber.java";
+//                String methodIdentifier = "abc";
+//
+//                String templateWithUniCalling = templateContentWithTestDataReading.replace(constants.PASSING_PARAMETER_PLACEHOLDER, "\"" + fileName + "\", \"" + methodIdentifier + "\"");
+//
+//                result.append(templateWithUniCalling);
+            }
+
+        }
+
+
+
     }
 
     public static ConcolicTestResult runFullConcolic(String path, String methodName, String className,
@@ -140,9 +176,9 @@ public class ITP4Java {
 
         String clonedJavaDirPath = CloneProjectUtil.getJavaDirPath(FilePath.clonedProjectPath);
 
-        ITP4JavaTestDriverGenerator.generateITPTestDriver(clonedJavaDirPath, getCoverageType(coverage));
+        ITP4JavaTestDriverGenerator.generateITPTestDriver(clonedJavaDirPath, coverage);
 
-        ITP4JavaTestDriverGenerator.generateTestDriver( (MethodDeclaration) testFunc, testData, getCoverageType(coverage));
+//        ITP4JavaTestDriverGenerator.generateTestDriver( (MethodDeclaration) testFunc, testData, coverage);
         List<MarkedStatement> markedStatements = ITP4JavaTestDriverRunner.runTestDriver();
 
         MarkedPath.markPathToCFGV2(cfgBeginNode, markedStatements);
@@ -222,6 +258,7 @@ public class ITP4Java {
                 throw new RuntimeException("Invalid coverage type");
         }
     }
+
 
     private static void setup(String path, String className, String methodName) throws IOException {
         funcAstNodeList = ProjectParser.parseFile(path);

@@ -1,5 +1,6 @@
 package utils.ITP4Java.ITPTestDriver;
 
+import controller.ITP4JavaController;
 import org.eclipse.jdt.core.dom.*;
 import utils.ITP4Java.common.ITPUtils;
 import utils.ITP4Java.common.constants;
@@ -20,7 +21,7 @@ public final class ITP4JavaTestDriverGenerator {
     private ITP4JavaTestDriverGenerator() {
     }
 
-    public static void generateITPTestDriver(String clonedJavaDirPath, ASTHelper.Coverage coverage) {
+    public static void generateITPTestDriver(String clonedJavaDirPath, ITP4JavaController.Coverage coverage) {
         StringBuilder result = new StringBuilder();
 
         String testDriverTemplateContent = readTestDriverTemplate();
@@ -30,35 +31,74 @@ public final class ITP4JavaTestDriverGenerator {
 
         List<File> files = Utils.getJavaFiles(clonedJavaDirPath);
 
+        StringBuilder allUnitCallingBlocks = new StringBuilder();
+
         for (File file : files) {
             //String clonedMethod = createCloneMethod(method, coverage);
 
-            List<ASTNode> methodList = getMethodList(file.getName());
+            allUnitCallingBlocks.append("//All units of file: " + file.getAbsolutePath() + "\n");
+
+            String absolutePath = file.getAbsolutePath();
+
+            List<ASTNode> methodList = getMethodList(absolutePath);
 
             for (ASTNode method : methodList) {
-                String testDataCallingString = generateTestDataReader((MethodDeclaration)method);
+                String unitCallingBlock = generateTestDataReader((MethodDeclaration)method, file);
 
-                String templateContentWithTestDataReading = templateContent.replace(constants.UNIT_CALLING_BLOCK_PLACEHOLDER,testDataCallingString);
+//                String methodSignature = getMethodSignature((MethodDeclaration)method);
+//
+//                String unitCallingBlock =
+//                        "if (\"" + absolutePath + "\".equals(fileName) && \"" + methodSignature + "\".equals(functionName)) {" +
+//                        unitCallingBlock +
+//
+//
+//                        "};";
 
-                String fileName = "E:\\IdeaProjects\\NTD-Paper\\src\\main\\uploadedProject\\Units-From-Leetcode-Java-Solutions\\src\\main\\java\\ArmstrongNumber.java";
-                String methodIdentifier = "abc";
+                System.out.println("unitCallingBlock = " + unitCallingBlock);
 
-                String templateWithUniCalling = templateContentWithTestDataReading.replace(constants.PASSING_PARAMETER_PLACEHOLDER, "\"" + fileName + "\", \"" + methodIdentifier + "\"");
+                allUnitCallingBlocks.append(unitCallingBlock + "\n\n");
 
-                result.append(templateWithUniCalling);
             }
 
         }
 
+        templateContent = templateContent.replace(constants.UNIT_CALLING_BLOCK_PLACEHOLDER, allUnitCallingBlocks);
 
+//        String templateContentWithTestDataReading = templateContent.replace(constants.UNIT_CALLING_BLOCK_PLACEHOLDER,testDataCallingString);
+
+        String fileName = "E:\\IdeaProjects\\NTD-Paper\\src\\main\\uploadedProject\\Units-From-Leetcode-Java-Solutions\\src\\main\\java\\ArmstrongNumber.java";
+        String methodIdentifier = "abc";
+
+//        String templateWithUniCalling = templateContent.replace(constants.PASSING_PARAMETER_PLACEHOLDER, "\"" + fileName + "\", \"" + methodIdentifier + "\"");
+//        result.append(templateWithUniCalling);
 
 //        String unitCalling = generateTestRunner(method.getName().toString(), testData);
 //
 //        String templateWithUnitCalling = templateContentWithTestDataReading.replace(constants.UNIT_CALLING_PLACEHOLDER, unitCalling);
 
 
-        ITPUtils.writeToFile(String.valueOf(result), constants.ITP_TEST_DRIVER_PATH, false);
+        ITPUtils.writeToFile(String.valueOf(templateContent), constants.ITP_TEST_DRIVER_PATH, false);
 
+    }
+
+    public static String getMethodSignature(MethodDeclaration node) {
+
+        StringBuilder signature = new StringBuilder();
+        String methodName = node.getName().getIdentifier();
+
+        List<ASTNode> parameterTypes = node.parameters();
+        String returnType = node.getReturnType2().toString();
+        signature.append(returnType).append(" ").append(methodName).append("(");
+        for (int i = 0; i < parameterTypes.size(); i++) {
+            signature.append(((SingleVariableDeclaration) parameterTypes.get(i)).getType());
+            if (i < parameterTypes.size() - 1) {
+                signature.append(",");
+            }
+        }
+        signature.append(")");
+        System.out.println("Method Signature: " + signature.toString());
+
+        return signature.toString();
     }
 
     public static List<ASTNode> getMethodList(String fileName){
@@ -86,36 +126,36 @@ public final class ITP4JavaTestDriverGenerator {
         return methods;
     }
 
-    public static void generateTestDriver(MethodDeclaration method, TestData testData, ASTHelper.Coverage coverage) {
-        StringBuilder result = new StringBuilder();
-
-        String testDriverTemplateContent = readTestDriverTemplate();
-
-        String clonedMethod = createCloneMethod(method, coverage);
-
-        String templateContent = testDriverTemplateContent.replace(constants.INSTRUMENTED_TESTING_UNIT_PLACEHOLDER, clonedMethod)
-                .replace(constants.ITP_TEST_DATA_FILE_PATH_PLACEHOLDER, constants.ITP_TEST_DATA_FILE_PATH_FOR_TEST_DRIVER)
-                .replace(constants.EXECUTION_RESULT_PATH_PLACEHOLDER, constants.EXECUTION_RESULT_PATH);
-
-        String testDataCallingString = generateTestDataReader(method);
-
-        String templateContentWithTestDataReading = templateContent.replace(constants.UNIT_CALLING_BLOCK_PLACEHOLDER,testDataCallingString);
-
-        String fileName = "E:\\IdeaProjects\\NTD-Paper\\src\\main\\uploadedProject\\Units-From-Leetcode-Java-Solutions\\src\\main\\java\\ArmstrongNumber.java";
-        String methodIdentifier = "abc";
-
-
-        String templateWithUniCalling = templateContentWithTestDataReading.replace(constants.PASSING_PARAMETER_PLACEHOLDER, "\"" + fileName + "\", \"" + methodIdentifier + "\"");
-
-//        String unitCalling = generateTestRunner(method.getName().toString(), testData);
+//    public static void generateTestDriver(MethodDeclaration method, TestData testData, ITP4JavaController.Coverage coverage) {
+//        StringBuilder result = new StringBuilder();
 //
-//        String templateWithUnitCalling = templateContentWithTestDataReading.replace(constants.UNIT_CALLING_PLACEHOLDER, unitCalling);
-
-        result.append(templateWithUniCalling);
-
-        ITPUtils.writeToFile(String.valueOf(result), constants.ITP_TEST_DRIVER_PATH, false);
-
-    }
+//        String testDriverTemplateContent = readTestDriverTemplate();
+//
+//        String clonedMethod = createCloneMethod(method, coverage);
+//
+//        String templateContent = testDriverTemplateContent.replace(constants.INSTRUMENTED_TESTING_UNIT_PLACEHOLDER, clonedMethod)
+//                .replace(constants.ITP_TEST_DATA_FILE_PATH_PLACEHOLDER, constants.ITP_TEST_DATA_FILE_PATH_FOR_TEST_DRIVER)
+//                .replace(constants.EXECUTION_RESULT_PATH_PLACEHOLDER, constants.EXECUTION_RESULT_PATH);
+//
+//        String testDataCallingString = generateTestDataReader(method);
+//
+//        String templateContentWithTestDataReading = templateContent.replace(constants.UNIT_CALLING_BLOCK_PLACEHOLDER,testDataCallingString);
+//
+//        String fileName = "E:\\IdeaProjects\\NTD-Paper\\src\\main\\uploadedProject\\Units-From-Leetcode-Java-Solutions\\src\\main\\java\\ArmstrongNumber.java";
+//        String methodIdentifier = "abc";
+//
+//
+////        String templateWithUniCalling = templateContentWithTestDataReading.replace(constants.PASSING_PARAMETER_PLACEHOLDER, "\"" + fileName + "\", \"" + methodIdentifier + "\"");
+//
+////        String unitCalling = generateTestRunner(method.getName().toString(), testData);
+////
+////        String templateWithUnitCalling = templateContentWithTestDataReading.replace(constants.UNIT_CALLING_PLACEHOLDER, unitCalling);
+//
+//        result.append(templateContentWithTestDataReading);
+//
+//        ITPUtils.writeToFile(String.valueOf(result), constants.ITP_TEST_DRIVER_PATH, false);
+//
+//    }
 
     private static String readTestDriverTemplate() {
         try
@@ -126,7 +166,7 @@ public final class ITP4JavaTestDriverGenerator {
         }
     }
 
-    private static String generateTestDataReader(MethodDeclaration method) {
+    private static String generateTestDataReader(MethodDeclaration method, File file) {
         StringBuilder testDataReader = new StringBuilder();
         StringBuilder unitCaller = new StringBuilder();
         unitCaller.append("Object output = ").append(method.getName().toString()).append("(");
@@ -138,13 +178,13 @@ public final class ITP4JavaTestDriverGenerator {
             String param = "String param" + i + " = (String) jsonObject.get(\"" + ((SingleVariableDeclaration)(method.parameters().get(i))).getName() + "\");";
 
             if (i == 0) {
-                testDataReader.append(param + "\n");
+                testDataReader.append("    " + param + "\n");
             }
             else {
-                testDataReader.append("        " + param + "\n");
+                testDataReader.append("    " + param + "\n");
             }
 
-            testDataReader.append("        System.out.println(\"" + ((SingleVariableDeclaration)(method.parameters().get(i))).getName() + " = \" " + " + param" + i + ");\n");
+            testDataReader.append("    System.out.println(\"" + ((SingleVariableDeclaration)(method.parameters().get(i))).getName() + " = \" " + " + param" + i + ");\n");
 
             SingleVariableDeclaration paramData = (SingleVariableDeclaration)method.parameters().get(i);
 
@@ -171,10 +211,12 @@ public final class ITP4JavaTestDriverGenerator {
 
         unitCaller.append(");\n");
 
-        StringBuilder unitcallingBlock = new StringBuilder();
-        unitcallingBlock.append("if (\"" + method.getName() + "\".equals(fileName) && \"" + method.getName() + "\".equals(functionName)) {");
+        String methodSignature = getMethodSignature(method);
 
-        String unitBlock = testDataReader + "        " + unitCaller.toString();
+        StringBuilder unitcallingBlock = new StringBuilder();
+        unitcallingBlock.append("if (\"" + file.getAbsolutePath() + "\".equals(fileName) && \"" + methodSignature + "\".equals(functionName)) {\n");
+
+        String unitBlock = testDataReader + "    " + unitCaller.toString();
 
         unitcallingBlock.append(unitBlock);
         unitcallingBlock.append("}\n\n");
@@ -202,7 +244,7 @@ public final class ITP4JavaTestDriverGenerator {
         return result.toString();
     }
 
-    private static String generateUtilities(MethodDeclaration method, ASTHelper.Coverage coverage) {
+    private static String generateUtilities(MethodDeclaration method, ITP4JavaController.Coverage coverage) {
         StringBuilder result = new StringBuilder();
 
         // Generate mark method
@@ -239,7 +281,7 @@ public final class ITP4JavaTestDriverGenerator {
         return result.toString();
     }
 
-    private static String createCloneMethod(MethodDeclaration method, ASTHelper.Coverage coverage) {
+    private static String createCloneMethod(MethodDeclaration method, ITP4JavaController.Coverage coverage) {
         StringBuilder cloneMethod = new StringBuilder();
 
         cloneMethod.append("public static ").append(method.getReturnType2()).append(" ").append(method.getName()).append("(");
@@ -255,7 +297,7 @@ public final class ITP4JavaTestDriverGenerator {
         return cloneMethod.toString();
     }
 
-    private static String generateCodeForOneStatement(ASTNode statement, String markMethodSeparator, ASTHelper.Coverage coverage) {
+    private static String generateCodeForOneStatement(ASTNode statement, String markMethodSeparator, ITP4JavaController.Coverage coverage) {
         if (statement == null) {
             return "";
         }
@@ -276,7 +318,7 @@ public final class ITP4JavaTestDriverGenerator {
 
     }
 
-    private static String generateCodeForBlock(Block block, ASTHelper.Coverage coverage) {
+    private static String generateCodeForBlock(Block block, ITP4JavaController.Coverage coverage) {
         StringBuilder result = new StringBuilder();
         List<ASTNode> statements = block.statements();
 
@@ -289,7 +331,7 @@ public final class ITP4JavaTestDriverGenerator {
         return result.toString();
     }
 
-    private static String generateCodeForIfStatement(IfStatement ifStatement, ASTHelper.Coverage coverage) {
+    private static String generateCodeForIfStatement(IfStatement ifStatement, ITP4JavaController.Coverage coverage) {
         StringBuilder result = new StringBuilder();
 
         result.append("    if (").append(generateCodeForCondition(ifStatement.getExpression(), coverage)).append(")\n");
@@ -306,7 +348,7 @@ public final class ITP4JavaTestDriverGenerator {
         return result.toString();
     }
 
-    private static String generateCodeForForStatement(ForStatement forStatement, ASTHelper.Coverage coverage) {
+    private static String generateCodeForForStatement(ForStatement forStatement, ITP4JavaController.Coverage coverage) {
         StringBuilder result = new StringBuilder();
 
         // Initializers
@@ -340,7 +382,7 @@ public final class ITP4JavaTestDriverGenerator {
         return result.toString();
     }
 
-    private static String generateCodeForWhileStatement(WhileStatement whileStatement, ASTHelper.Coverage coverage) {
+    private static String generateCodeForWhileStatement(WhileStatement whileStatement, ITP4JavaController.Coverage coverage) {
         StringBuilder result = new StringBuilder();
 
         // Condition
@@ -354,7 +396,7 @@ public final class ITP4JavaTestDriverGenerator {
         return result.toString();
     }
 
-    private static String generateCodeForDoStatement(DoStatement doStatement, ASTHelper.Coverage coverage) {
+    private static String generateCodeForDoStatement(DoStatement doStatement, ITP4JavaController.Coverage coverage) {
         StringBuilder result = new StringBuilder();
 
         // Do body
@@ -409,10 +451,11 @@ public final class ITP4JavaTestDriverGenerator {
         return result.toString();
     }
 
-    private static String generateCodeForCondition(Expression condition, ASTHelper.Coverage coverage) {
-        if(coverage == ASTHelper.Coverage.MCDC) {
-            return generateCodeForConditionForMCDCCoverage(condition);
-        } else if(coverage == ASTHelper.Coverage.BRANCH || coverage == ASTHelper.Coverage.STATEMENT) {
+    private static String generateCodeForCondition(Expression condition, ITP4JavaController.Coverage coverage) {
+//        if(coverage == ITP4JavaController.Coverage.MCDC) {
+//            return generateCodeForConditionForMCDCCoverage(condition);
+//        } else
+            if(coverage == ITP4JavaController.Coverage.BRANCH || coverage == ITP4JavaController.Coverage.STATEMENT) {
             return generateCodeForConditionForBranchAndStatementCoverage(condition);
         } else {
             throw new RuntimeException("Invalid coverage!");

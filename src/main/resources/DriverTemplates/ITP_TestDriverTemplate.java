@@ -47,7 +47,13 @@ public class ITP_V0_TestDriver {
 
     //End testing method
 
-    public static void ITP_TEST_EXECUTION(String fileName, String functionName) {
+    public static void ITP_TEST_EXECUTION() {
+
+        JSONParser parser = new JSONParser();
+        JSONObject jsonObject = (JSONObject) parser.parse(new FileReader("E:\\IdeaProjects\\testDriver\\TestData.json"));
+
+        String fileName = (String) jsonObject.get("fileName");
+        String functionName = (String) jsonObject.get("functionName");
 
 //        if ("".equals(fileName) && "func1(int,int)".equals(functionName)) {
 //            //Start test data file reading
@@ -88,7 +94,7 @@ public class ITP_V0_TestDriver {
 
 //        %%UNIT_CALLING_PLACEHOLDER%%
 
-        ITP_TEST_EXECUTION(%%PASSING_PARAMETER_PLACEHOLDER%%);
+        ITP_TEST_EXECUTION();
 
         System.out.println("output = " + output);
 
