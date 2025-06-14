@@ -284,6 +284,38 @@ public class ITP4JavaController implements Initializable {
         testCaseListView.getItems().addAll(result.getFullTestData());
     }
 
+
+    @FXML
+    void btnStartITPTestingButtonClicked(MouseEvent event) {
+        resetTestCaseDetailVBox();
+        resetGeneratedTestCasesInfo();
+        alertLabel.setText("");
+
+        ConcolicTestResult result;
+        try {
+//            result = ITP4Java.runITP4Project(choseUnit.getPath(), choseUnit.getMethodName(),
+//                    choseUnit.getClassName(), choseCoverage);
+
+            result = ITP4Java.runITP4Project(FilePath.clonedProjectPath, choseCoverage);
+        } catch (Exception e) {
+            alertLabel.setTextFill(Paint.valueOf("red"));
+            alertLabel.setText("Examined unit contains cases we haven't handle yet!");
+            return;
+        }
+
+        allTestCasesCoverageLabel.setText("   All test cases coverage: " + result.getFullCoverage() + "%");
+        allTestCasesCoverageLabel.setDisable(false);
+
+        testingTimeLabel.setText("   Testing time: " + result.getTestingTime() + "ms");
+        testingTimeLabel.setDisable(false);
+
+        usedMemoryLabel.setText("   Used memory: " + result.getUsedMemory() + "MB");
+        usedMemoryLabel.setDisable(false);
+
+
+        testCaseListView.getItems().addAll(result.getFullTestData());
+    }
+
     private void setTestCaseDetail(ConcolicTestData testData) {
         testCaseIDLabel.setText("   Test case ID: " + testData.getTestCaseID());
         sourceCodeCoverageLabel.setText("   Source code coverage: " + testData.getSourceCodeCoverage());

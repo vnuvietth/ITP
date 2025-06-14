@@ -55,20 +55,8 @@ public class ITP_V0_TestDriver {
         String fileName = (String) jsonObject.get("fileName");
         String functionName = (String) jsonObject.get("functionName");
 
-//        if ("".equals(fileName) && "func1(int,int)".equals(functionName)) {
-//            //Start test data file reading
-//            JSONParser parser = new JSONParser();
-//            JSONObject jsonObject = (JSONObject) parser.parse(new FileReader("E:\\IdeaProjects\\testDriver\\TestData.json"));
-//
-//            String param0 = (String) jsonObject.get("n");
-//            System.out.println("n = "  + param0);
-//            String param1 = (String) jsonObject.get("p");
-//            System.out.println("p = "  + param1);
-//
-//            Object output = getNthPowerSum(param0, param1);
-//        }
+%%UNIT_CALLING_BLOCK_PLACEHOLDER%%
 
-        %%UNIT_CALLING_BLOCK_PLACEHOLDER%%
     }
 
     public static void main(String[] args) throws IOException, ParseException {

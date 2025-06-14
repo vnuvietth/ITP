@@ -36,7 +36,7 @@ public final class ITP4JavaTestDriverGenerator {
         for (File file : files) {
             //String clonedMethod = createCloneMethod(method, coverage);
 
-            allUnitCallingBlocks.append("//All units of file: " + file.getAbsolutePath() + "\n");
+            allUnitCallingBlocks.append("        //All units of file: " + file.getAbsolutePath() + "\n");
 
             String absolutePath = file.getAbsolutePath();
 
@@ -169,7 +169,7 @@ public final class ITP4JavaTestDriverGenerator {
     private static String generateTestDataReader(MethodDeclaration method, File file) {
         StringBuilder testDataReader = new StringBuilder();
         StringBuilder unitCaller = new StringBuilder();
-        unitCaller.append("Object output = ").append(method.getName().toString()).append("(");
+        unitCaller.append("        Object output = ").append(method.getName().toString()).append("(");
 
 
         //List<ParamTestData> paramList = testData.getParamList();
@@ -178,34 +178,36 @@ public final class ITP4JavaTestDriverGenerator {
             String param = "String param" + i + " = (String) jsonObject.get(\"" + ((SingleVariableDeclaration)(method.parameters().get(i))).getName() + "\");";
 
             if (i == 0) {
-                testDataReader.append("    " + param + "\n");
+                testDataReader.append("            " + param + "\n");
             }
             else {
-                testDataReader.append("    " + param + "\n");
+                testDataReader.append("            " + param + "\n");
             }
 
-            testDataReader.append("    System.out.println(\"" + ((SingleVariableDeclaration)(method.parameters().get(i))).getName() + " = \" " + " + param" + i + ");\n");
+            testDataReader.append("            System.out.println(\"" + ((SingleVariableDeclaration)(method.parameters().get(i))).getName() + " = \" " + " + param" + i + ");\n");
 
             SingleVariableDeclaration paramData = (SingleVariableDeclaration)method.parameters().get(i);
 
             System.out.println("paramData.getName() = " + paramData.getName() + "; paramData.getType() = " + paramData.getType());
 
-//            if(paramData.getType() Character) {
-//                unitCaller.append("'").append(paramData.getValue()).append("'");
-//            } else if(paramData.getValue() instanceof String) {
-//                unitCaller.append(paramData.getValue());
-//            } else if (paramData.getValue() instanceof Integer) {
-//                unitCaller.append("Integer.parseInt(param" + i + ")");
-//            } else if (paramData.getValue() instanceof Double) {
-//                unitCaller.append("Double.parseDouble(param" + i + ")");
-//            } else if (paramData.getValue() instanceof Boolean) {
-//                unitCaller.append("Boolean.parseBoolean(param" + i + ")");
-//            } else if (paramData.getValue() instanceof Long) {
-//                unitCaller.append("Long.parseLong(param" + i + ")");
-//            } else if (paramData.getValue() instanceof Float) {
-//                unitCaller.append("Float.parseFloat(param" + i + ")");
-//            }
-//            if(i != paramList.size() - 1) unitCaller.append(", ");
+            System.out.println("paramData.getType() = " + paramData.getType().toString());
+
+            if(paramData.getType().toString().equals("char")) {
+                unitCaller.append("'").append("param" + i).append("'");
+            } else if(paramData.getType().toString().equals("String")) {
+                unitCaller.append("param" + i);
+            } else if (paramData.getType().toString().equals("int")) {
+                unitCaller.append("Integer.parseInt(param" + i + ")");
+            } else if (paramData.getType().toString().equals("double")) {
+                unitCaller.append("Double.parseDouble(param" + i + ")");
+            } else if (paramData.getType().toString().equals("boolean")) {
+                unitCaller.append("Boolean.parseBoolean(param" + i + ")");
+            } else if (paramData.getType().toString().equals("long")) {
+                unitCaller.append("Long.parseLong(param" + i + ")");
+            } else if (paramData.getType().toString().equals("float")) {
+                unitCaller.append("Float.parseFloat(param" + i + ")");
+            }
+            if(i != method.parameters().size() - 1) unitCaller.append(", ");
         }
         testDataReader.append("\n");
 
@@ -214,12 +216,12 @@ public final class ITP4JavaTestDriverGenerator {
         String methodSignature = getMethodSignature(method);
 
         StringBuilder unitcallingBlock = new StringBuilder();
-        unitcallingBlock.append("if (\"" + file.getAbsolutePath() + "\".equals(fileName) && \"" + methodSignature + "\".equals(functionName)) {\n");
+        unitcallingBlock.append("        if (\"" + file.getAbsolutePath() + "\".equals(fileName) && \"" + methodSignature + "\".equals(functionName)) {\n");
 
         String unitBlock = testDataReader + "    " + unitCaller.toString();
 
         unitcallingBlock.append(unitBlock);
-        unitcallingBlock.append("}\n\n");
+        unitcallingBlock.append("        }\n\n");
 
         return unitcallingBlock.toString();
     }
