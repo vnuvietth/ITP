@@ -38,6 +38,8 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import static utils.ITP4Java.ITPTestDriver.ITP4JavaTestDriverGenerator.getClassName;
+
 public class ITP4Java {
     private static CompilationUnit compilationUnit;
     private static ArrayList<ASTNode> funcAstNodeList;
@@ -97,8 +99,7 @@ public class ITP4Java {
     }
 
 
-    private static void generateTestDataForProject(String path, ITP4JavaController.Coverage coverage)
-    {
+    private static void generateTestDataForProject(String path, ITP4JavaController.Coverage coverage) throws IOException, NoSuchFieldException, ClassNotFoundException, InterruptedException, InvocationTargetException, IllegalAccessException, NoSuchMethodException {
         ITP4JavaTestDriverGenerator.generateITPTestDriver(path, coverage);
 
         List<File> files = Utils.getJavaFiles(path);
@@ -106,9 +107,12 @@ public class ITP4Java {
         for (File file : files) {
             //String clonedMethod = createCloneMethod(method, coverage);
 
-            List<ASTNode> methodList = ITP4JavaTestDriverGenerator.getMethodList(file.getName());
+            List<ASTNode> methodList = ITP4JavaTestDriverGenerator.getMethodList(file.getAbsolutePath());
 
             for (ASTNode method : methodList) {
+
+                startGeneratingForOneUnit(file.getAbsolutePath(), (MethodDeclaration)method, coverage);
+
 //                String testDataCallingString = generateTestDataReader((MethodDeclaration)method);
 //
 //                String templateContentWithTestDataReading = templateContent.replace(constants.UNIT_CALLING_BLOCK_PLACEHOLDER,testDataCallingString);
@@ -164,33 +168,43 @@ public class ITP4Java {
         return result;
     }
 
-    private static ConcolicTestResult startGenerating(ITP4JavaController.Coverage coverage)
+    private static ConcolicTestResult startGeneratingForOneUnit(String filePath, MethodDeclaration method, ITP4JavaController.Coverage coverage)
             throws InvocationTargetException, IllegalAccessException, ClassNotFoundException,
-                NoSuchFieldException, IOException, InterruptedException {
+            NoSuchFieldException, IOException, InterruptedException, NoSuchMethodException {
+
+        setup(filePath, getClassName(filePath), method.getName().toString());
+        setupCfgTree(coverage);
+        setupParameters(method.getName().toString());
+
+        setUpTestFunc(method.getName().toString());
+        setupParameters(method.getName().toString());
+
+        Boolean isTestDriverBuilt = false;
         ConcolicTestResult testResult = new ConcolicTestResult();
         int testCaseID = 1;
-//        Object[] evaluatedValues = Utils4TestDriver.createRandomTestData(parameterClasses);
+        Object[] evaluatedValues = Utils4TestDriver.createRandomTestData(parameterClasses);
         TestData testData = Utils4TestDriver.createRandomTestData4ITP(parameters);
 
         writeDataToFile("", FilePath.concreteExecuteResultPath, false);
 
         String clonedJavaDirPath = CloneProjectUtil.getJavaDirPath(FilePath.clonedProjectPath);
 
-        ITP4JavaTestDriverGenerator.generateITPTestDriver(clonedJavaDirPath, coverage);
+//        ITP4JavaTestDriverGenerator.generateITPTestDriver(clonedJavaDirPath, coverage);
 
 //        ITP4JavaTestDriverGenerator.generateTestDriver( (MethodDeclaration) testFunc, testData, coverage);
-        List<MarkedStatement> markedStatements = ITP4JavaTestDriverRunner.runTestDriver();
 
-        MarkedPath.markPathToCFGV2(cfgBeginNode, markedStatements);
+        ITP4JavaTestDriverRunner.buildTestDriver();
 
-        List<CoveredStatement> coveredStatements = CoveredStatement.switchToCoveredStatementList(markedStatements);
+//        MarkedPath.markPathToCFGV2(cfgBeginNode, markedStatements);
+//
+//        List<CoveredStatement> coveredStatements = CoveredStatement.switchToCoveredStatementList(markedStatements);
 
 //        testResult.addToFullTestData(new ConcolicTestData(parameterNames, parameterClasses, testData, coveredStatements,
 //                ITP4JavaTestDriverRunner.getOutput(), ITP4JavaTestDriverRunner.getRuntime(), calculateRequiredCoverage(coverage), calculateFunctionCoverage(), calculateSourceCodeCoverage(), testCaseID++));
 
 
-        testResult.addToFullTestData(new ConcolicTestData(testData, coveredStatements,
-                TestDriverRunner.getOutput(), TestDriverRunner.getRuntime(), calculateRequiredCoverage(coverage), calculateFunctionCoverage(), calculateSourceCodeCoverage(), testCaseID++));
+//        testResult.addToFullTestData(new ConcolicTestData(testData, coveredStatements,
+//                TestDriverRunner.getOutput(), TestDriverRunner.getRuntime(), calculateRequiredCoverage(coverage), calculateFunctionCoverage(), calculateSourceCodeCoverage(), testCaseID++));
 
 
         boolean isTestedSuccessfully = true;
@@ -214,17 +228,90 @@ public class ITP4Java {
             writeDataToFile("", FilePath.concreteExecuteResultPath, false);
 
 //            testDriver = ITP4JavaTestDriverGenerator.generateTestDriver((MethodDeclaration) testFunc, evaluatedValues, getCoverageType(coverage));
-            markedStatements = ITP4JavaTestDriverRunner.runTestDriver();
+            ITP4JavaTestDriverRunner.runTestDriver();
 
-            MarkedPath.markPathToCFGV2(cfgBeginNode, markedStatements);
-            coveredStatements = CoveredStatement.switchToCoveredStatementList(markedStatements);
+//            MarkedPath.markPathToCFGV2(cfgBeginNode, markedStatements);
+//            coveredStatements = CoveredStatement.switchToCoveredStatementList(markedStatements);
 
 //            testResult.addToFullTestData(new ConcolicTestData(parameterNames, parameterClasses, testData, coveredStatements, ITP4JavaTestDriverRunner.getOutput(), ITP4JavaTestDriverRunner.getRuntime(), calculateRequiredCoverage(coverage), calculateFunctionCoverage(), calculateSourceCodeCoverage(), testCaseID++));
 
 
-            testResult.addToFullTestData(new ConcolicTestData(testData, coveredStatements, TestDriverRunner.getOutput(),
-                    TestDriverRunner.getRuntime(), calculateRequiredCoverage(coverage),
-                    calculateFunctionCoverage(), calculateSourceCodeCoverage(), testCaseID++));
+//            testResult.addToFullTestData(new ConcolicTestData(testData, coveredStatements, TestDriverRunner.getOutput(),
+//                    TestDriverRunner.getRuntime(), calculateRequiredCoverage(coverage),
+//                    calculateFunctionCoverage(), calculateSourceCodeCoverage(), testCaseID++));
+
+            uncoveredNode = findUncoverNode(cfgBeginNode, coverage);
+            System.out.println("Uncovered Node: " + uncoveredNode);
+        }
+
+        if (isTestedSuccessfully) System.out.println("Tested successfully with 100% coverage");
+        else System.out.println("Test fail due to UNSATISFIABLE constraint");
+
+        testResult.setFullCoverage(calculateFullTestSuiteCoverage());
+
+        return testResult;
+    }
+
+    private static ConcolicTestResult startGenerating(ITP4JavaController.Coverage coverage)
+            throws InvocationTargetException, IllegalAccessException, ClassNotFoundException,
+                NoSuchFieldException, IOException, InterruptedException {
+        ConcolicTestResult testResult = new ConcolicTestResult();
+        int testCaseID = 1;
+//        Object[] evaluatedValues = Utils4TestDriver.createRandomTestData(parameterClasses);
+        TestData testData = Utils4TestDriver.createRandomTestData4ITP(parameters);
+
+        writeDataToFile("", FilePath.concreteExecuteResultPath, false);
+
+        String clonedJavaDirPath = CloneProjectUtil.getJavaDirPath(FilePath.clonedProjectPath);
+
+        ITP4JavaTestDriverGenerator.generateITPTestDriver(clonedJavaDirPath, coverage);
+
+        ITP4JavaTestDriverRunner.buildTestDriver();
+
+//        MarkedPath.markPathToCFGV2(cfgBeginNode, markedStatements);
+//
+//        List<CoveredStatement> coveredStatements = CoveredStatement.switchToCoveredStatementList(markedStatements);
+
+//        testResult.addToFullTestData(new ConcolicTestData(parameterNames, parameterClasses, testData, coveredStatements,
+//                ITP4JavaTestDriverRunner.getOutput(), ITP4JavaTestDriverRunner.getRuntime(), calculateRequiredCoverage(coverage), calculateFunctionCoverage(), calculateSourceCodeCoverage(), testCaseID++));
+
+
+//        testResult.addToFullTestData(new ConcolicTestData(testData, coveredStatements,
+//                TestDriverRunner.getOutput(), TestDriverRunner.getRuntime(), calculateRequiredCoverage(coverage), calculateFunctionCoverage(), calculateSourceCodeCoverage(), testCaseID++));
+
+
+        boolean isTestedSuccessfully = true;
+        int i = 5;
+
+        for (CfgNode uncoveredNode = findUncoverNode(cfgBeginNode, coverage); uncoveredNode != null; ) {
+
+            Path newPath = (new FindPath(cfgBeginNode, uncoveredNode, cfgEndNode)).getPath();
+
+            SymbolicExecution solution = new SymbolicExecution(newPath, parameters);
+
+            if (solution.getModel() == null) {
+                isTestedSuccessfully = false;
+                break;
+            }
+
+//            evaluatedValues = Utils4TestDriver.getParameterValue(parameterClasses);
+
+            testData = Utils4TestDriver.getParameterValue4ITP(parameters);
+
+            writeDataToFile("", FilePath.concreteExecuteResultPath, false);
+
+//            testDriver = ITP4JavaTestDriverGenerator.generateTestDriver((MethodDeclaration) testFunc, evaluatedValues, getCoverageType(coverage));
+//            markedStatements = ITP4JavaTestDriverRunner.runTestDriver();
+//
+//            MarkedPath.markPathToCFGV2(cfgBeginNode, markedStatements);
+//            coveredStatements = CoveredStatement.switchToCoveredStatementList(markedStatements);
+
+//            testResult.addToFullTestData(new ConcolicTestData(parameterNames, parameterClasses, testData, coveredStatements, ITP4JavaTestDriverRunner.getOutput(), ITP4JavaTestDriverRunner.getRuntime(), calculateRequiredCoverage(coverage), calculateFunctionCoverage(), calculateSourceCodeCoverage(), testCaseID++));
+
+
+//            testResult.addToFullTestData(new ConcolicTestData(testData, coveredStatements, TestDriverRunner.getOutput(),
+//                    TestDriverRunner.getRuntime(), calculateRequiredCoverage(coverage),
+//                    calculateFunctionCoverage(), calculateSourceCodeCoverage(), testCaseID++));
 
             uncoveredNode = findUncoverNode(cfgBeginNode, coverage);
             System.out.println("Uncovered Node: " + uncoveredNode);

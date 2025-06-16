@@ -145,6 +145,8 @@ public final class Utils4TestDriver {
                 return double.class;
             case "void":
                 return void.class;
+            case "String":
+                return String.class;
             default:
                 throw new RuntimeException("Unsupported primitive type: " + primitiveTypeStr);
         }

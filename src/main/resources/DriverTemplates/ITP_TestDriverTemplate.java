@@ -6,8 +6,9 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+%%IMPORT_PLACEHOLDER%%
 
-public class ITP_V0_TestDriver {
+public class ITP_TestDriver {
 
     public static final String PATH_RESULT = "%%EXECUTION_RESULT_PATH_PLACEHOLDER%%";
     //Start utilities
@@ -43,11 +44,11 @@ public class ITP_V0_TestDriver {
 
     //Start testing method
 
-    %%INSTRUMENTED_TESTING_UNIT_PLACEHOLDER%%
+//    %%INSTRUMENTED_TESTING_UNIT_PLACEHOLDER%%
 
     //End testing method
 
-    public static void ITP_TEST_EXECUTION() {
+    public static void ITP_TEST_EXECUTION() throws IOException, ParseException {
 
         JSONParser parser = new JSONParser();
         JSONObject jsonObject = (JSONObject) parser.parse(new FileReader("E:\\IdeaProjects\\testDriver\\TestData.json"));
@@ -84,7 +85,7 @@ public class ITP_V0_TestDriver {
 
         ITP_TEST_EXECUTION();
 
-        System.out.println("output = " + output);
+//        System.out.println("output = " + output);
 
         //Start function calling
 
@@ -92,7 +93,7 @@ public class ITP_V0_TestDriver {
 
         double runTestDuration = (endRunTestTime - startRunTestTime) / 1000000.0;
 
-        writeDataToFile(runTestDuration + "===" + output, PATH_RESULT, true);
+        writeDataToFile(runTestDuration + "===output", PATH_RESULT, true);
 
         System.out.println("Concolic4ITPTestDriver ends...");
 

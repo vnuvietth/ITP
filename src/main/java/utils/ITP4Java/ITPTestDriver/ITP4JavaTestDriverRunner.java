@@ -13,19 +13,24 @@ public final class ITP4JavaTestDriverRunner {
     private ITP4JavaTestDriverRunner() {
     }
 
-    public static List<MarkedStatement> runTestDriver() throws IOException, InterruptedException {
+    public static void buildTestDriver() throws IOException, InterruptedException {
 
         String buildCommand = constants.ITP_V0_BUILD_COMMAND;
 
         System.out.println(buildCommand);
 
         executeCommand(buildCommand);
+    }
+
+    public static void runTestDriver() throws IOException, InterruptedException {
 
         String runCommand = constants.ITP_V0_RUN_COMMAND;
 
         System.out.println(runCommand);
 
         executeCommand(runCommand);
+    }
+    public static List<MarkedStatement> getCoveredStatement() throws IOException, InterruptedException {
 
         return getMarkedStatement();
     }

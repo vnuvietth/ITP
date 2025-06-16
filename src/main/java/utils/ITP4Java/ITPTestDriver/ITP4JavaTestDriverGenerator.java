@@ -33,7 +33,15 @@ public final class ITP4JavaTestDriverGenerator {
 
         StringBuilder allUnitCallingBlocks = new StringBuilder();
 
+
+        String importStatement = "";
+
         for (File file : files) {
+
+            importStatement += "import clonedProject." + getClassName(file.getAbsolutePath()) + ";\n";
+
+            System.out.println("importStatement: " + importStatement);
+
             //String clonedMethod = createCloneMethod(method, coverage);
 
             allUnitCallingBlocks.append("        //All units of file: " + file.getAbsolutePath() + "\n");
@@ -43,6 +51,11 @@ public final class ITP4JavaTestDriverGenerator {
             List<ASTNode> methodList = getMethodList(absolutePath);
 
             for (ASTNode method : methodList) {
+
+                if (getMethodSignature((MethodDeclaration)method).equals("void writeDataToFile(String,String,boolean)") ||
+                        (getMethodSignature((MethodDeclaration)method).equals("boolean mark(String,boolean,boolean)")))
+                    continue;
+
                 String unitCallingBlock = generateTestDataReader((MethodDeclaration)method, file);
 
 //                String methodSignature = getMethodSignature((MethodDeclaration)method);
@@ -60,22 +73,13 @@ public final class ITP4JavaTestDriverGenerator {
 
             }
 
+            break;//xet 1 file trước rồi làm những file khác sau
         }
 
         templateContent = templateContent.replace(constants.UNIT_CALLING_BLOCK_PLACEHOLDER, allUnitCallingBlocks);
 
-//        String templateContentWithTestDataReading = templateContent.replace(constants.UNIT_CALLING_BLOCK_PLACEHOLDER,testDataCallingString);
 
-        String fileName = "E:\\IdeaProjects\\NTD-Paper\\src\\main\\uploadedProject\\Units-From-Leetcode-Java-Solutions\\src\\main\\java\\ArmstrongNumber.java";
-        String methodIdentifier = "abc";
-
-//        String templateWithUniCalling = templateContent.replace(constants.PASSING_PARAMETER_PLACEHOLDER, "\"" + fileName + "\", \"" + methodIdentifier + "\"");
-//        result.append(templateWithUniCalling);
-
-//        String unitCalling = generateTestRunner(method.getName().toString(), testData);
-//
-//        String templateWithUnitCalling = templateContentWithTestDataReading.replace(constants.UNIT_CALLING_PLACEHOLDER, unitCalling);
-
+        templateContent = templateContent.replace(constants.ITP_IMPORT_PLACEHOLDER, importStatement);
 
         ITPUtils.writeToFile(String.valueOf(templateContent), constants.ITP_TEST_DRIVER_PATH, false);
 
@@ -99,6 +103,36 @@ public final class ITP4JavaTestDriverGenerator {
         System.out.println("Method Signature: " + signature.toString());
 
         return signature.toString();
+    }
+
+
+    public static String getClassName(String fileName){
+        CompilationUnit compilationUnit = null;
+        try {
+            compilationUnit = Parser.parseFileToCompilationUnit(fileName);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        final String[] className = {""};
+        ASTVisitor methodsVisitor = new ASTVisitor() {
+            @Override
+            public boolean visit(TypeDeclaration node) {
+//                for (TypeDeclaration typeDeclaration : node.getMethods()) {
+////                    if (!method.isConstructor()) {
+//                    methods.add(method);
+////                    }
+//                }
+
+                className[0] = node.getName().toString();
+
+                System.out.println(node.toString());
+                return true;
+            }
+        };
+        compilationUnit.accept(methodsVisitor);
+
+        return className[0];
     }
 
     public static List<ASTNode> getMethodList(String fileName){
@@ -169,8 +203,37 @@ public final class ITP4JavaTestDriverGenerator {
     private static String generateTestDataReader(MethodDeclaration method, File file) {
         StringBuilder testDataReader = new StringBuilder();
         StringBuilder unitCaller = new StringBuilder();
-        unitCaller.append("        Object output = ").append(method.getName().toString()).append("(");
 
+        Boolean isStatic = false;
+        String className = ((TypeDeclaration) method.getParent()).getName().getIdentifier();
+
+        System.out.println("className: " + className);
+
+        if (method.modifiers().size() > 1 && method.modifiers().get(1).toString().contains("static")) {
+            isStatic = true;
+        }
+
+        if (method.getReturnType2().toString().contains("void")) {
+            if (isStatic) {
+                unitCaller.append("        ").append(className + "." + method.getName().toString()).append("(");
+            }
+            else
+            {
+                unitCaller.append("        ").append("AccountBalanceAfterPurchase object = new AccountBalanceAfterPurchase();\n");
+                unitCaller.append("        ").append("object." + method.getName().toString()).append("()");
+            }
+        }
+        else
+        {
+            if (isStatic) {
+                unitCaller.append("        Object output = ").append(className + "." + method.getName().toString()).append("(");
+            }
+            else
+            {
+                unitCaller.append("        ").append("AccountBalanceAfterPurchase object = new AccountBalanceAfterPurchase();\n");
+                unitCaller.append("        Object output = ").append("object." + method.getName().toString()).append("()");
+            }
+        }
 
         //List<ParamTestData> paramList = testData.getParamList();
 
@@ -216,7 +279,7 @@ public final class ITP4JavaTestDriverGenerator {
         String methodSignature = getMethodSignature(method);
 
         StringBuilder unitcallingBlock = new StringBuilder();
-        unitcallingBlock.append("        if (\"" + file.getAbsolutePath() + "\".equals(fileName) && \"" + methodSignature + "\".equals(functionName)) {\n");
+        unitcallingBlock.append("        if (\"" + file.getAbsolutePath().replace("\\", "\\\\") + "\".equals(fileName) && \"" + methodSignature + "\".equals(functionName)) {\n");
 
         String unitBlock = testDataReader + "    " + unitCaller.toString();
 

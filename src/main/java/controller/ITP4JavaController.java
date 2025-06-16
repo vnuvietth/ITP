@@ -264,7 +264,7 @@ public class ITP4JavaController implements Initializable {
 //            result = ITP4Java.runITP4Project(choseUnit.getPath(), choseUnit.getMethodName(),
 //                    choseUnit.getClassName(), choseCoverage);
 
-            result = ITP4Java.runITP4Project(FilePath.clonedProjectPath, choseCoverage);
+            result = ITP4Java.runITP4Project(FilePath.clonedProjectPath, Coverage.STATEMENT);
         } catch (Exception e) {
             alertLabel.setTextFill(Paint.valueOf("red"));
             alertLabel.setText("Examined unit contains cases we haven't handle yet!");
@@ -296,7 +296,7 @@ public class ITP4JavaController implements Initializable {
 //            result = ITP4Java.runITP4Project(choseUnit.getPath(), choseUnit.getMethodName(),
 //                    choseUnit.getClassName(), choseCoverage);
 
-            result = ITP4Java.runITP4Project(FilePath.clonedProjectPath, choseCoverage);
+            result = ITP4Java.runITP4Project(FilePath.clonedProjectPath, Coverage.STATEMENT);
         } catch (Exception e) {
             alertLabel.setTextFill(Paint.valueOf("red"));
             alertLabel.setText("Examined unit contains cases we haven't handle yet!");
