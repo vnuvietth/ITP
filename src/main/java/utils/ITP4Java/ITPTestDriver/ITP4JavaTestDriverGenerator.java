@@ -40,9 +40,7 @@ public final class ITP4JavaTestDriverGenerator {
 
             importStatement += "import clonedProject." + getClassName(file.getAbsolutePath()) + ";\n";
 
-            System.out.println("importStatement: " + importStatement);
-
-            //String clonedMethod = createCloneMethod(method, coverage);
+//            System.out.println("importStatement: " + importStatement);
 
             allUnitCallingBlocks.append("        //All units of file: " + file.getAbsolutePath() + "\n");
 
@@ -52,22 +50,13 @@ public final class ITP4JavaTestDriverGenerator {
 
             for (ASTNode method : methodList) {
 
-                if (getMethodSignature((MethodDeclaration)method).equals("void writeDataToFile(String,String,boolean)") ||
-                        (getMethodSignature((MethodDeclaration)method).equals("boolean mark(String,boolean,boolean)")))
+                if (getMethodSignature((MethodDeclaration)method).equals("static void writeDataToFile(String,String,boolean)") ||
+                        (getMethodSignature((MethodDeclaration)method).equals("static boolean mark(String,boolean,boolean)")) ||
+                        !(getMethodAccessModifier((MethodDeclaration)method).equals("public"))
+                )
                     continue;
 
                 String unitCallingBlock = generateTestDataReader((MethodDeclaration)method, file);
-
-//                String methodSignature = getMethodSignature((MethodDeclaration)method);
-//
-//                String unitCallingBlock =
-//                        "if (\"" + absolutePath + "\".equals(fileName) && \"" + methodSignature + "\".equals(functionName)) {" +
-//                        unitCallingBlock +
-//
-//
-//                        "};";
-
-                System.out.println("unitCallingBlock = " + unitCallingBlock);
 
                 allUnitCallingBlocks.append(unitCallingBlock + "\n\n");
 
@@ -85,14 +74,20 @@ public final class ITP4JavaTestDriverGenerator {
 
     }
 
-    public static String getMethodSignature(MethodDeclaration node) {
+    public static String getMethodSignature(MethodDeclaration method) {
 
         StringBuilder signature = new StringBuilder();
-        String methodName = node.getName().getIdentifier();
+        String methodName = method.getName().getIdentifier();
 
-        List<ASTNode> parameterTypes = node.parameters();
-        String returnType = node.getReturnType2().toString();
-        signature.append(returnType).append(" ").append(methodName).append("(");
+        List<ASTNode> parameterTypes = method.parameters();
+        String returnType = method.getReturnType2().toString();
+        String staticStr = "";
+
+        if (method.modifiers().size() > 1 && method.modifiers().get(1).toString().contains("static")) {
+            staticStr = "static ";
+        }
+
+        signature.append(method.modifiers().get(0) + " ").append(staticStr).append(returnType).append(" ").append(methodName).append("(");
         for (int i = 0; i < parameterTypes.size(); i++) {
             signature.append(((SingleVariableDeclaration) parameterTypes.get(i)).getType());
             if (i < parameterTypes.size() - 1) {
@@ -100,9 +95,12 @@ public final class ITP4JavaTestDriverGenerator {
             }
         }
         signature.append(")");
-        System.out.println("Method Signature: " + signature.toString());
 
         return signature.toString();
+    }
+
+    public static String getMethodAccessModifier(MethodDeclaration method) {
+        return method.modifiers().get(0).toString();
     }
 
 
@@ -118,15 +116,7 @@ public final class ITP4JavaTestDriverGenerator {
         ASTVisitor methodsVisitor = new ASTVisitor() {
             @Override
             public boolean visit(TypeDeclaration node) {
-//                for (TypeDeclaration typeDeclaration : node.getMethods()) {
-////                    if (!method.isConstructor()) {
-//                    methods.add(method);
-////                    }
-//                }
-
                 className[0] = node.getName().toString();
-
-                System.out.println(node.toString());
                 return true;
             }
         };
@@ -207,7 +197,7 @@ public final class ITP4JavaTestDriverGenerator {
         Boolean isStatic = false;
         String className = ((TypeDeclaration) method.getParent()).getName().getIdentifier();
 
-        System.out.println("className: " + className);
+//        System.out.println("className: " + className);
 
         if (method.modifiers().size() > 1 && method.modifiers().get(1).toString().contains("static")) {
             isStatic = true;
@@ -251,9 +241,9 @@ public final class ITP4JavaTestDriverGenerator {
 
             SingleVariableDeclaration paramData = (SingleVariableDeclaration)method.parameters().get(i);
 
-            System.out.println("paramData.getName() = " + paramData.getName() + "; paramData.getType() = " + paramData.getType());
+//            System.out.println("paramData.getName() = " + paramData.getName() + "; paramData.getType() = " + paramData.getType());
 
-            System.out.println("paramData.getType() = " + paramData.getType().toString());
+//            System.out.println("paramData.getType() = " + paramData.getType().toString());
 
             if(paramData.getType().toString().equals("char")) {
                 unitCaller.append("'").append("param" + i).append("'");

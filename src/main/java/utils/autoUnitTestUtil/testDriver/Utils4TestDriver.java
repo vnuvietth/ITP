@@ -2,7 +2,10 @@ package utils.autoUnitTestUtil.testDriver;
 
 import org.eclipse.jdt.core.dom.*;
 import utils.FilePath;
+import utils.ITP4Java.ITPTestDriver.ITP4JavaTestDriverGenerator;
+import utils.ITP4Java.ITPTestDriver.ITP4JavaV0TestDriverGenerator;
 import utils.ITP4Java.common.constants;
+import utils.autoUnitTestUtil.dataStructure.ITPTestData;
 import utils.autoUnitTestUtil.dataStructure.ParamTestData;
 import utils.autoUnitTestUtil.dataStructure.TestData;
 
@@ -112,7 +115,15 @@ public final class Utils4TestDriver {
             return Array.newInstance(componentClass, new int[dimension]).getClass();
         } else if (type instanceof SimpleType) {
             SimpleType simpleType = (SimpleType) type;
-            return getClassForName(simpleType.getName().getFullyQualifiedName());
+            if (simpleType.getName().toString().equals("String"))
+            {
+                return String.class;
+            }
+            else
+            {
+                return getClassForName(simpleType.getName().getFullyQualifiedName());
+            }
+
         } else {
             throw new RuntimeException("Unsupported parameter type: " + type.getClass());
         }
@@ -165,7 +176,59 @@ public final class Utils4TestDriver {
             throw new RuntimeException("Class not found: " + className, e);
         }
     }
-    public static TestData getParameterValue4ITP(List<ASTNode> parameters) {
+    public static ITPTestData getParameterValue4ITP(List<ASTNode> parameters) {
+
+        List<ParamTestData> paramList = new ArrayList<>();
+
+        Scanner scanner;
+        try {
+            scanner = new Scanner(new File(FilePath.generatedTestDataPath));
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+
+        for (int i = 0; i < parameters.size(); i++) {
+
+            String key = Utils4TestDriver.getParameterName(parameters.get(i));
+            Object value = null;
+
+            if (!scanner.hasNext()) {
+                value = createRandomVariableData(Utils4TestDriver.getParameterClass(parameters.get(i)));
+                continue;
+            }
+
+            String className = Utils4TestDriver.getParameterClass(parameters.get(i)).getName();
+
+            if ("int".equals(className)) {
+                value = scanner.nextInt();
+            } else if ("boolean".equals(className)) {
+                value = scanner.nextBoolean();
+            } else if ("byte".equals(className)) {
+                value = scanner.nextByte();
+            } else if ("short".equals(className)) {
+                value = scanner.nextShort();
+            } else if ("char".equals(className)) {
+                value = (char) scanner.nextInt();
+            } else if ("long".equals(className)) {
+                value = scanner.nextLong();
+            } else if ("float".equals(className)) {
+                value = scanner.nextFloat();
+            } else if ("double".equals(className)) {
+                value = scanner.nextDouble();
+            } else if ("void".equals(className)) {
+                value = null;
+            } else {
+                throw new RuntimeException("Unsupported type: " + className);
+            }
+
+            ParamTestData pair = new ParamTestData(key, className, value);
+            paramList.add(pair);
+        }
+
+        return new ITPTestData(paramList);
+    }
+
+    public static TestData getParameterValue4ITP_V0(List<ASTNode> parameters) {
 
         List<ParamTestData> paramList = new ArrayList<>();
 
@@ -270,7 +333,7 @@ public final class Utils4TestDriver {
         return result;
     }
 
-    public static TestData createRandomTestData4ITP(List<ASTNode> parameters) {
+    public static TestData createRandomTestData4ITP_V0(List<ASTNode> parameters) {
 
         List<ParamTestData> parameterPairs = new ArrayList<>();
 
@@ -288,6 +351,32 @@ public final class Utils4TestDriver {
         }
 
         TestData testData = new TestData(parameterPairs);
+
+        return testData;
+    }
+
+    public static ITPTestData createRandomTestData4ITP(List<ASTNode> parameters, String filePath, MethodDeclaration method) {
+
+        List<ParamTestData> parameterPairs = new ArrayList<>();
+
+        for (int i = 0; i < parameters.size(); i++) {
+
+            Class typeClass = getParameterClass(parameters.get(i));
+
+            Object object = createRandomVariableData4ITP(typeClass);
+
+            String className = typeClass.getName();
+
+            ParamTestData pair = new ParamTestData(Utils4TestDriver.getParameterName(parameters.get(i)), className, object);
+
+            parameterPairs.add(pair);
+        }
+
+        ITPTestData testData = new ITPTestData(parameterPairs);
+        testData.setTestDataName("randomTestData");
+        testData.setFileName(filePath);
+        testData.setFunctionName(ITP4JavaTestDriverGenerator.getMethodSignature(method));
+        testData.setReturnType(method.getReturnType2().toString());
 
         return testData;
     }
@@ -327,6 +416,9 @@ public final class Utils4TestDriver {
 //            return 8.0;
         } else if ("void".equals(className)) {
             return "null";
+        }
+        else if ("java.lang.String".equals(className)) {
+            return generateRandomString(20);
         }
         throw new RuntimeException("Unsupported type: " + className);
     }
@@ -389,8 +481,22 @@ public final class Utils4TestDriver {
             return 8.0;
         } else if ("void".equals(className)) {
             return "null";
+        } else if ("java.lang.String".equals(className)) {
+            return generateRandomString(20);
         }
         throw new RuntimeException("Unsupported type: " + className);
+    }
+
+    public static String generateRandomString(int length) {
+        Random random = new Random();
+        StringBuilder sb = new StringBuilder();
+        String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+        for (int i = 0; i < length; i++) {
+            int randomIndex = random.nextInt(characters.length());
+            sb.append(characters.charAt(randomIndex));
+        }
+        return sb.toString();
     }
 
 //    public static void createCloneMethod(MethodDeclaration method, CompilationUnit compilationUnit) {

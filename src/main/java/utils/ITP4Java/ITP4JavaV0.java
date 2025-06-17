@@ -98,7 +98,7 @@ public class ITP4JavaV0 {
 
         //Object[] evaluatedValues = utils.autoUnitTestUtil.testDriver.Utils.createRandomTestData(parameterClasses);
 
-        TestData testData = Utils4TestDriver.createRandomTestData4ITP(parameters);
+        TestData testData = Utils4TestDriver.createRandomTestData4ITP_V0(parameters);
 
         Utils.writeTestDataToFile(testData, constants.ITP_V0_TEST_DATA_FILE_PATH);
 
@@ -131,7 +131,7 @@ public class ITP4JavaV0 {
                 break;
             }
 
-            testData = Utils4TestDriver.getParameterValue4ITP(parameters);
+            testData = Utils4TestDriver.getParameterValue4ITP_V0(parameters);
 
             writeDataToFile("", FilePath.concreteExecuteResultPath, false);
 

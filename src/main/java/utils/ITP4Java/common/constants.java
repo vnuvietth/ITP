@@ -15,7 +15,7 @@ public interface constants {
     String TEST_DRIVER_FOLDER = "E:\\IdeaProjects\\testDriver";
     String TEST_DRIVER_CLASSPATH_FOLDER = TEST_DRIVER_FOLDER + "\\target";
     String TEST_DRIVER_LIBRARY_FOLDER = PROJECT_ROOT_DRIVE + "\\src\\main\\resources\\testDriverLibraries";
-    String UPLOADED_PROJECT_CLASSPATH = TEST_DRIVER_FOLDER + "\\target\\clonedProject\\classes";
+    String UPLOADED_PROJECT_CLASSPATH = TEST_DRIVER_FOLDER + "\\target";
 
     String EXECUTION_RESULT_PATH_PLACEHOLDER = "%%EXECUTION_RESULT_PATH_PLACEHOLDER%%";
     String EXECUTION_RESULT_PATH = TEST_DRIVER_FOLDER.replace("\\", "\\\\") + "\\\\concreteExecuteResult.txt";

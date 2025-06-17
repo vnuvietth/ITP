@@ -1,6 +1,7 @@
 package utils.autoUnitTestUtil.utils;
 
 import org.eclipse.jdt.core.dom.*;
+import utils.autoUnitTestUtil.dataStructure.ITPTestData;
 import utils.autoUnitTestUtil.dataStructure.TestData;
 import utils.cloneProjectUtil.Parser;
 import utils.cloneProjectUtil.projectTreeObjects.Folder;
@@ -274,6 +275,33 @@ public class Utils {
     public static void writeTestDataToFile(TestData testData, String fileName) {
 
         String content = "{\n";
+
+        for(int i = 0; i < testData.getParamList().size(); i++) {
+            if (i < testData.getParamList().size() - 1) {
+                content += "    \"" + testData.getParamList().get(i).getName() + "\" : \"" + testData.getParamList().get(i).getValue() + "\", \n";
+            }
+            else {
+                content += "    \"" + testData.getParamList().get(i).getName() + "\" : \"" + testData.getParamList().get(i).getValue() + "\"\n";
+            }
+
+        }
+
+        content += "}";
+
+        writeToFile(content,fileName);
+    }
+    public static void writeTestDataToFile(ITPTestData testData, String fileName) {
+
+        String content = "{\n";
+
+//        "testDataName": "add_int_int_random_0",
+//        "fileName": "./lib/math.c",
+//        "functionName": "./lib/math.c/add(int,int)",
+//        "returnType": "int",
+        content += "\"testDataName\"=\"" + testData.getTestDataName() + "\",\n";
+        content += "\"fileName\"=\"" + testData.getFileName() + "\",\n";
+        content += "\"functionName\"=\"" + testData.getFunctionName() + "\",\n";
+        content += "\"returnType\"=\"" + testData.getReturnType() + "\",\n";
 
         for(int i = 0; i < testData.getParamList().size(); i++) {
             if (i < testData.getParamList().size() - 1) {
