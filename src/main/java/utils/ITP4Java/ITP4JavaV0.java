@@ -105,7 +105,7 @@ public class ITP4JavaV0 {
         writeDataToFile("", constants.EXECUTION_RESULT_PATH, false);
 
         ITP4JavaV0TestDriverGenerator.generateTestDriver((MethodDeclaration) testFunc,
-                testData, getCoverageType(coverage));
+                getCoverageType(coverage));
         List<MarkedStatement> markedStatements = ITP4JavaV0TestDriverRunner.runTestDriver();
 
         MarkedPath.markPathToCFGV2(cfgBeginNode, markedStatements);
@@ -136,7 +136,7 @@ public class ITP4JavaV0 {
             writeDataToFile("", FilePath.concreteExecuteResultPath, false);
 
             ITP4JavaV0TestDriverGenerator.generateTestDriver((MethodDeclaration) testFunc,
-                    testData, getCoverageType(coverage));
+                    getCoverageType(coverage));
             markedStatements = ITP4JavaV0TestDriverRunner.runTestDriver();
 
             MarkedPath.markPathToCFGV2(cfgBeginNode, markedStatements);

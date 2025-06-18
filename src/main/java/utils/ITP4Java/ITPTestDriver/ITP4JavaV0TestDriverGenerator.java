@@ -16,7 +16,7 @@ public final class ITP4JavaV0TestDriverGenerator {
     private ITP4JavaV0TestDriverGenerator() {
     }
 
-    public static void generateTestDriver(MethodDeclaration method, TestData testData, ASTHelper.Coverage coverage) {
+    public static void generateTestDriver(MethodDeclaration method, ASTHelper.Coverage coverage) {
         StringBuilder result = new StringBuilder();
 
         String testDriverTemplateContent = readTestDriverTemplate();
@@ -27,7 +27,7 @@ public final class ITP4JavaV0TestDriverGenerator {
                 .replace(constants.ITP_V0_TEST_DATA_FILE_PATH_PLACEHOLDER, constants.ITP_V0_TEST_DATA_FILE_PATH_FOR_TEST_DRIVER)
                 .replace(constants.EXECUTION_RESULT_PATH_PLACEHOLDER, constants.EXECUTION_RESULT_PATH);
 
-        String testDataCallingString = generateTestDataReader(method, testData);
+        String testDataCallingString = generateTestDataReader(method);
 
         String templateContentWithTestDataReading = templateContent.replace(constants.TEST_DATA_READING_PLACEHOLDER,testDataCallingString);
 
@@ -50,13 +50,13 @@ public final class ITP4JavaV0TestDriverGenerator {
         }
     }
 
-    private static String generateTestDataReader(MethodDeclaration method, TestData testData) {
+    private static String generateTestDataReader(MethodDeclaration method) {
         StringBuilder testDataReader = new StringBuilder();
         StringBuilder unitCaller = new StringBuilder();
         unitCaller.append("Object output = ").append(method.getName().toString()).append("(");
 
 
-        List<ParamTestData> paramList = testData.getParamList();
+        List paramList = method.parameters();
 
         for(int i = 0; i < method.parameters().size(); i++) {
             String param = "String param" + i + " = (String) jsonObject.get(\"" + ((SingleVariableDeclaration)(method.parameters().get(i))).getName() + "\");";
@@ -70,21 +70,21 @@ public final class ITP4JavaV0TestDriverGenerator {
 
             testDataReader.append("        System.out.println(\"" + ((SingleVariableDeclaration)(method.parameters().get(i))).getName() + " = \" " + " + param" + i + ");\n");
 
-            ParamTestData paramData = paramList.get(i);
+            SingleVariableDeclaration paramData = (SingleVariableDeclaration)paramList.get(i);
 
-            if(paramData.getValue() instanceof Character) {
-                unitCaller.append("'").append(paramData.getValue()).append("'");
-            } else if(paramData.getValue() instanceof String) {
-                unitCaller.append(paramData.getValue());
-            } else if (paramData.getValue() instanceof Integer) {
+            if(paramData.getType().toString().equals("char")) {
+                unitCaller.append("'").append("param" + i).append("'");
+            } else if(paramData.getType().toString().equals("String")) {
+                unitCaller.append("param" + i);
+            } else if (paramData.getType().toString().equals("int")) {
                 unitCaller.append("Integer.parseInt(param" + i + ")");
-            } else if (paramData.getValue() instanceof Double) {
+            } else if (paramData.getType().toString().equals("double")) {
                 unitCaller.append("Double.parseDouble(param" + i + ")");
-            } else if (paramData.getValue() instanceof Boolean) {
+            } else if (paramData.getType().toString().equals("boolean")) {
                 unitCaller.append("Boolean.parseBoolean(param" + i + ")");
-            } else if (paramData.getValue() instanceof Long) {
+            } else if (paramData.getType().toString().equals("long")) {
                 unitCaller.append("Long.parseLong(param" + i + ")");
-            } else if (paramData.getValue() instanceof Float) {
+            } else if (paramData.getType().toString().equals("float")) {
                 unitCaller.append("Float.parseFloat(param" + i + ")");
             }
             if(i != paramList.size() - 1) unitCaller.append(", ");

@@ -42,7 +42,7 @@ public final class ITP4JavaTestDriverGenerator {
 
 //            System.out.println("importStatement: " + importStatement);
 
-            allUnitCallingBlocks.append("        //All units of file: " + file.getAbsolutePath() + "\n");
+            allUnitCallingBlocks.append("        //All units of file: " + file.getAbsolutePath().replace("\\", "\\\\") + "\n");
 
             String absolutePath = file.getAbsolutePath();
 
@@ -269,6 +269,12 @@ public final class ITP4JavaTestDriverGenerator {
 
         if (!method.getReturnType2().toString().contains("void")) {
             unitCaller.append("\t\t\t\t\t\tSystem.out.println(\"output = \"  + output.toString());\n\n");
+
+            unitCaller.append("\t\t\t\t\t\treturn output.toString();\n");
+        }
+        else
+        {
+            unitCaller.append("\t\t\t\t\t\treturn \"0\";\n");
         }
 
         String methodSignature = getMethodSignature(method);

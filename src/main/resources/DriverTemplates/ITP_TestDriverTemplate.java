@@ -48,7 +48,7 @@ public class ITP_TestDriver {
 
     //End testing method
 
-    public static void ITP_TEST_EXECUTION() throws IOException, ParseException {
+    public static String ITP_TEST_EXECUTION() throws IOException, ParseException {
 
         JSONParser parser = new JSONParser();
         JSONObject jsonObject = (JSONObject) parser.parse(new FileReader("%%TEST_DATA_FILE_PATH%%"));
@@ -60,6 +60,8 @@ public class ITP_TestDriver {
         System.out.println("functionName = "  + functionName);
 
 %%UNIT_CALLING_BLOCK_PLACEHOLDER%%
+
+        return "0";
 
     }
 
@@ -86,9 +88,9 @@ public class ITP_TestDriver {
 
 //        %%UNIT_CALLING_PLACEHOLDER%%
 
-        ITP_TEST_EXECUTION();
+        Object output = ITP_TEST_EXECUTION();
 
-//        System.out.println("output = " + output);
+        System.out.println("output = " + output);
 
         //Start function calling
 
@@ -96,7 +98,7 @@ public class ITP_TestDriver {
 
         double runTestDuration = (endRunTestTime - startRunTestTime) / 1000000.0;
 
-        writeDataToFile(runTestDuration + "===output", PATH_RESULT, true);
+        writeDataToFile(runTestDuration + "===" + output, PATH_RESULT, true);
 
         System.out.println("Concolic4ITPTestDriver ends...");
 

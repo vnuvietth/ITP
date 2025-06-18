@@ -25,6 +25,7 @@ import utils.cloneProjectUtil.projectTreeObjects.Folder;
 import utils.cloneProjectUtil.projectTreeObjects.JavaFile;
 import utils.cloneProjectUtil.projectTreeObjects.ProjectTreeObject;
 import utils.cloneProjectUtil.projectTreeObjects.Unit;
+import utils.uploadUtil.ConcolicUploadUtil;
 import utils.uploadUtil.NTDUploadUtil;
 
 import java.io.File;
@@ -150,6 +151,8 @@ public class ITP4JavaController implements Initializable {
 
             Folder folder = CloneProjectUtil.cloneProject4ITP(javaDirPath, FilePath.clonedProjectPath);
 
+//            Folder folder = ConcolicUploadUtil.createProjectTree(javaDirPath);
+
             long endTime = System.nanoTime();
             double duration = (endTime - startTime) / 1000000.0;
             duration = (double) Math.round(duration * 100) / 100;
@@ -261,10 +264,11 @@ public class ITP4JavaController implements Initializable {
 
         ConcolicTestResult result;
         try {
-//            result = ITP4Java.runITP4Project(choseUnit.getPath(), choseUnit.getMethodName(),
-//                    choseUnit.getClassName(), choseCoverage);
 
-            result = ITP4Java.runITP4Project(FilePath.clonedProjectPath, Coverage.STATEMENT);
+            String javaDirPath = CloneProjectUtil.getJavaDirPath(FilePath.uploadedProjectPath);
+            if (javaDirPath.equals("")) throw new RuntimeException("Invalid project");
+
+            result = ITP4Java.runITP4Project(FilePath.uploadedProjectPath, Coverage.STATEMENT);
         } catch (Exception e) {
             alertLabel.setTextFill(Paint.valueOf("red"));
             alertLabel.setText("Examined unit contains cases we haven't handle yet!");
@@ -293,10 +297,10 @@ public class ITP4JavaController implements Initializable {
 
         ConcolicTestResult result;
         try {
-//            result = ITP4Java.runITP4Project(choseUnit.getPath(), choseUnit.getMethodName(),
-//                    choseUnit.getClassName(), choseCoverage);
+            String javaDirPath = CloneProjectUtil.getJavaDirPath(FilePath.uploadedProjectPath);
+            if (javaDirPath.equals("")) throw new RuntimeException("Invalid project");
 
-            result = ITP4Java.runITP4Project(FilePath.clonedProjectPath, Coverage.STATEMENT);
+            result = ITP4Java.runITP4Project(javaDirPath, Coverage.STATEMENT);
         } catch (Exception e) {
             alertLabel.setTextFill(Paint.valueOf("red"));
             alertLabel.setText("Examined unit contains cases we haven't handle yet!");
