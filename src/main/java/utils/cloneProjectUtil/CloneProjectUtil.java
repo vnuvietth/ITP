@@ -2,6 +2,7 @@ package utils.cloneProjectUtil;
 import org.apache.commons.io.FileUtils;
 import org.eclipse.jdt.core.dom.*;
 import utils.FilePath;
+import utils.ITP4Java.common.constants;
 import utils.cloneProjectUtil.projectTreeObjects.Folder;
 import utils.cloneProjectUtil.projectTreeObjects.JavaFile;
 import utils.cloneProjectUtil.projectTreeObjects.ProjectTreeObject;
@@ -47,6 +48,23 @@ public final class CloneProjectUtil {
         return "";
     }
 
+    public static Folder cloneProject4ITP(String originalDirPath, String destinationDirPath) throws IOException, InterruptedException {
+        command = new StringBuilder("javac -d " + constants.ITP_CLONED_PROJECT_CLASSPATH + " ");
+        Folder rootFolder = new Folder("java");
+        iCloneProject4ITP(originalDirPath, destinationDirPath, rootFolder);
+        System.out.println(command);
+
+        Process p = Runtime.getRuntime().exec(command.toString());
+        System.out.println(p.waitFor());
+
+        if(p.waitFor() != 0) {
+            System.out.println("Can't compile project");
+            throw new RuntimeException("Can't compile project");
+        }
+
+        return rootFolder;
+    }
+
     public static Folder cloneProject(String originalDirPath, String destinationDirPath) throws IOException, InterruptedException {
         command = new StringBuilder("javac -d " + FilePath.targetClassesFolderPath + " ");
         Folder rootFolder = new Folder("java");
@@ -62,6 +80,37 @@ public final class CloneProjectUtil {
         }
 
         return rootFolder;
+    }
+
+    private static void iCloneProject4ITP(String originalDirPath, String destinationDirPath, Folder folder) throws IOException {
+        deleteFilesInDirectory(destinationDirPath);
+        boolean existJavaFile = false;
+
+        File[] files = getFilesInDirectory(originalDirPath);
+
+        for (File file : files) {
+            if (file.isDirectory()) {
+                String dirName = file.getName();
+                createCloneDirectory(destinationDirPath, dirName);
+                Folder newFolder = new Folder(dirName);
+                iCloneProject4ITP(originalDirPath + "\\" + dirName, destinationDirPath + "\\" + dirName, newFolder);
+                folder.addChild(newFolder);
+            } else if (file.isFile() && file.getName().endsWith("java")) {
+                existJavaFile = true;
+                totalClassStatement = 0;
+                String fileName = file.getName();
+                JavaFile javaFile = new JavaFile(fileName.replace(".java", ""));
+                createCloneFile(destinationDirPath, fileName);
+                CompilationUnit compilationUnit = Parser.parseFileToCompilationUnit(originalDirPath + "\\" + fileName);
+                String sourceCode = createCloneSourceCode4ITP(compilationUnit, originalDirPath + "\\" + fileName, javaFile);
+                writeDataToFile(sourceCode, destinationDirPath + "\\" + fileName);
+                folder.addChild(javaFile);
+            }
+        }
+
+        if (existJavaFile) {
+            command.append(destinationDirPath).append("\\*.java ");
+        }
     }
 
     private static void iCloneProject(String originalDirPath, String destinationDirPath, Folder folder) throws IOException {
@@ -149,6 +198,112 @@ public final class CloneProjectUtil {
         } catch (IOException e) {
             throw new RuntimeException("Can't create file");
         }
+    }
+
+    private static String createCloneSourceCode4ITP(CompilationUnit compilationUnit, String filePath, JavaFile javaFile) {
+        StringBuilder result = new StringBuilder();
+
+        //Packet
+        if (compilationUnit.getPackage() != null) {
+            result.append("package clonedProject.").append(compilationUnit.getPackage().getName().toString()).append(";\n");
+        } else {
+            result.append("package clonedProject;\n");
+        }
+
+        //Imports
+        for (ASTNode iImport : (List<ASTNode>) compilationUnit.imports()) {
+            result.append(iImport);
+        }
+        result.append("import java.io.FileWriter;\n");
+
+//        final ClassData[] classDataArr = {new ClassData()};
+        List<ClassData> classDataArr = new ArrayList<>();
+        ASTVisitor classVisitor = new ASTVisitor() {
+            @Override
+            public boolean visit(TypeDeclaration node) {
+//                classDataArr[0] = new ClassData(node);
+                classDataArr.add(new ClassData(node));
+                return true;
+            }
+        };
+        compilationUnit.accept(classVisitor);
+
+        // Class type (interface/class) and class name
+        ClassData classData = classDataArr.get(0);
+
+        result.append("public ").append(classData.getTypeOfClass()).append(" ").append(classData.getClassName());
+
+        //Extensions
+        if (classData.getSuperClassName() != null) {
+            result.append(" extends ").append(classData.getSuperClassName());
+        }
+
+        //implementations
+        if (classData.getSuperInterfaceName() != null) {
+            result.append(" implements ");
+            List<String> interfaceList = classData.getSuperInterfaceName();
+            for (int i = 0; i < interfaceList.size(); i++) {
+                result.append(interfaceList.get(i));
+                if (i != interfaceList.size() - 1) {
+                    result.append(", ");
+                }
+            }
+        }
+
+        result.append(" {\n");
+
+        result.append(classData.getFields());
+
+        result.append("private static void writeDataToFile(String data, String path, boolean append) {\n" +
+                "\ttry {\n" +
+                "\t\tFileWriter writer = new FileWriter(path, append);\n" +
+                "\t\twriter.write(data);\n" +
+                "\t\twriter.close();\n" +
+                "\t} catch (Exception e) {\n" +
+                "\t\te.printStackTrace();\n" +
+                "\t}\n" +
+                "}\n\n" +
+                "private static boolean mark(String statement, boolean isTrueCondition, boolean isFalseCondition) {\n" +
+                "\tStringBuilder markResult = new StringBuilder();\n" +
+                "\tmarkResult.append(statement).append(\"===\");\n" +
+                "\tmarkResult.append(isTrueCondition).append(\"===\");\n" +
+                "\tmarkResult.append(isFalseCondition).append(\"---end---\");\n" +
+                "\twriteDataToFile(markResult.toString(), \"" + constants.EXECUTION_RESULT_PATH + "\", true);\n" +
+                "\tif (!isTrueCondition && !isFalseCondition) return true;\n" +
+                "\t\treturn !isFalseCondition;\n" +
+                "}\n");
+
+        List<ASTNode> methods = new ArrayList<>();
+        ASTVisitor methodsVisitor = new ASTVisitor() {
+            @Override
+            public boolean visit(TypeDeclaration node) {
+                for (MethodDeclaration method : node.getMethods()) {
+//                    if (!method.isConstructor()) {
+                    methods.add(method);
+//                    }
+                }
+                return true;
+            }
+        };
+        compilationUnit.accept(methodsVisitor);
+
+        for (ASTNode astNode : methods) {
+            totalFunctionStatement = 0;
+            totalFunctionBranch = 0;
+            MethodDeclaration methodDeclaration = (MethodDeclaration) astNode;
+            result.append(createCloneMethod(methodDeclaration));
+            result.append(createTotalFunctionCoverageVariable(methodDeclaration, totalFunctionStatement, CoverageType.STATEMENT));
+            result.append(createTotalFunctionCoverageVariable(methodDeclaration, totalFunctionBranch, CoverageType.BRANCH));
+            String methodName = methodDeclaration.getName().toString();
+            Unit unit = new Unit(methodName, filePath, methodName, javaFile.getName() + ".java");
+            javaFile.addUnit(unit);
+        }
+
+        result.append(createTotalClassStatementVariable(classData));
+
+        result.append("}");
+
+        return result.toString();
     }
 
     private static String createCloneSourceCode(CompilationUnit compilationUnit, String filePath, JavaFile javaFile) {
@@ -336,7 +491,7 @@ public final class CloneProjectUtil {
         if(block != null) {
             List<ASTNode> statements = block.statements();
             for (int i = 0; i < statements.size(); i++) {
-                result.append(generateCodeForOneStatement(statements.get(i), ";"));
+                result.append("\t").append(generateCodeForOneStatement(statements.get(i), ";"));
             }
         }
         result.append("}\n");
@@ -349,13 +504,13 @@ public final class CloneProjectUtil {
 
         result.append("if (").append(generateCodeForCondition(ifStatement.getExpression())).append(")\n");
         result.append("{\n");
-        result.append(generateCodeForOneStatement(ifStatement.getThenStatement(), ";"));
+        result.append("\t").append(generateCodeForOneStatement(ifStatement.getThenStatement(), ";"));
         result.append("}\n");
 
 
         String elseCode = generateCodeForOneStatement(ifStatement.getElseStatement(), ";");
         if (!elseCode.equals("")) {
-            result.append("else {\n").append(elseCode).append("}\n");
+            result.append("else {\n").append("\t").append(elseCode).append("}\n");
         }
 
         return result.toString();

@@ -71,7 +71,7 @@ public interface constants {
 
     String ITP_TEST_DATA_FILE_PATH_PLACEHOLDER = "%%TEST_DATA_FILE_PATH%%";
     String ITP_TEST_DATA_FILE_PATH = TEST_DRIVER_FOLDER + "\\ITPTestData.json";
-    String ITP_TEST_DATA_FILE_PATH_FOR_TEST_DRIVER = TEST_DRIVER_FOLDER.replace("\\", "\\\\") + "\\\\TestData.json";
+    String ITP_TEST_DATA_FILE_PATH_FOR_TEST_DRIVER = TEST_DRIVER_FOLDER.replace("\\", "\\\\") + "\\\\ITPTestData.json";
 
     String ITP_TEST_DRIVER_TEMPLATE_PATH = TEST_DRIVER_TEMPLATE_FOLDER + "\\ITP_TestDriverTemplate.java";
     String ITP_TEST_DRIVER_PATH = TEST_DRIVER_FOLDER + "\\ITP_TestDriver.java";
@@ -90,4 +90,6 @@ public interface constants {
             constants.ITP_BUILT_TEST_DRIVER_PATH;
 
     String ITP_IMPORT_PLACEHOLDER = "%%IMPORT_PLACEHOLDER%%";
+
+    String ITP_CLONED_PROJECT_CLASSPATH =  TEST_DRIVER_CLASSPATH_FOLDER;
 }

@@ -51,10 +51,13 @@ public class ITP_TestDriver {
     public static void ITP_TEST_EXECUTION() throws IOException, ParseException {
 
         JSONParser parser = new JSONParser();
-        JSONObject jsonObject = (JSONObject) parser.parse(new FileReader("E:\\IdeaProjects\\testDriver\\TestData.json"));
+        JSONObject jsonObject = (JSONObject) parser.parse(new FileReader("%%TEST_DATA_FILE_PATH%%"));
 
         String fileName = (String) jsonObject.get("fileName");
         String functionName = (String) jsonObject.get("functionName");
+
+        System.out.println("fileName = "  + fileName);
+        System.out.println("functionName = "  + functionName);
 
 %%UNIT_CALLING_BLOCK_PLACEHOLDER%%
 

@@ -64,7 +64,12 @@ public final class ITP4JavaTestDriverRunner {
 
             return p.exitValue();
         }
-        return 0;
+        else {
+            String result = new String(p.getInputStream().readAllBytes());
+            System.out.println("Executing command: " + command);
+            System.out.println(" result = " + result);
+            return 0;
+        }
     }
 
     private static List<MarkedStatement> getMarkedStatement() {

@@ -38,4 +38,12 @@ public class ParamTestData {
                 ", value=" + value +
                 '}';
     }
+
+    public String toJSONString() {
+        return "{" +
+                "\"name\"=\"" + name + "\", \n" +
+                "\"type\"=\"" + type + "\", \n" +
+                "\"value\"=\"" + value + "\"\n" +
+                '}';
+    }
 }

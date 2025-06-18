@@ -89,7 +89,7 @@ public final class ITP4JavaTestDriverGenerator {
 
         signature.append(method.modifiers().get(0) + " ").append(staticStr).append(returnType).append(" ").append(methodName).append("(");
         for (int i = 0; i < parameterTypes.size(); i++) {
-            signature.append(((SingleVariableDeclaration) parameterTypes.get(i)).getType());
+            signature.append(((SingleVariableDeclaration) parameterTypes.get(i)).getType() + " " + ((SingleVariableDeclaration) parameterTypes.get(i)).getName());
             if (i < parameterTypes.size() - 1) {
                 signature.append(",");
             }
@@ -209,7 +209,7 @@ public final class ITP4JavaTestDriverGenerator {
             }
             else
             {
-                unitCaller.append("        ").append("AccountBalanceAfterPurchase object = new AccountBalanceAfterPurchase();\n");
+                unitCaller.append("        ").append(className + " object = new " + className + "();\n");//need to get constructor
                 unitCaller.append("        ").append("object." + method.getName().toString()).append("()");
             }
         }
@@ -223,6 +223,7 @@ public final class ITP4JavaTestDriverGenerator {
                 unitCaller.append("        ").append("AccountBalanceAfterPurchase object = new AccountBalanceAfterPurchase();\n");
                 unitCaller.append("        Object output = ").append("object." + method.getName().toString()).append("()");
             }
+
         }
 
         //List<ParamTestData> paramList = testData.getParamList();
@@ -264,12 +265,20 @@ public final class ITP4JavaTestDriverGenerator {
         }
         testDataReader.append("\n");
 
-        unitCaller.append(");\n");
+        unitCaller.append(");\n\n");
+
+        if (!method.getReturnType2().toString().contains("void")) {
+            unitCaller.append("\t\t\t\t\t\tSystem.out.println(\"output = \"  + output.toString());\n\n");
+        }
 
         String methodSignature = getMethodSignature(method);
 
         StringBuilder unitcallingBlock = new StringBuilder();
         unitcallingBlock.append("        if (\"" + file.getAbsolutePath().replace("\\", "\\\\") + "\".equals(fileName) && \"" + methodSignature + "\".equals(functionName)) {\n");
+
+        unitcallingBlock.append(
+                "\t\t\t\t\t\n" +
+                "            System.out.println(\"Executing unit: " + getMethodSignature(method) + " ...\");\n\n");
 
         String unitBlock = testDataReader + "    " + unitCaller.toString();
 

@@ -1,8 +1,7 @@
 {
   "testDataName": "add_int_int_random_0",
-  "fileName": "./lib/math.c",
-  "functionName": "./lib/math.c/add(int,int)",
+  "fileName": "E:\\IdeaProjects\\NTD-Paper\\src\\main\\java\\clonedProject\\AccountBalanceAfterPurchase.java",
+  "functionName": "public static int accountBalanceAfterPurchase(int)",
   "returnType": "int",
-  "n":"8",
-  "p":"8"
+  "purchaseAmount":"810"
 }

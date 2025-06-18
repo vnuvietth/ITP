@@ -8,6 +8,7 @@ import org.eclipse.jdt.core.dom.MethodDeclaration;
 import utils.FilePath;
 import utils.ITP4Java.ITPTestDriver.ITP4JavaTestDriverGenerator;
 import utils.ITP4Java.ITPTestDriver.ITP4JavaTestDriverRunner;
+import utils.ITP4Java.ITPTestDriver.ITP4JavaV0TestDriverRunner;
 import utils.ITP4Java.common.constants;
 import utils.autoUnitTestUtil.algorithms.FindPath;
 import utils.autoUnitTestUtil.algorithms.SymbolicExecution;
@@ -36,6 +37,8 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import static utils.ITP4Java.ITPTestDriver.ITP4JavaTestDriverGenerator.getClassName;
+import static utils.ITP4Java.ITPTestDriver.ITP4JavaTestDriverGenerator.getMethodAccessModifier;
+import static utils.ITP4Java.ITPTestDriver.ITP4JavaTestDriverRunner.runTestDriver;
 
 public class ITP4Java {
     private static CompilationUnit compilationUnit;
@@ -111,6 +114,12 @@ public class ITP4Java {
 
             for (ASTNode method : methodList) {
 
+                if (ITP4JavaTestDriverGenerator.getMethodSignature((MethodDeclaration)method).equals("static void writeDataToFile(String,String,boolean)") ||
+                        (ITP4JavaTestDriverGenerator.getMethodSignature((MethodDeclaration)method).equals("static boolean mark(String,boolean,boolean)")) ||
+                        !(getMethodAccessModifier((MethodDeclaration)method).equals("public"))
+                )
+                    continue;
+
                 startGeneratingForOneUnit(file.getAbsolutePath(), (MethodDeclaration)method, coverage);
 
 //                String testDataCallingString = generateTestDataReader((MethodDeclaration)method);
@@ -185,7 +194,7 @@ public class ITP4Java {
 //        Object[] evaluatedValues = Utils4TestDriver.createRandomTestData(parameterClasses);
         ITPTestData testData = Utils4TestDriver.createRandomTestData4ITP(parameters, filePath, method);
 
-        writeDataToFile(testData.toString(), FilePath.concreteExecuteResultPath, false);
+        writeDataToFile(testData.toJSONString(), constants.ITP_TEST_DATA_FILE_PATH, false);
 
         String clonedJavaDirPath = CloneProjectUtil.getJavaDirPath(FilePath.clonedProjectPath);
 
@@ -194,8 +203,11 @@ public class ITP4Java {
 //        ITP4JavaTestDriverGenerator.generateTestDriver( (MethodDeclaration) testFunc, testData, coverage);
 
         ITP4JavaTestDriverRunner.buildTestDriver();
+        runTestDriver();
 
-//        MarkedPath.markPathToCFGV2(cfgBeginNode, markedStatements);
+        List<MarkedStatement> markedStatements = ITP4JavaTestDriverRunner.getCoveredStatement();
+
+        MarkedPath.markPathToCFGV2(cfgBeginNode, markedStatements);
 //
 //        List<CoveredStatement> coveredStatements = CoveredStatement.switchToCoveredStatementList(markedStatements);
 
@@ -228,7 +240,7 @@ public class ITP4Java {
             writeDataToFile("", FilePath.concreteExecuteResultPath, false);
 
 //            testDriver = ITP4JavaTestDriverGenerator.generateTestDriver((MethodDeclaration) testFunc, evaluatedValues, getCoverageType(coverage));
-            ITP4JavaTestDriverRunner.runTestDriver();
+            runTestDriver();
 
 //            MarkedPath.markPathToCFGV2(cfgBeginNode, markedStatements);
 //            coveredStatements = CoveredStatement.switchToCoveredStatementList(markedStatements);

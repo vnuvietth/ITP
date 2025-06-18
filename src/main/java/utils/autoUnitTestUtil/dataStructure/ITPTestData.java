@@ -78,4 +78,27 @@ public class ITPTestData {
                 ", paramList=" + str +
                 '}';
     }
+
+    public String toJSONString() {
+        String str = "";
+        for (int i = 0; i < paramList.size(); i++) {
+            ParamTestData p = paramList.get(i);
+            str += "    \"" + p.getName() + "\": \"" + p.getValue() + "\"";
+            if (i < paramList.size() - 1) {
+                str += ",\n";
+            }
+            else
+            {
+                str += "\n";
+            }
+        }
+
+        return "{\n" +
+                "    \"testDataName\": \"" + testDataName + "\", \n" +
+                "    \"fileName\": \"" + fileName + "\", \n" +
+                "    \"functionName\": \"" + functionName + "\", \n" +
+                "    \"returnType\": \"" + returnType + "\", \n"+
+                str +
+                '}';
+    }
 }
