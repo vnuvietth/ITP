@@ -24,7 +24,6 @@ import utils.autoUnitTestUtil.parser.ProjectParser;
 import utils.autoUnitTestUtil.testDriver.TestDriverRunner;
 import utils.autoUnitTestUtil.testDriver.Utils4TestDriver;
 import utils.autoUnitTestUtil.utils.Utils;
-import utils.cloneProjectUtil.CloneProjectUtil;
 import utils.uploadUtil.ConcolicUploadUtil;
 
 import java.io.File;
@@ -223,7 +222,7 @@ public class ITP4Java {
                 break;
             }
 
-            testData = Utils4TestDriver.getParameterValue4ITP(parameters);
+            testData = Utils4TestDriver.getParameterValue4ITP(parameters, filePath, method);
 
             writeDataToFile(testData.toJSONString(), constants.ITP_TEST_DATA_FILE_PATH, false);
 

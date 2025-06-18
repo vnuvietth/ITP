@@ -13,15 +13,19 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 public final class CloneProjectUtil {
 
     private static int totalFunctionStatement;
     private static int totalClassStatement;
     private static int totalFunctionBranch;
+
+//
+    public static final Map<String, Integer> totalStatementsInJavaFile = new HashMap<>();
+    public static final Map<String, Integer> totalStatementsInUnits = new HashMap<>();
+    public static final Map<String, Integer> totalBranchesInUnits = new HashMap<>();
+
     private enum CoverageType {
         STATEMENT,
         BRANCH
@@ -209,6 +213,8 @@ public final class CloneProjectUtil {
         } else {
             result.append("package clonedProject;\n");
         }
+
+        String key = (compilationUnit.getPackage() != null ? compilationUnit.getPackage().getName().toString() : "") + javaFile.getName() + "totalStatement";
 
         //Imports
         for (ASTNode iImport : (List<ASTNode>) compilationUnit.imports()) {
@@ -421,8 +427,10 @@ public final class CloneProjectUtil {
         }
         if(coverageType == CoverageType.STATEMENT) {
             result.append("TotalStatement");
+            totalStatementsInUnits.put(reformatVariableName(result.toString()), totalStatement);
         } else if (coverageType == CoverageType.BRANCH){
             result.append("TotalBranch");
+            totalBranchesInUnits.put(reformatVariableName(result.toString()), totalStatement);
         } else {
             throw new RuntimeException("Invalid Coverage");
         }
@@ -437,8 +445,11 @@ public final class CloneProjectUtil {
     }
 
     private static String createTotalClassStatementVariable(ClassData classData) {
+        //String key = (compilationUnit.getPackage() != null ? compilationUnit.getPackage().getName().toString() : "") + javaFile.getName() + "totalStatement";
+
         StringBuilder result = new StringBuilder();
         result.append(classData.getClassName()).append("TotalStatement");
+//        totalStatementsInJavaFile.put(key, totalClassStatements);
         return "public static final int ".concat(reformatVariableName(result.toString())).concat(" = " + totalClassStatement + ";\n");
     }
 

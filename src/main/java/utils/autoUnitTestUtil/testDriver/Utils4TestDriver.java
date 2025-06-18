@@ -176,7 +176,7 @@ public final class Utils4TestDriver {
             throw new RuntimeException("Class not found: " + className, e);
         }
     }
-    public static ITPTestData getParameterValue4ITP(List<ASTNode> parameters) {
+    public static ITPTestData getParameterValue4ITP(List<ASTNode> parameters, String filePath, MethodDeclaration method) {
 
         List<ParamTestData> paramList = new ArrayList<>();
 
@@ -225,7 +225,13 @@ public final class Utils4TestDriver {
             paramList.add(pair);
         }
 
-        return new ITPTestData(paramList);
+        ITPTestData testData = new ITPTestData(paramList);
+        testData.setTestDataName("generatedTestData");
+        testData.setFileName(filePath);
+        testData.setFunctionName(ITP4JavaTestDriverGenerator.getMethodSignature(method));
+        testData.setReturnType(method.getReturnType2().toString());
+
+        return testData;
     }
 
     public static TestData getParameterValue4ITP_V0(List<ASTNode> parameters) {

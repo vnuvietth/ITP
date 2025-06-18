@@ -16,9 +16,18 @@ import java.util.zip.ZipInputStream;
 
 public final class ConcolicUploadUtil {
 
+    private static int totalFunctionStatements;
+    private static int totalClassStatements;
+    private static int totalFunctionBranches;
+
     public static final Map<String, Integer> totalStatementsInJavaFile = new HashMap<>();
     public static final Map<String, Integer> totalStatementsInUnits = new HashMap<>();
     public static final Map<String, Integer> totalBranchesInUnits = new HashMap<>();
+
+    private enum CoverageType {
+        STATEMENT,
+        BRANCH
+    }
 
 
     public static String javaUnzipFile(String Filepath, String DestinationFolderPath) {
@@ -79,15 +88,6 @@ public final class ConcolicUploadUtil {
         }
 
         return destFile;
-    }
-
-    private static int totalFunctionStatements;
-    private static int totalClassStatements;
-    private static int totalFunctionBranches;
-
-    private enum CoverageType {
-        STATEMENT,
-        BRANCH
     }
 
     public static Folder createProjectTree (String dirPath) throws IOException {
