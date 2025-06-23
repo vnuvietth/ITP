@@ -38,7 +38,7 @@ public final class ITP4JavaTestDriverGenerator {
 
         for (File file : files) {
 
-            importStatement += "import clonedProject." + getClassName(file.getAbsolutePath()) + ";\n";
+//            importStatement += "import " + getClassName(file.getAbsolutePath()) + ";\n";
 
 //            System.out.println("importStatement: " + importStatement);
 

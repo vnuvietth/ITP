@@ -149,7 +149,7 @@ public class ITP4JavaController implements Initializable {
             String javaDirPath = CloneProjectUtil.getJavaDirPath(FilePath.uploadedProjectPath);
             if (javaDirPath.equals("")) throw new RuntimeException("Invalid project");
 
-//            Folder folder = CloneProjectUtil.cloneProject4ITP(javaDirPath, FilePath.clonedProjectPath);
+            Folder folder1 = CloneProjectUtil.cloneProject4ITP(javaDirPath, FilePath.clonedProjectPath);
 
             Folder folder = ConcolicUploadUtil.createProjectTree(javaDirPath);
 

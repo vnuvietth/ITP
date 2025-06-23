@@ -53,7 +53,7 @@ public final class CloneProjectUtil {
     }
 
     public static Folder cloneProject4ITP(String originalDirPath, String destinationDirPath) throws IOException, InterruptedException {
-        command = new StringBuilder("javac -d " + constants.ITP_CLONED_PROJECT_CLASSPATH + " ");
+        command = new StringBuilder("javac -d " + constants.UPLOADED_PROJECT_CLASSPATH + " ");
         Folder rootFolder = new Folder("java");
         iCloneProject4ITP(originalDirPath, destinationDirPath, rootFolder);
         System.out.println(command);
@@ -209,9 +209,10 @@ public final class CloneProjectUtil {
 
         //Packet
         if (compilationUnit.getPackage() != null) {
-            result.append("package clonedProject.").append(compilationUnit.getPackage().getName().toString()).append(";\n");
+            //result.append("package clonedProject.").append(compilationUnit.getPackage().getName().toString()).append(";\n");
+            result.append(compilationUnit.getPackage().getName().toString()).append(";\n");
         } else {
-            result.append("package clonedProject;\n");
+            //result.append("package clonedProject;\n");
         }
 
         String key = (compilationUnit.getPackage() != null ? compilationUnit.getPackage().getName().toString() : "") + javaFile.getName() + "totalStatement";
