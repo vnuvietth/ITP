@@ -116,22 +116,13 @@ public class ITP4Java {
                 if (ITP4JavaTestDriverGenerator.getMethodSignature((MethodDeclaration)method).equals("static void writeDataToFile(String,String,boolean)") ||
                         (ITP4JavaTestDriverGenerator.getMethodSignature((MethodDeclaration)method).equals("static boolean mark(String,boolean,boolean)")) ||
                         !(getMethodAccessModifier((MethodDeclaration)method).equals("public"))
-                )
+                ) {
                     continue;
+                }
 
                 startGeneratingForOneUnit(file.getAbsolutePath(), (MethodDeclaration)method, coverage);
-
-//                String testDataCallingString = generateTestDataReader((MethodDeclaration)method);
-//
-//                String templateContentWithTestDataReading = templateContent.replace(constants.UNIT_CALLING_BLOCK_PLACEHOLDER,testDataCallingString);
-//
-//                String fileName = "E:\\IdeaProjects\\NTD-Paper\\src\\main\\uploadedProject\\Units-From-Leetcode-Java-Solutions\\src\\main\\java\\ArmstrongNumber.java";
-//                String methodIdentifier = "abc";
-//
-//                String templateWithUniCalling = templateContentWithTestDataReading.replace(constants.PASSING_PARAMETER_PLACEHOLDER, "\"" + fileName + "\", \"" + methodIdentifier + "\"");
-//
-//                result.append(templateWithUniCalling);
             }
+            break;
 
         }
 
