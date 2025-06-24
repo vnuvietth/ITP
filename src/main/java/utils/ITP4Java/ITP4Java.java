@@ -120,9 +120,13 @@ public class ITP4Java {
                     continue;
                 }
 
-                startGeneratingForOneUnit(file.getAbsolutePath(), (MethodDeclaration)method, coverage);
+                boolean isSimpleUnit = ITP4JavaTestDriverGenerator.isSimpleUnit((MethodDeclaration)method);
+
+                if (isSimpleUnit) {
+                    startGeneratingForOneUnit(file.getAbsolutePath(), (MethodDeclaration) method, coverage);
+                }
             }
-            break;
+//            break;
 
         }
 

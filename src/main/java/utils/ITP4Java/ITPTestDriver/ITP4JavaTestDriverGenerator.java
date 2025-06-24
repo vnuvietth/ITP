@@ -4,6 +4,7 @@ import controller.ITP4JavaController;
 import org.eclipse.jdt.core.dom.*;
 import utils.ITP4Java.common.ITPUtils;
 import utils.ITP4Java.common.constants;
+import utils.autoUnitTestUtil.cfg.*;
 import utils.autoUnitTestUtil.dataStructure.ParamTestData;
 import utils.autoUnitTestUtil.dataStructure.TestData;
 import utils.autoUnitTestUtil.parser.ASTHelper;
@@ -50,19 +51,23 @@ public final class ITP4JavaTestDriverGenerator {
 
             for (ASTNode method : methodList) {
 
-                if (getMethodSignature((MethodDeclaration)method).equals("static void writeDataToFile(String,String,boolean)") ||
-                        (getMethodSignature((MethodDeclaration)method).equals("static boolean mark(String,boolean,boolean)")) ||
-                        !(getMethodAccessModifier((MethodDeclaration)method).equals("public"))
+                if (getMethodSignature((MethodDeclaration) method).equals("static void writeDataToFile(String,String,boolean)") ||
+                        (getMethodSignature((MethodDeclaration) method).equals("static boolean mark(String,boolean,boolean)")) ||
+                        !(getMethodAccessModifier((MethodDeclaration) method).equals("public"))
                 )
                     continue;
 
-                String unitCallingBlock = generateTestDataReader((MethodDeclaration)method, file);
+                boolean isSimpleUnit = ITP4JavaTestDriverGenerator.isSimpleUnit((MethodDeclaration) method);
 
-                allUnitCallingBlocks.append(unitCallingBlock + "\n\n");
+                if (isSimpleUnit) {
+                    String unitCallingBlock = generateTestDataReader((MethodDeclaration) method, file);
+
+                    allUnitCallingBlocks.append(unitCallingBlock + "\n\n");
+                }
 
             }
 
-            break;//xet 1 file trước rồi làm những file khác sau
+//            break;//xet 1 file trước rồi làm những file khác sau
         }
 
         templateContent = templateContent.replace(constants.UNIT_CALLING_BLOCK_PLACEHOLDER, allUnitCallingBlocks);
@@ -72,6 +77,266 @@ public final class ITP4JavaTestDriverGenerator {
 
         ITPUtils.writeToFile(String.valueOf(templateContent), constants.ITP_TEST_DRIVER_PATH, false);
 
+    }
+
+    public static boolean isSimpleUnit(MethodDeclaration method) {
+        System.out.println(method.toString());
+
+        List<ASTNode> statements = method.getBody().statements();
+
+        boolean isSimpleUnit = true;
+        for (ASTNode statement : statements) {
+            boolean isSimpleStatement = isSimpleStatement(statement);
+
+            if (!isSimpleStatement) {
+                isSimpleUnit = false;
+                return isSimpleUnit;
+            }
+        }
+
+        return true;
+    }
+
+    public static boolean isSimpleStatement(ASTNode statement) {
+        boolean isSimpleStatement = true;
+
+        if (statement instanceof SwitchStatement) {
+            Expression switchExpression = statement.getAST().newConditionalExpression();
+
+            isSimpleStatement = isSimpleStatement(switchExpression);
+
+            return isSimpleStatement;
+
+        } else if (statement instanceof IfStatement) {
+
+            Expression ifConditionAST = ((IfStatement) statement).getExpression();
+
+            boolean isIfConditionSimpleStatement = isSimpleStatement(ifConditionAST);
+
+            Statement thenAST = ((IfStatement) statement).getThenStatement();
+
+            boolean isThenSimpleStatement = isSimpleStatement(thenAST);
+
+            Statement elseAST = ((IfStatement) statement).getElseStatement();
+
+            boolean isElseSimpleStatement = isSimpleStatement(elseAST);
+
+            isSimpleStatement = isIfConditionSimpleStatement && isThenSimpleStatement && isElseSimpleStatement;
+
+            return isSimpleStatement;
+
+        } else if (statement instanceof ForStatement) {
+
+            List initializers = ((ForStatement) statement).initializers();
+
+            boolean isInitializerSimpleStatement = true;
+            for (int i = 0; i < initializers.size(); i++) {
+                if (initializers.get(i) instanceof VariableDeclarationExpression) {
+                    isInitializerSimpleStatement = isSimpleStatement((VariableDeclarationExpression) initializers.get(i));
+                } else if (initializers.get(i) instanceof Assignment) {
+                    isInitializerSimpleStatement = isSimpleStatement((Assignment) initializers.get(i));
+                }
+
+                if (isInitializerSimpleStatement == false) {
+                    break;
+                }
+            }
+
+            //Dieu kien
+            Expression forConditionAST = ((ForStatement) statement).getExpression();
+
+            boolean isForConditionSimpleStatement = isSimpleStatement(forConditionAST);
+
+            //Khoi body
+            Statement bodyStatementBlock = ((ForStatement) statement).getBody();
+
+            boolean isBodySimpleStatement = isSimpleStatement(bodyStatementBlock);
+
+            //Updater
+            List updaters = ((ForStatement) statement).updaters();
+
+            boolean isUpdaterSimpleStatement = true;
+
+            for (int i = 0; i < updaters.size(); i++) {
+                CfgNormalNode normalNode = new CfgNormalNode();
+
+                if (updaters.get(i) instanceof PostfixExpression) {
+                    isUpdaterSimpleStatement = true;
+                } else if (updaters.get(i) instanceof Assignment) {
+                    isUpdaterSimpleStatement = isSimpleStatement((Assignment) updaters.get(i));
+                }
+
+                if (isUpdaterSimpleStatement == false) {
+                    break;
+                }
+            }
+
+            isSimpleStatement = isInitializerSimpleStatement && isForConditionSimpleStatement && isUpdaterSimpleStatement;
+            return isSimpleStatement;
+
+        } else if (statement instanceof EnhancedForStatement) {
+
+            //Khoi expression
+            Expression expressionAST = ((EnhancedForStatement) statement).getExpression();
+
+            boolean isExpressionASTSimpleStatement = isSimpleStatement(expressionAST);
+
+            //Khoi parameter
+            SingleVariableDeclaration parameterAST = ((EnhancedForStatement) statement).getParameter();
+
+            boolean isParameterASTSimpleStatement = isSimpleStatement(parameterAST);
+
+            //Khoi body
+            Statement bodyStatementBlock = ((EnhancedForStatement) statement).getBody();
+
+            boolean isBodySimpleStatement = isSimpleStatement(bodyStatementBlock);
+
+            isSimpleStatement = isExpressionASTSimpleStatement && isParameterASTSimpleStatement && isBodySimpleStatement;
+
+            return isSimpleStatement;
+
+        } else if (statement instanceof WhileStatement) {
+            //Dieu kien
+            Expression whileConditionAST = ((WhileStatement) statement).getExpression();
+
+            boolean isWhileConditionSimpleStatement = isSimpleStatement(whileConditionAST);
+
+            //Khoi body
+            Statement bodyStatementBlock = ((WhileStatement) statement).getBody();
+
+            boolean isBodySimpleStatement = isSimpleStatement(bodyStatementBlock);
+
+            isSimpleStatement = isWhileConditionSimpleStatement && isBodySimpleStatement;
+
+            return isSimpleStatement;
+        } else if (statement instanceof DoStatement) {
+            //Khoi body
+            Statement bodyStatementBlock = ((DoStatement) statement).getBody();
+
+            boolean isBodySimpleStatement = isSimpleStatement(bodyStatementBlock);
+
+            //Dieu kien
+            Expression doConditionAST = ((DoStatement) statement).getExpression();
+
+            boolean isDoConditionASTSimpleStatement = isSimpleStatement(doConditionAST);
+
+            isSimpleStatement = isBodySimpleStatement && isDoConditionASTSimpleStatement;
+
+            return isSimpleStatement;
+        } else if (statement instanceof Block) {
+
+            isSimpleStatement = false;
+
+            List childStatements = ((Block) statement).statements();
+
+            for (int i = 0; i < childStatements.size(); i++) {
+                isSimpleStatement = isSimpleStatement((Statement)childStatements.get(i));
+
+                if (!isSimpleStatement) {
+                    break;
+                }
+            }
+
+            return isSimpleStatement;
+
+        } else if (statement instanceof ExpressionStatement) {
+
+            if (((ExpressionStatement) statement).getExpression() instanceof Assignment) {
+                boolean isLeftHandSideSimpleStatement = isSimpleStatement(((Assignment) ((ExpressionStatement) statement).getExpression()).getLeftHandSide());
+                boolean isRightHandSideSimpleStatement = isSimpleStatement(((Assignment) ((ExpressionStatement) statement).getExpression()).getRightHandSide());
+
+                return isLeftHandSideSimpleStatement && isRightHandSideSimpleStatement;
+            }
+            else {
+                isSimpleStatement = isSimpleStatement(((ExpressionStatement) statement).getExpression());
+
+                return isSimpleStatement;
+            }
+        }
+        else if (statement instanceof InfixExpression) {
+            boolean isLeftHandSideSimpleStatement = isSimpleStatement(((InfixExpression) statement).getLeftOperand());
+            boolean isRightHandSideSimpleStatement = isSimpleStatement(((InfixExpression) statement).getRightOperand());
+
+            return isLeftHandSideSimpleStatement && isRightHandSideSimpleStatement;
+
+        }
+        else if (statement instanceof PostfixExpression) {
+            boolean isOperandSimpleStatement = isSimpleStatement(((PostfixExpression)statement).getOperand());
+
+            return isOperandSimpleStatement;
+
+        }
+        else if (statement instanceof PrefixExpression) {
+            boolean isOperandSimpleStatement = isSimpleStatement(((PrefixExpression)statement).getOperand());
+
+            return isOperandSimpleStatement;
+
+        }
+        else if (statement instanceof ReturnStatement) {
+
+//            isSimpleStatement = isSimpleStatement(statement);
+
+            boolean isExpressionASTSimpleStatement = isSimpleStatement(((ReturnStatement) statement).getExpression());
+
+            return isExpressionASTSimpleStatement;
+
+        } else if (statement instanceof VariableDeclarationStatement) {
+
+            List fragments = ((VariableDeclarationStatement)statement).fragments();
+
+            isSimpleStatement = true;
+
+            for (int i = 0; i < fragments.size(); i++) {
+                isSimpleStatement = isSimpleStatement(((VariableDeclarationFragment)(ASTNode) fragments.get(i)).getInitializer());
+
+                if (!isSimpleStatement) {
+                    break;
+                }
+            }
+
+            return isSimpleStatement;
+
+        }
+        if (statement instanceof VariableDeclarationExpression) {
+
+            List fragments = ((VariableDeclarationExpression)statement).fragments();
+
+            isSimpleStatement = true;
+
+            for (int i = 0; i < fragments.size(); i++) {
+                isSimpleStatement = isSimpleStatement(((VariableDeclarationFragment)(ASTNode) fragments.get(i)).getInitializer());
+
+                if (!isSimpleStatement) {
+                    break;
+                }
+            }
+
+            return isSimpleStatement;
+
+        }
+        else if (statement instanceof MethodInvocation) {
+            return false;
+        } else if (statement instanceof BreakStatement) {
+
+            isSimpleStatement = true;
+
+            return isSimpleStatement;
+
+        } else if (statement instanceof ContinueStatement) {
+
+            isSimpleStatement = true;
+
+            return isSimpleStatement;
+
+        }
+        else {
+
+            isSimpleStatement = true;
+
+            return isSimpleStatement;
+
+        }
+//        return false;
     }
 
     public static String getMethodSignature(MethodDeclaration method) {
@@ -104,7 +369,7 @@ public final class ITP4JavaTestDriverGenerator {
     }
 
 
-    public static String getClassName(String fileName){
+    public static String getClassName(String fileName) {
         CompilationUnit compilationUnit = null;
         try {
             compilationUnit = Parser.parseFileToCompilationUnit(fileName);
@@ -125,7 +390,7 @@ public final class ITP4JavaTestDriverGenerator {
         return className[0];
     }
 
-    public static List<ASTNode> getMethodList(String fileName){
+    public static List<ASTNode> getMethodList(String fileName) {
         CompilationUnit compilationUnit = null;
         try {
             compilationUnit = Parser.parseFileToCompilationUnit(fileName);
@@ -171,19 +436,18 @@ public final class ITP4JavaTestDriverGenerator {
 //
 ////        String templateWithUniCalling = templateContentWithTestDataReading.replace(constants.PASSING_PARAMETER_PLACEHOLDER, "\"" + fileName + "\", \"" + methodIdentifier + "\"");
 //
-////        String unitCalling = generateTestRunner(method.getName().toString(), testData);
-////
-////        String templateWithUnitCalling = templateContentWithTestDataReading.replace(constants.UNIT_CALLING_PLACEHOLDER, unitCalling);
+
+    /// /        String unitCalling = generateTestRunner(method.getName().toString(), testData);
+    /// /
+    /// /        String templateWithUnitCalling = templateContentWithTestDataReading.replace(constants.UNIT_CALLING_PLACEHOLDER, unitCalling);
 //
 //        result.append(templateContentWithTestDataReading);
 //
 //        ITPUtils.writeToFile(String.valueOf(result), constants.ITP_TEST_DRIVER_PATH, false);
 //
 //    }
-
     private static String readTestDriverTemplate() {
-        try
-        {
+        try {
             return Files.readString(Path.of(constants.ITP_TEST_DRIVER_TEMPLATE_PATH));
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -206,49 +470,42 @@ public final class ITP4JavaTestDriverGenerator {
         if (method.getReturnType2().toString().contains("void")) {
             if (isStatic) {
                 unitCaller.append("        ").append(className + "." + method.getName().toString()).append("(");
-            }
-            else
-            {
+            } else {
                 unitCaller.append("        ").append(className + " object = new " + className + "();\n");//need to get constructor
-                unitCaller.append("        ").append("object." + method.getName().toString()).append("()");
+                unitCaller.append("        ").append("object." + method.getName().toString()).append("(");
             }
-        }
-        else
-        {
+        } else {
             if (isStatic) {
                 unitCaller.append("        Object output = ").append(className + "." + method.getName().toString()).append("(");
-            }
-            else
-            {
-                unitCaller.append("        ").append("AccountBalanceAfterPurchase object = new AccountBalanceAfterPurchase();\n");
-                unitCaller.append("        Object output = ").append("object." + method.getName().toString()).append("()");
+            } else {
+                unitCaller.append("        ").append(className + " object = new " + className + "();\n");
+                unitCaller.append("            Object output = ").append("object." + method.getName().toString()).append("(");
             }
 
         }
 
         //List<ParamTestData> paramList = testData.getParamList();
 
-        for(int i = 0; i < method.parameters().size(); i++) {
-            String param = "String param" + i + " = (String) jsonObject.get(\"" + ((SingleVariableDeclaration)(method.parameters().get(i))).getName() + "\");";
+        for (int i = 0; i < method.parameters().size(); i++) {
+            String param = "String param" + i + " = (String) jsonObject.get(\"" + ((SingleVariableDeclaration) (method.parameters().get(i))).getName() + "\");";
 
             if (i == 0) {
                 testDataReader.append("            " + param + "\n");
-            }
-            else {
+            } else {
                 testDataReader.append("            " + param + "\n");
             }
 
-            testDataReader.append("            System.out.println(\"" + ((SingleVariableDeclaration)(method.parameters().get(i))).getName() + " = \" " + " + param" + i + ");\n");
+            testDataReader.append("            System.out.println(\"" + ((SingleVariableDeclaration) (method.parameters().get(i))).getName() + " = \" " + " + param" + i + ");\n");
 
-            SingleVariableDeclaration paramData = (SingleVariableDeclaration)method.parameters().get(i);
+            SingleVariableDeclaration paramData = (SingleVariableDeclaration) method.parameters().get(i);
 
 //            System.out.println("paramData.getName() = " + paramData.getName() + "; paramData.getType() = " + paramData.getType());
 
 //            System.out.println("paramData.getType() = " + paramData.getType().toString());
 
-            if(paramData.getType().toString().equals("char")) {
+            if (paramData.getType().toString().equals("char")) {
                 unitCaller.append("'").append("param" + i).append("'");
-            } else if(paramData.getType().toString().equals("String")) {
+            } else if (paramData.getType().toString().equals("String")) {
                 unitCaller.append("param" + i);
             } else if (paramData.getType().toString().equals("int")) {
                 unitCaller.append("Integer.parseInt(param" + i + ")");
@@ -261,7 +518,7 @@ public final class ITP4JavaTestDriverGenerator {
             } else if (paramData.getType().toString().equals("float")) {
                 unitCaller.append("Float.parseFloat(param" + i + ")");
             }
-            if(i != method.parameters().size() - 1) unitCaller.append(", ");
+            if (i != method.parameters().size() - 1) unitCaller.append(", ");
         }
         testDataReader.append("\n");
 
@@ -271,9 +528,7 @@ public final class ITP4JavaTestDriverGenerator {
             unitCaller.append("\t\t\t\t\t\tSystem.out.println(\"output = \"  + output.toString());\n\n");
 
             unitCaller.append("\t\t\t\t\t\treturn output.toString();\n");
-        }
-        else
-        {
+        } else {
             unitCaller.append("\t\t\t\t\t\treturn \"0\";\n");
         }
 
@@ -284,7 +539,7 @@ public final class ITP4JavaTestDriverGenerator {
 
         unitcallingBlock.append(
                 "\t\t\t\t\t\n" +
-                "            System.out.println(\"Executing unit: " + getMethodSignature(method) + " ...\");\n\n");
+                        "            System.out.println(\"Executing unit: " + getMethodSignature(method) + " ...\");\n\n");
 
         String unitBlock = testDataReader + "    " + unitCaller.toString();
 
@@ -300,15 +555,15 @@ public final class ITP4JavaTestDriverGenerator {
 
         List<ParamTestData> paramList = testData.getParamList();
 
-        for(int i = 0; i < paramList.size(); i++) {
+        for (int i = 0; i < paramList.size(); i++) {
             ParamTestData param = paramList.get(i);
 
-            if(param.getValue() instanceof Character) {
+            if (param.getValue() instanceof Character) {
                 result.append("'").append(param.getValue()).append("'");
             } else {
                 result.append(param.getValue());
             }
-            if(i != paramList.size() - 1) result.append(", ");
+            if (i != paramList.size() - 1) result.append(", ");
         }
         result.append(");\n");
         return result.toString();
@@ -525,7 +780,7 @@ public final class ITP4JavaTestDriverGenerator {
 //        if(coverage == ITP4JavaController.Coverage.MCDC) {
 //            return generateCodeForConditionForMCDCCoverage(condition);
 //        } else
-            if(coverage == ITP4JavaController.Coverage.BRANCH || coverage == ITP4JavaController.Coverage.STATEMENT) {
+        if (coverage == ITP4JavaController.Coverage.BRANCH || coverage == ITP4JavaController.Coverage.STATEMENT) {
             return generateCodeForConditionForBranchAndStatementCoverage(condition);
         } else {
             throw new RuntimeException("Invalid coverage!");

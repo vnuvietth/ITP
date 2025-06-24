@@ -307,7 +307,8 @@ public class ITP4JavaController implements Initializable {
             return;
         }
 
-        allTestCasesCoverageLabel.setText("   All test cases coverage: " + result.getFullCoverage() + "%");
+        //allTestCasesCoverageLabel.setText("   All test cases coverage: " + result.getFullCoverage() + "%");
+        allTestCasesCoverageLabel.setText("Finished testing");
         allTestCasesCoverageLabel.setDisable(false);
 
         testingTimeLabel.setText("   Testing time: " + result.getTestingTime() + "ms");
