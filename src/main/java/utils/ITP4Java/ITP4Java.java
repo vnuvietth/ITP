@@ -225,7 +225,7 @@ public class ITP4Java {
 
             markedStatements = ITP4JavaTestDriverRunner.getCoveredStatement();
 
-            MarkedPath.markPathToCFGV2(cfgBeginNode, markedStatements); //
+            MarkedPath.markPathToCFGV2(cfgBeginNode, markedStatements); // CHANGE SOMETHING ELSE
 
             coveredStatements = CoveredStatement.switchToCoveredStatementList(markedStatements);
 
