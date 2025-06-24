@@ -6,15 +6,15 @@
 
 <AnchorPane prefHeight="186.0" prefWidth="334.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ChooseToolController">
    <children>
-      <Label layoutX="23.0" layoutY="40.0" text="Please choose the tool that you want to use">
+      <Label layoutX="24.0" layoutY="25.0" text="Please choose the tool that you want to use">
          <font>
             <Font name="System Bold" size="14.0" />
          </font>
       </Label>
-      <Button fx:id="btnNTDAUT" layoutX="23.0" layoutY="68.0" mnemonicParsing="false" onMouseClicked="#chooseNTDToolButtonClicked" prefHeight="25.0" prefWidth="95.0" text="NTD-AUT" />
-      <Button fx:id="btnConcolicAUT" layoutX="231.0" layoutY="68.0" mnemonicParsing="false" onMouseClicked="#chooseConcolicToolButtonClicked" text="Concolic-AUT" />
-      <Button fx:id="btnConcolic4ITP" layoutX="23.0" layoutY="110.0" mnemonicParsing="false" onMouseClicked="#chooseConcolic4ITPButtonClicked" prefHeight="25.0" prefWidth="95.0" text="Concolic4ITP" />
-      <Button fx:id="btnITP4Java" layoutX="231.0" layoutY="110.0" mnemonicParsing="false" onMouseClicked="#chooseITP4JavaButtonClicked" prefHeight="25.0" prefWidth="89.0" text="ITP4Java" />
-      <Button fx:id="btnITP4JavaV0" layoutX="138.0" layoutY="110.0" mnemonicParsing="false" onMouseClicked="#chooseITP4JavaV0ButtonClicked" prefHeight="25.0" prefWidth="78.0" text="ITP4JavaV0" />
+      <Button fx:id="btnNTDAUT" layoutX="6.0" layoutY="2.0" mnemonicParsing="false" onMouseClicked="#chooseNTDToolButtonClicked" prefHeight="25.0" prefWidth="95.0" text="NTD-AUT" visible="false" />
+      <Button fx:id="btnConcolicAUT" layoutX="112.0" layoutY="2.0" mnemonicParsing="false" onMouseClicked="#chooseConcolicToolButtonClicked" text="Concolic-AUT" visible="false" />
+      <Button fx:id="btnConcolic4ITP" layoutX="14.0" layoutY="79.0" mnemonicParsing="false" onMouseClicked="#chooseConcolic4ITPButtonClicked" prefHeight="25.0" prefWidth="95.0" text="Concolic4ITP" />
+      <Button fx:id="btnITP4Java" layoutX="231.0" layoutY="79.0" mnemonicParsing="false" onMouseClicked="#chooseITP4JavaButtonClicked" prefHeight="25.0" prefWidth="89.0" text="ITP4Java" />
+      <Button fx:id="btnITP4JavaV0" layoutX="129.0" layoutY="79.0" mnemonicParsing="false" onMouseClicked="#chooseITP4JavaV0ButtonClicked" prefHeight="25.0" prefWidth="78.0" text="ITP4JavaV0" />
    </children>
 </AnchorPane>

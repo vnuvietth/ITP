@@ -8,8 +8,8 @@ public interface constants {
     String UNIT_CALLING_PLACEHOLDER = "%%UNIT_CALLING_PLACEHOLDER%%";
     String TEST_DATA_READING_PLACEHOLDER = "%%TEST_DATA_READING_PLACEHOLDER%%";
 
-    String PROJECT_ROOT_DRIVE = "E:\\IdeaProjects\\NTD-Paper"; // At company
-//    String PROJECT_ROOT_DRIVE = "D:\\QG25.09\\Code.VietTH\\NTD-Paper"; //At home
+//    String PROJECT_ROOT_DRIVE = "E:\\IdeaProjects\\NTD-Paper"; // At company
+    String PROJECT_ROOT_DRIVE = "D:\\QG25.09\\Code.VietTH\\NTD-Paper"; //At home
 
     //Test driver folder
     String TEST_DRIVER_FOLDER = "E:\\IdeaProjects\\testDriver";
@@ -92,4 +92,6 @@ public interface constants {
     String ITP_IMPORT_PLACEHOLDER = "%%IMPORT_PLACEHOLDER%%";
 
     String ITP_CLONED_PROJECT_CLASSPATH =  TEST_DRIVER_CLASSPATH_FOLDER;
+
+    String ITP_TEST_RESULT_FILEPATH = TEST_DRIVER_FOLDER + "\\TestResult.txt";
 }

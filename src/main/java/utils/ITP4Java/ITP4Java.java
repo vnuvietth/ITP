@@ -35,8 +35,7 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import static utils.ITP4Java.ITPTestDriver.ITP4JavaTestDriverGenerator.getClassName;
-import static utils.ITP4Java.ITPTestDriver.ITP4JavaTestDriverGenerator.getMethodAccessModifier;
+import static utils.ITP4Java.ITPTestDriver.ITP4JavaTestDriverGenerator.*;
 import static utils.ITP4Java.ITPTestDriver.ITP4JavaTestDriverRunner.runTestDriver;
 
 public class ITP4Java {
@@ -105,6 +104,8 @@ public class ITP4Java {
         ITP4JavaTestDriverGenerator.generateITPTestDriver(path, coverage);
 
         List<File> files = Utils.getJavaFiles(path);
+
+        writeDataToFile("Test result for the selected project\n", constants.ITP_TEST_RESULT_FILEPATH, false);
 
         for (File file : files) {
             //String clonedMethod = createCloneMethod(method, coverage);
@@ -242,7 +243,36 @@ public class ITP4Java {
 
         testResult.setFullCoverage(calculateFullTestSuiteCoverage());
 
+        writeDataToFile("\n=========== o0o ===========\n", constants.ITP_TEST_RESULT_FILEPATH, true);
+
+        writeDataToFile("Test result for: " + getMethodSignature(method) + "\n\n", constants.ITP_TEST_RESULT_FILEPATH, true);
+
+        writeTestResultToFile(testResult, constants.ITP_TEST_RESULT_FILEPATH, true);
+
         return testResult;
+    }
+
+    private static void writeTestResultToFile(ConcolicTestResult testResult, String path, boolean append) {
+        try {
+            FileWriter writer = new FileWriter(path, append);
+
+            StringBuilder result = new StringBuilder();
+
+            List<ConcolicTestData> testDataList = testResult.getFullTestData();
+
+            for (int i = 0; i < testDataList.size(); i++) {
+                result.append("Test no " + i + ": " + testDataList.get(i) + " \n");
+            }
+
+            result.append("Full coverage: " + testResult.getFullCoverage() + " \n");
+            result.append("Testing time: " + testResult.getTestingTime() + " \n");
+            result.append("Memory: " + testResult.getUsedMemory() + " \n");
+
+            writer.write(result.toString());
+            writer.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private static void writeDataToFile(String data, String path, boolean append) {

@@ -311,14 +311,14 @@ public class ITP4JavaController implements Initializable {
         allTestCasesCoverageLabel.setText("Finished testing");
         allTestCasesCoverageLabel.setDisable(false);
 
-        testingTimeLabel.setText("   Testing time: " + result.getTestingTime() + "ms");
+//        testingTimeLabel.setText("   Testing time: " + result.getTestingTime() + "ms");
         testingTimeLabel.setDisable(false);
 
-        usedMemoryLabel.setText("   Used memory: " + result.getUsedMemory() + "MB");
+//        usedMemoryLabel.setText("   Used memory: " + result.getUsedMemory() + "MB");
         usedMemoryLabel.setDisable(false);
 
 
-        testCaseListView.getItems().addAll(result.getFullTestData());
+//        testCaseListView.getItems().addAll(result.getFullTestData());
     }
 
     private void setTestCaseDetail(ConcolicTestData testData) {
