@@ -82,12 +82,20 @@ public class ITP4Java {
         long startRunTestTime = System.nanoTime();
 //        ConcolicTestResult result = startGenerating(coverage);
 
+        String projectName = path.substring(path.lastIndexOf("\\"));
+
+        writeDataToFile("Test result for the selected project: " + projectName + "\n", constants.ITP_TEST_RESULT_FILEPATH, false);
+
         generateTestDataForProject(path, coverage);
 
         long endRunTestTime = System.nanoTime();
 
         double runTestDuration = (endRunTestTime - startRunTestTime) / 1000000.0;
         float usedMem = ((float) totalUsedMem) / tickCount / 1024 / 1024;
+
+        writeDataToFile("***************** o0o *****************\n", constants.ITP_TEST_RESULT_FILEPATH, true);
+        writeDataToFile("runTestDuration: " + runTestDuration + " (ms)\n", constants.ITP_TEST_RESULT_FILEPATH, true);
+        writeDataToFile("usedMem: " + usedMem + " (MB)\n", constants.ITP_TEST_RESULT_FILEPATH, true);
 
 //        result.setTestingTime(runTestDuration);
 //        result.setUsedMemory(usedMem);
@@ -105,12 +113,22 @@ public class ITP4Java {
 
         List<File> files = Utils.getJavaFiles(path);
 
-        writeDataToFile("Test result for the selected project\n", constants.ITP_TEST_RESULT_FILEPATH, false);
+        int unitCount = 0;
+        int simpleUnitCount = 0;
+
+        double totalCoverage = 0;
 
         for (File file : files) {
             //String clonedMethod = createCloneMethod(method, coverage);
+            double totalCoverageForFile = 0;
+            int simpleUnitCountForFile = 0;
 
             List<ASTNode> methodList = ITP4JavaTestDriverGenerator.getMethodList(file.getAbsolutePath());
+
+            unitCount += methodList.size();
+
+            writeDataToFile("======================== o0o ========================\n", constants.ITP_TEST_RESULT_FILEPATH, true);
+            writeDataToFile("Test result for file: " + file.getName() + "\n", constants.ITP_TEST_RESULT_FILEPATH, true);
 
             for (ASTNode method : methodList) {
 
@@ -124,13 +142,25 @@ public class ITP4Java {
                 boolean isSimpleUnit = ITP4JavaTestDriverGenerator.isSimpleUnit((MethodDeclaration)method);
 
                 if (isSimpleUnit) {
-                    startGeneratingForOneUnit(file.getAbsolutePath(), (MethodDeclaration) method, coverage);
+                    simpleUnitCount += 1;
+                    simpleUnitCountForFile += 1;
+                    ConcolicTestResult testResult = startGeneratingForOneUnit(file.getAbsolutePath(), (MethodDeclaration) method, coverage);
+
+                    totalCoverage += testResult.getFullCoverage();
+
+                    totalCoverageForFile += testResult.getFullCoverage();
                 }
             }
+
+            writeDataToFile("averageCoverageForFile: " + file.getName() + ": " + (totalCoverageForFile /simpleUnitCountForFile)  + "%\n", constants.ITP_TEST_RESULT_FILEPATH, true);
 //            break;
 
         }
 
+        writeDataToFile("unitCount: " + unitCount + "\n", constants.ITP_TEST_RESULT_FILEPATH, true);
+        writeDataToFile("simpleUnitCount: " + simpleUnitCount + "\n", constants.ITP_TEST_RESULT_FILEPATH, true);
+
+        writeDataToFile("totalAverageCoverage: " + (totalCoverage /simpleUnitCount)  + "%\n", constants.ITP_TEST_RESULT_FILEPATH, true);
 
 
     }
@@ -245,7 +275,7 @@ public class ITP4Java {
 
         writeDataToFile("\n=========== o0o ===========\n", constants.ITP_TEST_RESULT_FILEPATH, true);
 
-        writeDataToFile("Test result for: " + getMethodSignature(method) + "\n\n", constants.ITP_TEST_RESULT_FILEPATH, true);
+        writeDataToFile("Test result for file: " + filePath.substring(filePath.lastIndexOf("\\") + 1) + ", method: " + getMethodSignature(method) + "\n\n", constants.ITP_TEST_RESULT_FILEPATH, true);
 
         writeTestResultToFile(testResult, constants.ITP_TEST_RESULT_FILEPATH, true);
 
