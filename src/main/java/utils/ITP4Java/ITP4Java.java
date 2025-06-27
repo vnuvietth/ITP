@@ -82,7 +82,7 @@ public class ITP4Java {
         long startRunTestTime = System.nanoTime();
 //        ConcolicTestResult result = startGenerating(coverage);
 
-        String projectName = path.substring(path.lastIndexOf("\\"));
+        String projectName = path;// path.substring(path.lastIndexOf("\\"));
 
         writeDataToFile("Test result for the selected project: " + projectName + "\n", constants.ITP_TEST_RESULT_FILEPATH, false);
 

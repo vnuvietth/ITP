@@ -2,7 +2,9 @@ package utils.ITP4Java.common;
 
 public interface constants {
     //General info start
-    String TEST_FOLDER = "\\sample\\Units-From-Leetcode-Java-Solutions.zip";
+    //String TEST_FOLDER = "\\sample\\Units-From-Leetcode-Java-Solutions.zip";
+
+    String TEST_FOLDER = "\\sample\\Refactored-TheAlgorithms-Java.zip";
 
     String INSTRUMENTED_TESTING_UNIT_PLACEHOLDER = "%%INSTRUMENTED_TESTING_UNIT_PLACEHOLDER%%";
     String UNIT_CALLING_PLACEHOLDER = "%%UNIT_CALLING_PLACEHOLDER%%";
@@ -93,5 +95,5 @@ public interface constants {
 
     String ITP_CLONED_PROJECT_CLASSPATH =  TEST_DRIVER_CLASSPATH_FOLDER;
 
-    String ITP_TEST_RESULT_FILEPATH = TEST_DRIVER_FOLDER + "\\TestResult.txt";
+    String ITP_TEST_RESULT_FILEPATH = TEST_DRIVER_FOLDER + "\\ITP_TestResult.txt";
 }

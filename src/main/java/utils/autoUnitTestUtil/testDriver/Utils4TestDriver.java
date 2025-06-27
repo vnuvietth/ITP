@@ -227,7 +227,7 @@ public final class Utils4TestDriver {
 
         ITPTestData testData = new ITPTestData(paramList);
         testData.setTestDataName("generatedTestData");
-        testData.setFileName(filePath);
+        testData.setFileName(filePath.replace("\\", "\\\\"));
         testData.setFunctionName(ITP4JavaTestDriverGenerator.getMethodSignature(method));
         testData.setReturnType(method.getReturnType2().toString());
 
@@ -380,7 +380,7 @@ public final class Utils4TestDriver {
 
         ITPTestData testData = new ITPTestData(parameterPairs);
         testData.setTestDataName("randomTestData");
-        testData.setFileName(filePath);
+        testData.setFileName(filePath.replace("\\", "\\\\"));
         testData.setFunctionName(ITP4JavaTestDriverGenerator.getMethodSignature(method));
         testData.setReturnType(method.getReturnType2().toString());
 
