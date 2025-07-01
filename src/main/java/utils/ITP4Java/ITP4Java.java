@@ -56,7 +56,7 @@ public class ITP4Java {
     private static long tickCount = 0;
 
 
-    public static ConcolicTestResult runITP4Project(String path, ITP4JavaController.Coverage coverage)
+    public static ConcolicTestResult runITP4Project(String path, ITP4JavaController.Coverage coverage, StringBuilder importStatement)
             throws IOException, NoSuchMethodException, InvocationTargetException,
             IllegalAccessException, ClassNotFoundException, NoSuchFieldException,
             InterruptedException {
@@ -86,7 +86,7 @@ public class ITP4Java {
 
         writeDataToFile("Test result for the selected project: " + projectName + "\n", constants.ITP_TEST_RESULT_FILEPATH, false);
 
-        generateTestDataForProject(path, coverage);
+        generateTestDataForProject(path, coverage, importStatement);
 
         long endRunTestTime = System.nanoTime();
 
@@ -108,8 +108,8 @@ public class ITP4Java {
     // Đường dẫn tới class path thì chứa thư mục clonedProject, nhưng không được bao gồm thư mục clonedProject.
 
 
-    private static void generateTestDataForProject(String path, ITP4JavaController.Coverage coverage) throws IOException, NoSuchFieldException, ClassNotFoundException, InterruptedException, InvocationTargetException, IllegalAccessException, NoSuchMethodException {
-        ITP4JavaTestDriverGenerator.generateITPTestDriver(path, coverage);
+    private static void generateTestDataForProject(String path, ITP4JavaController.Coverage coverage, StringBuilder importStatement) throws IOException, NoSuchFieldException, ClassNotFoundException, InterruptedException, InvocationTargetException, IllegalAccessException, NoSuchMethodException {
+        ITP4JavaTestDriverGenerator.generateITPTestDriver(path, coverage, importStatement);
 
         List<File> files = Utils.getJavaFiles(path);
 

@@ -136,6 +136,9 @@ public class ITP4JavaController implements Initializable {
         }
     }
 
+
+    StringBuilder importStatement = new StringBuilder();
+
     @FXML
     void uploadFileButtonClicked(MouseEvent event) {
         reset();
@@ -149,7 +152,7 @@ public class ITP4JavaController implements Initializable {
             String javaDirPath = CloneProjectUtil.getJavaDirPath(FilePath.uploadedProjectPath);
             if (javaDirPath.equals("")) throw new RuntimeException("Invalid project");
 
-            Folder folder1 = CloneProjectUtil.cloneProject4ITP(javaDirPath, FilePath.clonedProjectPath);
+            Folder folder1 = CloneProjectUtil.cloneProject4ITP(javaDirPath, FilePath.clonedProjectPath, importStatement);
 
             Folder folder = ConcolicUploadUtil.createProjectTree(javaDirPath);
 
@@ -268,24 +271,24 @@ public class ITP4JavaController implements Initializable {
             String javaDirPath = CloneProjectUtil.getJavaDirPath(FilePath.uploadedProjectPath);
             if (javaDirPath.equals("")) throw new RuntimeException("Invalid project");
 
-            result = ITP4Java.runITP4Project(FilePath.uploadedProjectPath, Coverage.STATEMENT);
+//            result = ITP4Java.runITP4Project(FilePath.uploadedProjectPath, Coverage.STATEMENT);
         } catch (Exception e) {
             alertLabel.setTextFill(Paint.valueOf("red"));
             alertLabel.setText("Examined unit contains cases we haven't handle yet!");
             return;
         }
 
-        allTestCasesCoverageLabel.setText("   All test cases coverage: " + result.getFullCoverage() + "%");
+//        allTestCasesCoverageLabel.setText("   All test cases coverage: " + result.getFullCoverage() + "%");
         allTestCasesCoverageLabel.setDisable(false);
 
-        testingTimeLabel.setText("   Testing time: " + result.getTestingTime() + "ms");
+//        testingTimeLabel.setText("   Testing time: " + result.getTestingTime() + "ms");
         testingTimeLabel.setDisable(false);
 
-        usedMemoryLabel.setText("   Used memory: " + result.getUsedMemory() + "MB");
+//        usedMemoryLabel.setText("   Used memory: " + result.getUsedMemory() + "MB");
         usedMemoryLabel.setDisable(false);
 
 
-        testCaseListView.getItems().addAll(result.getFullTestData());
+//        testCaseListView.getItems().addAll(result.getFullTestData());
     }
 
 
@@ -300,7 +303,7 @@ public class ITP4JavaController implements Initializable {
             String javaDirPath = CloneProjectUtil.getJavaDirPath(FilePath.uploadedProjectPath);
             if (javaDirPath.equals("")) throw new RuntimeException("Invalid project");
 
-            result = ITP4Java.runITP4Project(javaDirPath, Coverage.STATEMENT);
+            result = ITP4Java.runITP4Project(javaDirPath, Coverage.STATEMENT, importStatement);
         } catch (Exception e) {
             alertLabel.setTextFill(Paint.valueOf("red"));
             alertLabel.setText("Examined unit contains cases we haven't handle yet!");

@@ -22,7 +22,7 @@ public final class ITP4JavaTestDriverGenerator {
     private ITP4JavaTestDriverGenerator() {
     }
 
-    public static void generateITPTestDriver(String clonedJavaDirPath, ITP4JavaController.Coverage coverage) {
+    public static void generateITPTestDriver(String clonedJavaDirPath, ITP4JavaController.Coverage coverage, StringBuilder importStatement) {
         StringBuilder result = new StringBuilder();
 
         String testDriverTemplateContent = readTestDriverTemplate();
@@ -35,7 +35,7 @@ public final class ITP4JavaTestDriverGenerator {
         StringBuilder allUnitCallingBlocks = new StringBuilder();
 
 
-        String importStatement = "";
+//        String importStatement = "";
 
         for (File file : files) {
 
@@ -118,7 +118,7 @@ public final class ITP4JavaTestDriverGenerator {
             for (ASTNode parameter : parameters) {
                 System.out.println(parameter.toString());
 
-                if (!getType((SingleVariableDeclaration) parameter).isPrimitiveType())
+                if (!((SingleVariableDeclaration) parameter).getType().isPrimitiveType())
                 {
                     if (!((SingleVariableDeclaration) parameter).getType().toString().equals("String"))
                     {

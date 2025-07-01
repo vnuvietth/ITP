@@ -52,10 +52,10 @@ public final class CloneProjectUtil {
         return "";
     }
 
-    public static Folder cloneProject4ITP(String originalDirPath, String destinationDirPath) throws IOException, InterruptedException {
+    public static Folder cloneProject4ITP(String originalDirPath, String destinationDirPath, StringBuilder importStatement) throws IOException, InterruptedException {
         command = new StringBuilder("javac -d " + constants.UPLOADED_PROJECT_CLASSPATH + " ");
         Folder rootFolder = new Folder("java");
-        iCloneProject4ITP(originalDirPath, destinationDirPath, rootFolder);
+        importStatement.append(iCloneProject4ITP(originalDirPath, destinationDirPath, rootFolder));
         System.out.println(command);
 
         Process p = Runtime.getRuntime().exec(command.toString());
@@ -86,18 +86,20 @@ public final class CloneProjectUtil {
         return rootFolder;
     }
 
-    private static void iCloneProject4ITP(String originalDirPath, String destinationDirPath, Folder folder) throws IOException {
+    private static StringBuilder iCloneProject4ITP(String originalDirPath, String destinationDirPath, Folder folder) throws IOException {
         deleteFilesInDirectory(destinationDirPath);
         boolean existJavaFile = false;
 
         File[] files = getFilesInDirectory(originalDirPath);
+
+        StringBuilder importStatement = new StringBuilder();
 
         for (File file : files) {
             if (file.isDirectory()) {
                 String dirName = file.getName();
                 createCloneDirectory(destinationDirPath, dirName);
                 Folder newFolder = new Folder(dirName);
-                iCloneProject4ITP(originalDirPath + "\\" + dirName, destinationDirPath + "\\" + dirName, newFolder);
+                importStatement.append(iCloneProject4ITP(originalDirPath + "\\" + dirName, destinationDirPath + "\\" + dirName, newFolder));
                 folder.addChild(newFolder);
             } else if (file.isFile() && file.getName().endsWith("java")) {
                 existJavaFile = true;
@@ -106,7 +108,7 @@ public final class CloneProjectUtil {
                 JavaFile javaFile = new JavaFile(fileName.replace(".java", ""));
                 createCloneFile(destinationDirPath, fileName);
                 CompilationUnit compilationUnit = Parser.parseFileToCompilationUnit(originalDirPath + "\\" + fileName);
-                String sourceCode = createCloneSourceCode4ITP(compilationUnit, originalDirPath + "\\" + fileName, javaFile);
+                String sourceCode = createCloneSourceCode4ITP(compilationUnit, originalDirPath + "\\" + fileName, javaFile, importStatement);
                 writeDataToFile(sourceCode, destinationDirPath + "\\" + fileName);
                 folder.addChild(javaFile);
             }
@@ -115,6 +117,8 @@ public final class CloneProjectUtil {
         if (existJavaFile) {
             command.append(destinationDirPath).append("\\*.java ");
         }
+
+        return importStatement;
     }
 
     private static void iCloneProject(String originalDirPath, String destinationDirPath, Folder folder) throws IOException {
@@ -204,13 +208,20 @@ public final class CloneProjectUtil {
         }
     }
 
-    private static String createCloneSourceCode4ITP(CompilationUnit compilationUnit, String filePath, JavaFile javaFile) {
+    private static String createCloneSourceCode4ITP(CompilationUnit compilationUnit, String filePath, JavaFile javaFile, StringBuilder importStatement) {
         StringBuilder result = new StringBuilder();
 
         //Packet
         if (compilationUnit.getPackage() != null) {
             //result.append("package clonedProject.").append(compilationUnit.getPackage().getName().toString()).append(";\n");
             result.append("package " + compilationUnit.getPackage().getName().toString()).append(";\n");
+
+            String importStr = "import " + compilationUnit.getPackage().getName().toString() + ".*;";
+
+            if (importStatement.indexOf(importStr) < 0)
+            {
+                importStatement.append("import " + compilationUnit.getPackage().getName().toString()).append(".*;\n");
+            }
         } else {
             //result.append("package clonedProject;\n");
         }
