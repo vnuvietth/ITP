@@ -105,7 +105,35 @@ public final class ITP4JavaTestDriverGenerator {
             }
         }
 
+        boolean isSimpleParameter = true;
+
+        if (((MethodDeclaration) method).parameters().isEmpty())
+        {
+            return false;
+        }
+        else
+        {
+            List<ASTNode> parameters = ((MethodDeclaration) method).parameters();
+
+            for (ASTNode parameter : parameters) {
+                System.out.println(parameter.toString());
+
+                if (!getType((SingleVariableDeclaration) parameter).isPrimitiveType())
+                {
+                    if (!((SingleVariableDeclaration) parameter).getType().toString().equals("String"))
+                    {
+                        isSimpleParameter = false;
+                        return isSimpleParameter;
+                    }
+                }
+            }
+        }
+
         return true;
+    }
+
+    private static Type getType(SingleVariableDeclaration parameter) {
+        return parameter.getType();
     }
 
     public static boolean isSimpleStatement(ASTNode statement) {
