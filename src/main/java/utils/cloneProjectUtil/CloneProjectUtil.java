@@ -210,7 +210,7 @@ public final class CloneProjectUtil {
         //Packet
         if (compilationUnit.getPackage() != null) {
             //result.append("package clonedProject.").append(compilationUnit.getPackage().getName().toString()).append(";\n");
-            result.append(compilationUnit.getPackage().getName().toString()).append(";\n");
+            result.append("package " + compilationUnit.getPackage().getName().toString()).append(";\n");
         } else {
             //result.append("package clonedProject;\n");
         }

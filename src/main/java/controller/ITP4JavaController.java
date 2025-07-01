@@ -304,6 +304,9 @@ public class ITP4JavaController implements Initializable {
         } catch (Exception e) {
             alertLabel.setTextFill(Paint.valueOf("red"));
             alertLabel.setText("Examined unit contains cases we haven't handle yet!");
+
+            System.out.println(e.getMessage());
+            e.printStackTrace();
             return;
         }
 

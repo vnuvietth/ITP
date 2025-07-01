@@ -43,7 +43,15 @@ public final class ITP4JavaTestDriverGenerator {
 
 //            System.out.println("importStatement: " + importStatement);
 
+            if (file.getAbsolutePath().equals("E:\\IdeaProjects\\testDriver\\uploadedProject\\Refactored-TheAlgorithms-Java\\src\\main\\java\\com\\thealgorithms\\ciphers\\Blowfish.java") ||
+                    file.getAbsolutePath().equals("E:\\IdeaProjects\\testDriver\\uploadedProject\\Refactored-TheAlgorithms-Java\\src\\main\\java\\com\\thealgorithms\\ciphers\\AffineCipher.java"))
+            {
+                int i = 0;
+                System.out.println(file.getAbsolutePath());
+            }
+
             allUnitCallingBlocks.append("        //All units of file: " + file.getAbsolutePath().replace("\\", "\\\\") + "\n");
+            System.out.println("ITP4JavaTestDriverGenerator:        //All units of file: " + file.getAbsolutePath().replace("\\", "\\\\") + "\n");
 
             String absolutePath = file.getAbsolutePath();
 
@@ -51,7 +59,10 @@ public final class ITP4JavaTestDriverGenerator {
 
             for (ASTNode method : methodList) {
 
-                if (getMethodSignature((MethodDeclaration) method).equals("static void writeDataToFile(String,String,boolean)") ||
+                System.out.println("method name: " + ((MethodDeclaration) method).getName().getIdentifier());
+
+                if (((MethodDeclaration) method).isConstructor() || ((MethodDeclaration) method).getName().getIdentifier().equals("main") ||
+                        getMethodSignature((MethodDeclaration) method).equals("static void writeDataToFile(String,String,boolean)") ||
                         (getMethodSignature((MethodDeclaration) method).equals("static boolean mark(String,boolean,boolean)")) ||
                         !(getMethodAccessModifier((MethodDeclaration) method).equals("public"))
                 )
@@ -345,6 +356,12 @@ public final class ITP4JavaTestDriverGenerator {
         String methodName = method.getName().getIdentifier();
 
         List<ASTNode> parameterTypes = method.parameters();
+
+        if (method.getReturnType2() == null)
+        {
+            return methodName;
+        }
+
         String returnType = method.getReturnType2().toString();
         String staticStr = "";
 
@@ -352,7 +369,15 @@ public final class ITP4JavaTestDriverGenerator {
             staticStr = "static ";
         }
 
-        signature.append(method.modifiers().get(0) + " ").append(staticStr).append(returnType).append(" ").append(methodName).append("(");
+        if (method.modifiers().size() == 1)
+        {
+            signature.append(method.modifiers().get(0) + " ").append(staticStr).append(returnType).append(" ").append(methodName).append("(");
+        }
+        else
+        {
+            signature.append(staticStr).append(returnType).append(" ").append(methodName).append("(");
+        }
+
         for (int i = 0; i < parameterTypes.size(); i++) {
             signature.append(((SingleVariableDeclaration) parameterTypes.get(i)).getType() + " " + ((SingleVariableDeclaration) parameterTypes.get(i)).getName());
             if (i < parameterTypes.size() - 1) {
@@ -365,9 +390,27 @@ public final class ITP4JavaTestDriverGenerator {
     }
 
     public static String getMethodAccessModifier(MethodDeclaration method) {
-        return method.modifiers().get(0).toString();
-    }
 
+        if (method.modifiers().size() > 1)
+        {
+            return method.modifiers().get(0).toString();
+        }
+        if (method.modifiers().size() == 1)
+        {
+            if (!method.modifiers().get(0).equals("static"))
+            {
+                return method.modifiers().get(0).toString();
+            }
+            else
+            {
+                return "";
+            }
+        }
+        else
+        {
+            return "";
+        }
+    }
 
     public static String getClassName(String fileName) {
         CompilationUnit compilationUnit = null;
@@ -465,6 +508,13 @@ public final class ITP4JavaTestDriverGenerator {
 
         if (method.modifiers().size() > 1 && method.modifiers().get(1).toString().contains("static")) {
             isStatic = true;
+        }
+        else if (method.modifiers().size() == 1)
+        {
+            if (method.modifiers().get(0).toString().equals("static"))
+            {
+                isStatic = true;
+            }
         }
 
         if (method.getReturnType2().toString().contains("void")) {

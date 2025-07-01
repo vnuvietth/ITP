@@ -119,6 +119,16 @@ public class ITP4Java {
         double totalCoverage = 0;
 
         for (File file : files) {
+            System.out.println("ITP4Java:        //All units of file: " + file.getAbsolutePath().replace("\\", "\\\\") + "\n");
+
+            if (file.getAbsolutePath().equals("E:\\IdeaProjects\\testDriver\\uploadedProject\\Refactored-TheAlgorithms-Java\\src\\main\\java\\com\\thealgorithms\\audiofilters\\IIRFilter.java") //||
+//                    file.getAbsolutePath().equals("E:\\IdeaProjects\\testDriver\\uploadedProject\\Refactored-TheAlgorithms-Java\\src\\main\\java\\com\\thealgorithms\\ciphers\\AffineCipher.java")
+            )
+            {
+                int i = 0;
+                System.out.println(file.getAbsolutePath());
+            }
+
             //String clonedMethod = createCloneMethod(method, coverage);
             double totalCoverageForFile = 0;
             int simpleUnitCountForFile = 0;
@@ -132,7 +142,8 @@ public class ITP4Java {
 
             for (ASTNode method : methodList) {
 
-                if (ITP4JavaTestDriverGenerator.getMethodSignature((MethodDeclaration)method).equals("static void writeDataToFile(String,String,boolean)") ||
+                if (((MethodDeclaration) method).isConstructor() || ((MethodDeclaration) method).getName().getIdentifier().equals("main") ||
+                        ITP4JavaTestDriverGenerator.getMethodSignature((MethodDeclaration)method).equals("static void writeDataToFile(String,String,boolean)") ||
                         (ITP4JavaTestDriverGenerator.getMethodSignature((MethodDeclaration)method).equals("static boolean mark(String,boolean,boolean)")) ||
                         !(getMethodAccessModifier((MethodDeclaration)method).equals("public"))
                 ) {

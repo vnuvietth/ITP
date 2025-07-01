@@ -27,6 +27,9 @@ public class Utils {
                     if (file.isFile() && file.getName().toLowerCase().endsWith(".java")) {
                         javaFiles.add(file);
                     }
+                    else if (file.isDirectory()) {
+                        javaFiles.addAll(getJavaFiles(file.getPath()));
+                    }
                 }
             }
         } else {
