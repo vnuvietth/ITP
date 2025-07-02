@@ -275,10 +275,10 @@ public final class CloneProjectUtil {
 
         result.append("private static void writeDataToFile(String data, String path, boolean append) {\n" +
                 "\ttry {\n" +
-                "\t\tif (!append)\n" +
-                "\t\t{\n" +
-                        "\t\t\tFiles.deleteIfExists(Paths.get(path));\n" +
-                "\t\t}\n" +
+//                "\t\tif (!append)\n" +
+//                "\t\t{\n" +
+//                        "\t\t\tFiles.deleteIfExists(Paths.get(path));\n" +
+//                "\t\t}\n" +
                 "\t\tFileWriter writer = new FileWriter(path, append);\n" +
                 "\t\twriter.write(data);\n" +
                 "\t\twriter.close();\n" +
