@@ -614,8 +614,11 @@ public final class ITP4JavaTestDriverGenerator {
 
 //            System.out.println("paramData.getType() = " + paramData.getType().toString());
 
+//            String sss = "test";
+//            sss.charAt(0)
+
             if (paramData.getType().toString().equals("char")) {
-                unitCaller.append("'").append("param" + i).append("'");
+                unitCaller.append("param" + i).append(".charAt(0)");
             } else if (paramData.getType().toString().equals("String")) {
                 unitCaller.append("param" + i);
             } else if (paramData.getType().toString().equals("int")) {
