@@ -175,6 +175,29 @@ public class ITP4Java {
                         methodName.equals("decimal2octal") ||
                         methodName.equals("convertOctalDigitToBinary") ||
                         methodName.equals("convertOctalToDecimal") ||
+                        methodName.equals("minTrials") ||
+                        methodName.equals("uniquePaths2") ||
+                        methodName.equals("getMaxValue") ||
+                        methodName.equals("surfaceAreaCube") ||
+                        methodName.equals("surfaceAreaSphere") ||
+                        methodName.equals("bpR") ||
+                        methodName.equals("surfaceAreaRectangle") ||
+                        methodName.equals("surfaceAreaCylinder") ||
+                        methodName.equals("surfaceAreaSquare") ||
+                        methodName.equals("surfaceAreaTriangle") ||
+                        methodName.equals("surfaceAreaParallelogram") ||
+                        methodName.equals("surfaceAreaTrapezium") ||
+                        methodName.equals("surfaceAreaCircle") ||
+                        methodName.equals("surfaceAreaHemisphere") ||
+                        methodName.equals("surfaceAreaCone") ||
+                        methodName.equals("binomialCoefficient") ||
+                        methodName.equals("ceil") ||
+                        methodName.equals("factorial") ||
+                        methodName.equals("combinationsOptimized") ||
+                        methodName.equals("isDudeney") ||
+                        methodName.equals("floor") ||
+                        methodName.equals("isHarshad") ||
+                        methodName.equals("lcm") ||
                         methodName.equals("valOfChar")
                 ) //
                 {
