@@ -387,7 +387,7 @@ public final class Utils4TestDriver {
         return testData;
     }
 
-    private static Object createRandomVariableData4ITP(Class<?> parameterClass) {
+    public static Object createRandomVariableData4ITP(Class<?> parameterClass) {
         String className = parameterClass.getName();
         Random random = new Random();
 

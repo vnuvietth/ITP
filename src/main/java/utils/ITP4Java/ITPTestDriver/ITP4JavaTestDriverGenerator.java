@@ -7,7 +7,7 @@ import utils.ITP4Java.common.constants;
 import utils.autoUnitTestUtil.cfg.*;
 import utils.autoUnitTestUtil.dataStructure.ParamTestData;
 import utils.autoUnitTestUtil.dataStructure.TestData;
-import utils.autoUnitTestUtil.parser.ASTHelper;
+import utils.autoUnitTestUtil.testDriver.Utils4TestDriver;
 import utils.autoUnitTestUtil.utils.Utils;
 import utils.cloneProjectUtil.Parser;
 
@@ -43,8 +43,8 @@ public final class ITP4JavaTestDriverGenerator {
 
 //            System.out.println("importStatement: " + importStatement);
 
-            if (file.getAbsolutePath().equals("E:\\IdeaProjects\\testDriver\\uploadedProject\\Refactored-TheAlgorithms-Java\\src\\main\\java\\com\\thealgorithms\\ciphers\\Blowfish.java") ||
-                    file.getAbsolutePath().equals("E:\\IdeaProjects\\testDriver\\uploadedProject\\Refactored-TheAlgorithms-Java\\src\\main\\java\\com\\thealgorithms\\ciphers\\AffineCipher.java"))
+            if (//file.getAbsolutePath().equals("E:\\IdeaProjects\\testDriver\\uploadedProject\\Refactored-TheAlgorithms-Java\\src\\main\\java\\com\\thealgorithms\\ciphers\\Blowfish.java") ||
+                    file.getAbsolutePath().equals("E:\\IdeaProjects\\testDriver\\uploadedProject\\Refactored-TheAlgorithms-Java\\src\\main\\java\\com\\thealgorithms\\dynamicprogramming\\OptimalJobScheduling.java"))
             {
                 int i = 0;
                 System.out.println(file.getAbsolutePath());
@@ -127,13 +127,20 @@ public final class ITP4JavaTestDriverGenerator {
                     }
                 }
             }
+
+            Integer countConstructor = getClassConstructorCount((MethodDeclaration) method);
+
+            MethodDeclaration classConstructor = getClassSimpleConstructor((MethodDeclaration) method);
+
+            if (classConstructor == null && countConstructor > 0)
+            {
+                isSimpleParameter = false;
+                return isSimpleParameter;
+            }
+
         }
 
         return true;
-    }
-
-    private static Type getType(SingleVariableDeclaration parameter) {
-        return parameter.getType();
     }
 
     public static boolean isSimpleStatement(ASTNode statement) {
@@ -532,6 +539,11 @@ public final class ITP4JavaTestDriverGenerator {
         Boolean isStatic = false;
         String className = ((TypeDeclaration) method.getParent()).getName().getIdentifier();
 
+
+        int countConstructor = getClassConstructorCount((MethodDeclaration) method);
+
+        MethodDeclaration constructor = getClassSimpleConstructor(method);
+
 //        System.out.println("className: " + className);
 
         if (method.modifiers().size() > 1 && method.modifiers().get(1).toString().contains("static")) {
@@ -549,15 +561,36 @@ public final class ITP4JavaTestDriverGenerator {
             if (isStatic) {
                 unitCaller.append("        ").append(className + "." + method.getName().toString()).append("(");
             } else {
-                unitCaller.append("        ").append(className + " object = new " + className + "();\n");//need to get constructor
-                unitCaller.append("        ").append("object." + method.getName().toString()).append("(");
+                if (constructor == null && countConstructor <= 0) {
+                    unitCaller.append("        ").append(className + " object = new " + className + "();\n");//need to get constructor
+                    unitCaller.append("        ").append("object." + method.getName().toString()).append("(");
+                }
+                else
+                {
+                    String objectCreationString = generateObjectCreationString(method);
+
+                    unitCaller.append(objectCreationString);
+
+                    unitCaller.append("        ").append("object." + method.getName().toString()).append("(");
+                }
             }
         } else {
             if (isStatic) {
                 unitCaller.append("        Object output = ").append(className + "." + method.getName().toString()).append("(");
             } else {
-                unitCaller.append("        ").append(className + " object = new " + className + "();\n");
-                unitCaller.append("            Object output = ").append("object." + method.getName().toString()).append("(");
+                if (constructor == null && countConstructor <= 0) {
+                    unitCaller.append("        ").append(className + " object = new " + className + "();\n");
+                    unitCaller.append("            Object output = ").append("object." + method.getName().toString()).append("(");
+                }
+                else
+                {
+                    String objectCreationString = generateObjectCreationString(method);
+
+                    unitCaller.append(objectCreationString);
+
+                    unitCaller.append("            Object output = ").append("object." + method.getName().toString()).append("(");
+
+                }
             }
 
         }
@@ -625,6 +658,111 @@ public final class ITP4JavaTestDriverGenerator {
         unitcallingBlock.append("        }\n\n");
 
         return unitcallingBlock.toString();
+    }
+
+    //get simple constructor of a class, if not, return null
+    private static MethodDeclaration getClassSimpleConstructor(MethodDeclaration method)
+    {
+        MethodDeclaration[] methodDeclarations = ((TypeDeclaration) method.getParent()).getMethods();
+
+        for (int i = 0; i < methodDeclarations.length; i++) {
+
+            MethodDeclaration constructor = methodDeclarations[i];
+
+            if (constructor.isConstructor()) {
+
+                List<ASTNode> parameterTypes = constructor.parameters();
+
+                for (int j = 0; j < parameterTypes.size(); j++) {
+                    ASTNode parameter = parameterTypes.get(j);
+
+                    if (!parameter.getClass().isPrimitive())
+                    {
+                        return null;
+                    }
+                }
+
+                return methodDeclarations[i];
+            }
+        }
+        return null;
+    }
+
+    private static int getClassConstructorCount(MethodDeclaration method)
+    {
+        MethodDeclaration[] methodDeclarations = ((TypeDeclaration) method.getParent()).getMethods();
+
+        int countConstructors = 0;
+        for (int i = 0; i < methodDeclarations.length; i++) {
+
+            MethodDeclaration constructor = methodDeclarations[i];
+
+            if (constructor.isConstructor()) {
+
+                countConstructors += 1;
+            }
+        }
+        return countConstructors;
+    }
+
+    //method phai la constructor
+    private static String generateObjectCreationString(MethodDeclaration method)
+    {
+        String className = ((TypeDeclaration) method.getParent()).getName().toString();
+
+        StringBuilder objectCreationString = new StringBuilder();
+        objectCreationString.append(className);
+        objectCreationString.append(" object = new ");
+        objectCreationString.append(className);
+        objectCreationString.append("(");
+
+
+        int countConstructor = getClassConstructorCount((MethodDeclaration) method);
+
+        MethodDeclaration constructor = getClassSimpleConstructor(method);
+
+        if (constructor != null) {
+
+            List<ASTNode> parameterTypes = constructor.parameters();
+
+            for (int i = 0; i < parameterTypes.size(); i++) {
+                ASTNode parameter = parameterTypes.get(i);
+
+                Class typeClass =  Utils4TestDriver.getParameterClass(parameter);
+
+                Object object = Utils4TestDriver.createRandomVariableData4ITP(typeClass);
+
+                if (typeClass.getTypeName().equals("char")) {
+                    objectCreationString.append("'").append(object.toString()).append("'");
+                }
+                else if (typeClass.getTypeName().equals("String")) {
+                    objectCreationString.append("\"").append(object.toString()).append("\"");
+                } else if (typeClass.getTypeName().equals("int")) {
+                    objectCreationString.append("Integer.parseInt(\"" + object.toString() + "\")");
+                } else if (typeClass.getTypeName().equals("double")) {
+                    objectCreationString.append("Double.parseDouble(\"" + object.toString() + "\")");
+                } else if (typeClass.getTypeName().equals("boolean")) {
+                    objectCreationString.append("Boolean.parseBoolean(\"" + object.toString() + "\")");
+                } else if (typeClass.getTypeName().equals("long")) {
+                    objectCreationString.append("Long.parseLong(\"" + object.toString() + "\")");
+                } else if (typeClass.getTypeName().equals("float")) {
+                    objectCreationString.append("Float.parseFloat(\"" + object.toString() + "\")");
+                }
+
+                if (i < parameterTypes.size() - 1) {
+                    objectCreationString.append(",");
+                }
+            }
+
+            objectCreationString.append(");\n");
+
+            return objectCreationString.toString();
+        }
+        else if (countConstructor == 0) {
+            objectCreationString.append(");\n");
+            return objectCreationString.toString();
+        }
+        else return "";
     }
 
     private static String generateTestRunner(String methodName, TestData testData) {
