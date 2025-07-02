@@ -1,6 +1,8 @@
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 //import ClonedProjects.*;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -31,6 +33,10 @@ public class ITP_TestDriver {
     }
     private static void writeDataToFile(String data, String path, boolean append) {
         try {
+            if (!append)
+            {
+                Files.deleteIfExists(Paths.get(path));
+            }
             FileWriter writer = new FileWriter(path, append);
             writer.write(data);
             writer.close();

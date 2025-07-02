@@ -30,6 +30,8 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
@@ -111,15 +113,18 @@ public class ITP4Java {
     private static void generateTestDataForProject(String path, ITP4JavaController.Coverage coverage, StringBuilder importStatement) throws IOException, NoSuchFieldException, ClassNotFoundException, InterruptedException, InvocationTargetException, IllegalAccessException, NoSuchMethodException {
         ITP4JavaTestDriverGenerator.generateITPTestDriver(path, coverage, importStatement);
 
+        ITP4JavaTestDriverRunner.buildTestDriver();
+
         List<File> files = Utils.getJavaFiles(path);
 
-        int unitCount = 0;
-        int simpleUnitCount = 0;
+        int unitCountForProject = 0;
+        int simpleUnitCountForProject = 0;
 
         double totalCoverage = 0;
 
         for (File file : files) {
             System.out.println("ITP4Java:        //All units of file: " + file.getAbsolutePath().replace("\\", "\\\\") + "\n");
+
 
             if (file.getAbsolutePath().equals("E:\\IdeaProjects\\testDriver\\uploadedProject\\Refactored-TheAlgorithms-Java\\src\\main\\java\\com\\thealgorithms\\audiofilters\\IIRFilter.java") //||
 //                    file.getAbsolutePath().equals("E:\\IdeaProjects\\testDriver\\uploadedProject\\Refactored-TheAlgorithms-Java\\src\\main\\java\\com\\thealgorithms\\ciphers\\AffineCipher.java")
@@ -132,13 +137,14 @@ public class ITP4Java {
             //String clonedMethod = createCloneMethod(method, coverage);
             double totalCoverageForFile = 0;
             int simpleUnitCountForFile = 0;
+            int unitCountForFile = 0;
 
             List<ASTNode> methodList = ITP4JavaTestDriverGenerator.getMethodList(file.getAbsolutePath());
 
-            unitCount += methodList.size();
+            unitCountForProject += methodList.size();
 
             writeDataToFile("======================== o0o ========================\n", constants.ITP_TEST_RESULT_FILEPATH, true);
-            writeDataToFile("Test result for file: " + file.getName() + "\n", constants.ITP_TEST_RESULT_FILEPATH, true);
+            writeDataToFile("Test result for file: " + file.getAbsolutePath() + "\n", constants.ITP_TEST_RESULT_FILEPATH, true);
 
             for (ASTNode method : methodList) {
 
@@ -150,11 +156,39 @@ public class ITP4Java {
                     continue;
                 }
 
+                String methodName = ((MethodDeclaration)method).getName().getIdentifier();
+
+                unitCountForFile += 1;
+
+                if (methodName.equals("indexOfRightMostSetBit") ||
+                        methodName.equals("bruteforce") ||
+                        methodName.equals("isEven") ||
+                        methodName.equals("isPowerTwo") ||
+                        methodName.equals("differentSigns") ||
+                        methodName.equals("reverseBits") ||
+                        methodName.equals("flipBit") ||
+                        methodName.equals("setBit") ||
+                        methodName.equals("clearBit") ||
+                        methodName.equals("getBit") ||
+                        methodName.equals("binaryToDecimal") ||
+                        methodName.equals("convertBinaryToOctal") ||
+                        methodName.equals("decimal2octal") ||
+                        methodName.equals("convertOctalDigitToBinary") ||
+                        methodName.equals("convertOctalToDecimal") ||
+                        methodName.equals("valOfChar")
+                ) //
+                {
+                    continue;
+                }
+
                 boolean isSimpleUnit = ITP4JavaTestDriverGenerator.isSimpleUnit((MethodDeclaration)method);
 
                 if (isSimpleUnit) {
-                    simpleUnitCount += 1;
+                    simpleUnitCountForProject += 1;
                     simpleUnitCountForFile += 1;
+
+                    writeDataToFile("", constants.EXECUTION_RESULT_PATH, false);//clear file
+
                     ConcolicTestResult testResult = startGeneratingForOneUnit(file.getAbsolutePath(), (MethodDeclaration) method, coverage);
 
                     totalCoverage += testResult.getFullCoverage();
@@ -163,15 +197,17 @@ public class ITP4Java {
                 }
             }
 
+            writeDataToFile("unitCountForFile: " + file.getName() + ": " + unitCountForFile  + "\n", constants.ITP_TEST_RESULT_FILEPATH, true);
+            writeDataToFile("simpleUnitCountForFile: " + file.getName() + ": " + simpleUnitCountForFile  + "\n", constants.ITP_TEST_RESULT_FILEPATH, true);
             writeDataToFile("averageCoverageForFile: " + file.getName() + ": " + (totalCoverageForFile /simpleUnitCountForFile)  + "%\n", constants.ITP_TEST_RESULT_FILEPATH, true);
 //            break;
 
         }
 
-        writeDataToFile("unitCount: " + unitCount + "\n", constants.ITP_TEST_RESULT_FILEPATH, true);
-        writeDataToFile("simpleUnitCount: " + simpleUnitCount + "\n", constants.ITP_TEST_RESULT_FILEPATH, true);
+        writeDataToFile("unitCountForProject: " + unitCountForProject + "\n", constants.ITP_TEST_RESULT_FILEPATH, true);
+        writeDataToFile("simpleUnitCountForProject: " + simpleUnitCountForProject + "\n", constants.ITP_TEST_RESULT_FILEPATH, true);
 
-        writeDataToFile("totalAverageCoverage: " + (totalCoverage /simpleUnitCount)  + "%\n", constants.ITP_TEST_RESULT_FILEPATH, true);
+        writeDataToFile("totalAverageCoverage: " + (totalCoverage /simpleUnitCountForProject)  + "%\n", constants.ITP_TEST_RESULT_FILEPATH, true);
 
 
     }
@@ -232,7 +268,7 @@ public class ITP4Java {
 
         writeDataToFile(testData.toJSONString(), constants.ITP_TEST_DATA_FILE_PATH, false);
 
-        ITP4JavaTestDriverRunner.buildTestDriver();
+//        ITP4JavaTestDriverRunner.buildTestDriver();
         runTestDriver();
 
         List<MarkedStatement> markedStatements = ITP4JavaTestDriverRunner.getCoveredStatement();
@@ -318,6 +354,10 @@ public class ITP4Java {
 
     private static void writeDataToFile(String data, String path, boolean append) {
         try {
+            if (!append)
+            {
+                Files.deleteIfExists(Paths.get(path));
+            }
             FileWriter writer = new FileWriter(path, append);
             writer.write(data);
             writer.close();

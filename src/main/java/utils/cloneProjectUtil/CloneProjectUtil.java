@@ -13,6 +13,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
 
 public final class CloneProjectUtil {
@@ -274,6 +275,10 @@ public final class CloneProjectUtil {
 
         result.append("private static void writeDataToFile(String data, String path, boolean append) {\n" +
                 "\ttry {\n" +
+                "\t\tif (!append)\n" +
+                "\t\t{\n" +
+                        "\t\t\tFiles.deleteIfExists(Paths.get(path));\n" +
+                "\t\t}\n" +
                 "\t\tFileWriter writer = new FileWriter(path, append);\n" +
                 "\t\twriter.write(data);\n" +
                 "\t\twriter.close();\n" +
