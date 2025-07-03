@@ -286,6 +286,53 @@ public class ITP4JavaV0Controller implements Initializable {
         testCaseListView.getItems().addAll(result.getFullTestData());
     }
 
+    StringBuilder importStatement = new StringBuilder();
+
+    @FXML
+    void btnStartGeneratingClicked(MouseEvent event) {
+        resetTestCaseDetailVBox();
+        resetGeneratedTestCasesInfo();
+        alertLabel.setText("");
+
+        ConcolicTestResult result;
+        try {
+            String javaDirPath = CloneProjectUtil.getJavaDirPath(FilePath.uploadedProjectPath);
+            if (javaDirPath.equals("")) throw new RuntimeException("Invalid project");
+
+            ITP4JavaV0.runITPv0ForProject(javaDirPath, Coverage.BRANCH, importStatement);
+        } catch (Exception e) {
+            alertLabel.setTextFill(Paint.valueOf("red"));
+            alertLabel.setText("Examined unit contains cases we haven't handle yet!");
+
+            System.out.println(e.getMessage());
+            e.printStackTrace();
+            return;
+        }
+
+
+//        try {
+//            result = ITP4JavaV0.runITPv0ForProject(choseUnit.getPath(), choseUnit.getMethodName(),
+//                    choseUnit.getClassName(), choseCoverage);
+//        } catch (Exception e) {
+//            System.out.println("Exception: " + e.getMessage() + ";\n" + e.getStackTrace().toString());
+//            alertLabel.setTextFill(Paint.valueOf("red"));
+//            alertLabel.setText("Examined unit contains cases we haven't handle yet!");
+//            return;
+//        }
+
+//        allTestCasesCoverageLabel.setText("   All test cases coverage: " + result.getFullCoverage() + "%");
+        allTestCasesCoverageLabel.setDisable(false);
+
+//        testingTimeLabel.setText("   Testing time: " + result.getTestingTime() + "ms");
+        testingTimeLabel.setDisable(false);
+
+//        usedMemoryLabel.setText("   Used memory: " + result.getUsedMemory() + "MB");
+        usedMemoryLabel.setDisable(false);
+
+
+//        testCaseListView.getItems().addAll(result.getFullTestData());
+    }
+
     private void setTestCaseDetail(ConcolicTestData testData) {
         testCaseIDLabel.setText("   Test case ID: " + testData.getTestCaseID());
         sourceCodeCoverageLabel.setText("   Source code coverage: " + testData.getSourceCodeCoverage());
