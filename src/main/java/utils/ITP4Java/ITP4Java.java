@@ -273,7 +273,7 @@ public class ITP4Java {
         writeDataToFile("simpleUnitCountForProject: " + simpleUnitCountForProject + "\n", constants.ITP_TEST_RESULT_FILEPATH, true);
         writeDataToFile("simpleUnitCountForProjectWithException: " + simpleUnitCountForProjectWithException + "\n", constants.ITP_TEST_RESULT_FILEPATH, true);
         writeDataToFile("totalCoverage: " + totalCoverage + "\n", constants.ITP_TEST_RESULT_FILEPATH, true);
-        writeDataToFile("simpleUnitCountForProject - simpleUnitCountForProjectWithException - 12: " + (simpleUnitCountForProject - simpleUnitCountForProjectWithException - 12) + "\n", constants.ITP_TEST_RESULT_FILEPATH, true);
+        writeDataToFile("simpleUnitCountForProject - simpleUnitCountForProjectWithException: " + (simpleUnitCountForProject - simpleUnitCountForProjectWithException) + "\n", constants.ITP_TEST_RESULT_FILEPATH, true);
         writeDataToFile("totalAverageCoverage: " + (totalCoverage /(simpleUnitCountForProject - simpleUnitCountForProjectWithException ))  + "%\n", constants.ITP_TEST_RESULT_FILEPATH, true);
 
 
