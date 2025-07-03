@@ -315,9 +315,9 @@ public class ITP4JavaController implements Initializable {
 
         //allTestCasesCoverageLabel.setText("   All test cases coverage: " + result.getFullCoverage() + "%");
 
-        alertLabel.setText("Finish testing the selected project.");
+        alertLabel.setText("ITP: Finish testing the selected project.");
 
-        allTestCasesCoverageLabel.setText("Finished testing");
+        allTestCasesCoverageLabel.setText("ITP: Finished testing");
 
         allTestCasesCoverageLabel.setDisable(false);
 

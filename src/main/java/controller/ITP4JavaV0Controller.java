@@ -258,32 +258,32 @@ public class ITP4JavaV0Controller implements Initializable {
 
     @FXML
     void generateButtonClicked(MouseEvent event) {
-        resetTestCaseDetailVBox();
-        resetGeneratedTestCasesInfo();
-        alertLabel.setText("");
-
-        ConcolicTestResult result;
-        try {
-            result = ITP4JavaV0.runFullConcolic(choseUnit.getPath(), choseUnit.getMethodName(),
-                    choseUnit.getClassName(), choseCoverage);
-        } catch (Exception e) {
-            System.out.println("Exception: " + e.getMessage() + ";\n" + e.getStackTrace().toString());
-            alertLabel.setTextFill(Paint.valueOf("red"));
-            alertLabel.setText("Examined unit contains cases we haven't handle yet!");
-            return;
-        }
-
-        allTestCasesCoverageLabel.setText("   All test cases coverage: " + result.getFullCoverage() + "%");
-        allTestCasesCoverageLabel.setDisable(false);
-
-        testingTimeLabel.setText("   Testing time: " + result.getTestingTime() + "ms");
-        testingTimeLabel.setDisable(false);
-
-        usedMemoryLabel.setText("   Used memory: " + result.getUsedMemory() + "MB");
-        usedMemoryLabel.setDisable(false);
-
-
-        testCaseListView.getItems().addAll(result.getFullTestData());
+//        resetTestCaseDetailVBox();
+//        resetGeneratedTestCasesInfo();
+//        alertLabel.setText("");
+//
+//        ConcolicTestResult result;
+//        try {
+//            result = ITP4JavaV0.runFullConcolic(choseUnit.getPath(), choseUnit.getMethodName(),
+//                    choseUnit.getClassName(), choseCoverage);
+//        } catch (Exception e) {
+//            System.out.println("Exception: " + e.getMessage() + ";\n" + e.getStackTrace().toString());
+//            alertLabel.setTextFill(Paint.valueOf("red"));
+//            alertLabel.setText("Examined unit contains cases we haven't handle yet!");
+//            return;
+//        }
+//
+//        allTestCasesCoverageLabel.setText("   All test cases coverage: " + result.getFullCoverage() + "%");
+//        allTestCasesCoverageLabel.setDisable(false);
+//
+//        testingTimeLabel.setText("   Testing time: " + result.getTestingTime() + "ms");
+//        testingTimeLabel.setDisable(false);
+//
+//        usedMemoryLabel.setText("   Used memory: " + result.getUsedMemory() + "MB");
+//        usedMemoryLabel.setDisable(false);
+//
+//
+//        testCaseListView.getItems().addAll(result.getFullTestData());
     }
 
     StringBuilder importStatement = new StringBuilder();
@@ -310,20 +310,10 @@ public class ITP4JavaV0Controller implements Initializable {
         }
 
 
-//        try {
-//            result = ITP4JavaV0.runITPv0ForProject(choseUnit.getPath(), choseUnit.getMethodName(),
-//                    choseUnit.getClassName(), choseCoverage);
-//        } catch (Exception e) {
-//            System.out.println("Exception: " + e.getMessage() + ";\n" + e.getStackTrace().toString());
-//            alertLabel.setTextFill(Paint.valueOf("red"));
-//            alertLabel.setText("Examined unit contains cases we haven't handle yet!");
-//            return;
-//        }
-
-//        allTestCasesCoverageLabel.setText("   All test cases coverage: " + result.getFullCoverage() + "%");
+        alertLabel.setText("ITP v0: Finish testing the selected project.");
         allTestCasesCoverageLabel.setDisable(false);
 
-//        testingTimeLabel.setText("   Testing time: " + result.getTestingTime() + "ms");
+//        testingTimeLabel.setText("ITP v0: Finished testing");
         testingTimeLabel.setDisable(false);
 
 //        usedMemoryLabel.setText("   Used memory: " + result.getUsedMemory() + "MB");

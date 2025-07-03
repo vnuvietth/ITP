@@ -35,6 +35,8 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.*;
 
 import static utils.ITP4Java.ITPTestDriver.ITP4JavaTestDriverGenerator.*;
@@ -82,7 +84,14 @@ public class ITP4JavaV0 {
         T.scheduleAtFixedRate(memoryTask, 0, 1); //0 delay and 5 ms tick
 
         long startRunTestTime = System.nanoTime();
+
+        writeDataToFile("ITPV0: Test result for the selected project: " + path + "\n", constants.ITP_TEST_RESULT_FILEPATH, false);
+        writeDataToFile("Coverage: " + coverage.name() + "\n", constants.ITP_TEST_RESULT_FILEPATH, true);
+
+
         ITPV0_GenerateTestDataForProject(path, coverage, importStatement);
+
+
         long endRunTestTime = System.nanoTime();
 
         double runTestDuration = (endRunTestTime - startRunTestTime) / 1000000.0;
@@ -126,16 +135,20 @@ public class ITP4JavaV0 {
         bypassMethodList.add("getImage");
         bypassMethodList.add("fermatPrimeChecking");
         bypassMethodList.add("minTrials");
+//        bypassMethodList.add("encode");
+
+        //encode
 
         for (File file : files) {
             resultString.setLength(0);
-            System.out.println("ITP4Java:        //All units of file: " + file.getAbsolutePath().replace("\\", "\\\\") + "\n");
+            System.out.println("ITP4 v0:        //All units of file: " + file.getAbsolutePath().replace("\\", "\\\\") + "\n");
 
 
-            if (file.getAbsolutePath().equals("E:\\IdeaProjects\\testDriver\\uploadedProject\\Refactored-TheAlgorithms-Java\\src\\main\\java\\com\\thealgorithms\\audiofilters\\IIRFilter.java") //||
+            if (file.getAbsolutePath().equals("E:\\IdeaProjects\\testDriver\\uploadedProject\\Refactored-TheAlgorithms-Java\\src\\main\\java\\com\\thealgorithms\\strings\\zigZagPattern\\zigZagPattern.java") //||
 //                    file.getAbsolutePath().equals("E:\\IdeaProjects\\testDriver\\uploadedProject\\Refactored-TheAlgorithms-Java\\src\\main\\java\\com\\thealgorithms\\ciphers\\AffineCipher.java")
             )
             {
+                //for debugging purpose
                 int i = 0;
                 System.out.println(file.getAbsolutePath());
             }
@@ -202,6 +215,8 @@ public class ITP4JavaV0 {
 
                         long startRunTestTimeForUnit = System.nanoTime();
 
+                        System.out.println("Start generating test data for: " + getMethodSignature((MethodDeclaration) method));
+
                         ConcolicTestResult testResult = startGeneratingITPv0ForOneUnit(file.getAbsolutePath(), (MethodDeclaration) method, coverage);
 
                         long endRunTestTimeForUnit = System.nanoTime();
@@ -237,13 +252,6 @@ public class ITP4JavaV0 {
             if (simpleUnitCountForFile > 0 && simpleUnitCountForFileWithException <= 0)
             {
                 writeDataToFile(resultString.toString(), constants.ITP_TEST_RESULT_FILEPATH, true);
-
-//                writeDataToFile("\n=========== o0o ===========\n", constants.ITP_TEST_RESULT_FILEPATH, true);
-//
-//                writeDataToFile("Test result for unit: " + getMethodSignature(method) + "\n\n", constants.ITP_TEST_RESULT_FILEPATH, true);
-//
-//                writeTestResultToFile(testResult, constants.ITP_TEST_RESULT_FILEPATH, true);
-
 
                 writeDataToFile("unitCountForFile: " + unitCountForFile  + "\n", constants.ITP_TEST_RESULT_FILEPATH, true);
                 writeDataToFile("simpleUnitCountForFile: " + simpleUnitCountForFile  + "\n", constants.ITP_TEST_RESULT_FILEPATH, true);
@@ -295,7 +303,12 @@ public class ITP4JavaV0 {
 
         ITP4JavaV0TestDriverGenerator.generateTestDriver((MethodDeclaration) method,
                 getCoverageType(coverage));
-        List<MarkedStatement> markedStatements = ITP4JavaV0TestDriverRunner.runTestDriver();
+
+        ITP4JavaV0TestDriverRunner.buildTestDriver();
+
+        ITP4JavaV0TestDriverRunner.runTestDriver();
+
+        List<MarkedStatement> markedStatements =  ITP4JavaV0TestDriverRunner.getMarkedStatement();
 
         MarkedPath.markPathToCFGV2(cfgBeginNode, markedStatements);
 
@@ -322,13 +335,17 @@ public class ITP4JavaV0 {
 
             testData = Utils4TestDriver.getParameterValue4ITP_V0(parameters);
 
-            writeDataToFile("", FilePath.concreteExecuteResultPath, false);
+            Utils.writeTestDataToFile(testData, constants.ITP_V0_TEST_DATA_FILE_PATH);
 
-            ITP4JavaV0TestDriverGenerator.generateTestDriver((MethodDeclaration) method,
-                    getCoverageType(coverage));
-            markedStatements = ITP4JavaV0TestDriverRunner.runTestDriver();
+//            ITP4JavaV0TestDriverGenerator.generateTestDriver((MethodDeclaration) method,
+//                    getCoverageType(coverage));
+
+            ITP4JavaV0TestDriverRunner.runTestDriver();
+
+            markedStatements = ITP4JavaV0TestDriverRunner.getMarkedStatement();
 
             MarkedPath.markPathToCFGV2(cfgBeginNode, markedStatements);
+
             coveredStatements = CoveredStatement.switchToCoveredStatementList(markedStatements);
 
             testResult.addToFullTestData(new ConcolicTestData(testData, coveredStatements, TestDriverRunner.getOutput(),
@@ -400,9 +417,12 @@ public class ITP4JavaV0 {
 
         ITP4JavaV0TestDriverGenerator.generateTestDriver((MethodDeclaration) testFunc,
                 getCoverageType(coverage));
-        List<MarkedStatement> markedStatements = ITP4JavaV0TestDriverRunner.runTestDriver();
 
-        MarkedPath.markPathToCFGV2(cfgBeginNode, markedStatements);
+        ITP4JavaV0TestDriverRunner.runTestDriver();
+
+        List<MarkedStatement> markedStatements = ITP4JavaV0TestDriverRunner.getMarkedStatement();
+
+                MarkedPath.markPathToCFGV2(cfgBeginNode, markedStatements);
 
         List<CoveredStatement> coveredStatements = CoveredStatement.switchToCoveredStatementList(markedStatements);
 
@@ -431,7 +451,10 @@ public class ITP4JavaV0 {
 
             ITP4JavaV0TestDriverGenerator.generateTestDriver((MethodDeclaration) testFunc,
                     getCoverageType(coverage));
-            markedStatements = ITP4JavaV0TestDriverRunner.runTestDriver();
+
+            ITP4JavaV0TestDriverRunner.runTestDriver();
+
+            markedStatements = ITP4JavaV0TestDriverRunner.getMarkedStatement();
 
             MarkedPath.markPathToCFGV2(cfgBeginNode, markedStatements);
             coveredStatements = CoveredStatement.switchToCoveredStatementList(markedStatements);
@@ -454,6 +477,10 @@ public class ITP4JavaV0 {
 
     private static void writeDataToFile(String data, String path, boolean append) {
         try {
+            if (!append)
+            {
+                Files.deleteIfExists(Paths.get(path));
+            }
             FileWriter writer = new FileWriter(path, append);
             writer.write(data);
             writer.close();

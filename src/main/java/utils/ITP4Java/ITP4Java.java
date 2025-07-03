@@ -83,7 +83,7 @@ public class ITP4Java {
 
         String projectName = path;// path.substring(path.lastIndexOf("\\"));
 
-        writeDataToFile("Test result for the selected project: " + projectName + "\n", constants.ITP_TEST_RESULT_FILEPATH, false);
+        writeDataToFile("ITP: Test result for the selected project: " + projectName + "\n", constants.ITP_TEST_RESULT_FILEPATH, false);
         writeDataToFile("Coverage: " + coverage.name() + "\n", constants.ITP_TEST_RESULT_FILEPATH, true);
 
         generateTestDataForProject(path, coverage, importStatement);

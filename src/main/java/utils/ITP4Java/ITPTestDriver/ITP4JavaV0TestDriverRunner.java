@@ -13,21 +13,23 @@ public final class ITP4JavaV0TestDriverRunner {
     private ITP4JavaV0TestDriverRunner() {
     }
 
-    public static List<MarkedStatement> runTestDriver() throws IOException, InterruptedException {
+
+    public static void buildTestDriver() throws IOException, InterruptedException {
 
         String buildCommand = constants.ITP_V0_BUILD_COMMAND;
 
         System.out.println(buildCommand);
 
         executeCommand(buildCommand);
+    }
+
+    public static void runTestDriver() throws IOException, InterruptedException {
 
         String runCommand = constants.ITP_V0_RUN_COMMAND;
 
         System.out.println(runCommand);
 
         executeCommand(runCommand);
-
-        return getMarkedStatement();
     }
 
     private static void executeCommand(String command) throws IOException, InterruptedException {
@@ -50,7 +52,7 @@ public final class ITP4JavaV0TestDriverRunner {
 
     }
 
-    private static List<MarkedStatement> getMarkedStatement() {
+    public static List<MarkedStatement> getMarkedStatement() {
         List<MarkedStatement> result = new ArrayList<>();
 
         String markedData = getDataFromFile(constants.EXECUTION_RESULT_PATH);
