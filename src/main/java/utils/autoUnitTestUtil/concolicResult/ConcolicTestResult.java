@@ -65,8 +65,8 @@ public class ConcolicTestResult {
         }
 
         result.append("Full coverage: " + this.getFullCoverage() + " \n");
-        result.append("Testing time: " + this.getTestingTime() + " \n");
-        result.append("Memory: " + this.getUsedMemory() + " \n");
+//        result.append("Testing time: " + this.getTestingTime() + " \n");
+//        result.append("Memory: " + this.getUsedMemory() + " \n");
 
         return result.toString();
     }

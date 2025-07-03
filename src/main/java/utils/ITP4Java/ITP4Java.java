@@ -106,6 +106,8 @@ public class ITP4Java {
     //javac  -d "E:\IdeaProjects\testDriver\target"  -cp "C:\Users\HP\Downloads\UploadedCode\1\target\classes;E:\IdeaProjects\NTD-Paper\src\main\resources\testDriverLibraries\json-simple-1.1.1.jar;"  "E:\IdeaProjects\testDriver\ITP_TestDriver.java"
     // Đường dẫn tới class path thì chứa thư mục clonedProject, nhưng không được bao gồm thư mục clonedProject.
 
+    static long totalUsedMemForUnit = 0;
+    static long tickCountForUnit = 0;
 
     private static void generateTestDataForProject(String path, ITP4JavaController.Coverage coverage, StringBuilder importStatement) throws IOException, NoSuchFieldException, ClassNotFoundException, InterruptedException, InvocationTargetException, IllegalAccessException, NoSuchMethodException {
         ITP4JavaTestDriverGenerator.generateITPTestDriver(path, coverage, importStatement);
@@ -194,7 +196,30 @@ public class ITP4Java {
                     writeDataToFile("", constants.EXECUTION_RESULT_PATH, false);//clear file
 
                     try {
+
+                        totalUsedMemForUnit = 0;
+                        tickCountForUnit = 0;
+
+                        Timer T4Unit = new Timer(true);
+
+                        TimerTask memoryTaskForUnit = new TimerTask() {
+                            @Override
+                            public void run() {
+                                totalUsedMemForUnit += (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory());
+                                tickCountForUnit += 1;
+                            }
+                        };
+
+                        T4Unit.scheduleAtFixedRate(memoryTaskForUnit, 0, 1); //0 delay and 5 ms tick
+
+                        long startRunTestTimeForUnit = System.nanoTime();
+
                         ConcolicTestResult testResult = startGeneratingForOneUnit(file.getAbsolutePath(), (MethodDeclaration) method, coverage);
+
+                        long endRunTestTimeForUnit = System.nanoTime();
+
+                        double runTestDurationForUnit = (endRunTestTimeForUnit - startRunTestTimeForUnit) / 1000000.0;
+                        float usedMemForUnit = ((float) totalUsedMemForUnit) / tickCountForUnit / 1024 / 1024;
 
                         totalCoverage += testResult.getFullCoverage();
 
@@ -203,7 +228,9 @@ public class ITP4Java {
                         resultString.append("\n**********************\n");
                         resultString.append("Test result for unit: " + getMethodSignature((MethodDeclaration) method) + "\n\n");
                         resultString.append(testResult.getStringResult()).append("\n");
-
+                        resultString.append("runTestDurationForUnit: " + runTestDurationForUnit + " (ms)\n");
+                        resultString.append("usedMemForUnit: " + usedMemForUnit + " (MB)\n");
+                        resultString.append("***************** o0o *****************\n");
                     }
                     catch (Exception e) {
                         exceptionUnitList.append(methodName).append("\n");
