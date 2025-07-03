@@ -54,4 +54,20 @@ public class ConcolicTestResult {
 
         return result.toString();
     }
+
+    public String getStringResult() {
+        StringBuilder result = new StringBuilder();
+
+        List<ConcolicTestData> testDataList = this.getFullTestData();
+
+        for (int i = 0; i < testDataList.size(); i++) {
+            result.append("Test no " + i + ": " + testDataList.get(i) + " \n");
+        }
+
+        result.append("Full coverage: " + this.getFullCoverage() + " \n");
+        result.append("Testing time: " + this.getTestingTime() + " \n");
+        result.append("Memory: " + this.getUsedMemory() + " \n");
+
+        return result.toString();
+    }
 }

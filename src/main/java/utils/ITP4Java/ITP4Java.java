@@ -32,10 +32,7 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.*;
 
 import static utils.ITP4Java.ITPTestDriver.ITP4JavaTestDriverGenerator.*;
 import static utils.ITP4Java.ITPTestDriver.ITP4JavaTestDriverRunner.runTestDriver;
@@ -119,10 +116,29 @@ public class ITP4Java {
 
         int unitCountForProject = 0;
         int simpleUnitCountForProject = 0;
+        int simpleUnitCountForProjectWithException = 0;
 
         double totalCoverage = 0;
 
+        StringBuilder resultString = new StringBuilder();
+        StringBuilder exceptionUnitList = new StringBuilder();
+
+        ArrayList<String> bypassMethodList = new ArrayList<>();
+        bypassMethodList.add("indexOfRightMostSetBit");
+        bypassMethodList.add("bpR");
+        bypassMethodList.add("binomialCoefficient");
+        bypassMethodList.add("leonardoNumber");
+        bypassMethodList.add("lucasSeries");
+        bypassMethodList.add("pascal");
+        bypassMethodList.add("TrinomialValue");
+        bypassMethodList.add("printTrinomial");
+        bypassMethodList.add("square_Root");
+        bypassMethodList.add("getImage");
+        bypassMethodList.add("fermatPrimeChecking");
+        bypassMethodList.add("minTrials");
+
         for (File file : files) {
+            resultString.setLength(0);
             System.out.println("ITP4Java:        //All units of file: " + file.getAbsolutePath().replace("\\", "\\\\") + "\n");
 
 
@@ -138,13 +154,17 @@ public class ITP4Java {
             double totalCoverageForFile = 0;
             int simpleUnitCountForFile = 0;
             int unitCountForFile = 0;
+            int simpleUnitCountForFileWithException = 0;
 
             List<ASTNode> methodList = ITP4JavaTestDriverGenerator.getMethodList(file.getAbsolutePath());
 
-            unitCountForProject += methodList.size();
+            //unitCountForProject += methodList.size();
 
-            writeDataToFile("======================== o0o ========================\n", constants.ITP_TEST_RESULT_FILEPATH, true);
-            writeDataToFile("Test result for file: " + file.getAbsolutePath() + "\n", constants.ITP_TEST_RESULT_FILEPATH, true);
+//            writeDataToFile("======================== o0o ========================\n", constants.ITP_TEST_RESULT_FILEPATH, true);
+//            writeDataToFile("Test result for file: " + file.getAbsolutePath() + "\n", constants.ITP_TEST_RESULT_FILEPATH, true);
+
+            resultString.append("======================== o0o ========================\n");
+            resultString.append("Test result for file: " + file.getAbsolutePath() + "\n");
 
             for (ASTNode method : methodList) {
 
@@ -158,28 +178,12 @@ public class ITP4Java {
 
                 String methodName = ((MethodDeclaration)method).getName().getIdentifier();
 
-                unitCountForFile += 1;
-
-                if (methodName.equals("indexOfRightMostSetBit") ||
-                        methodName.equals("bruteforce") ||
-                        methodName.equals("isEven") ||
-                        methodName.equals("isPowerTwo") ||
-                        methodName.equals("differentSigns") ||
-                        methodName.equals("reverseBits") ||
-                        methodName.equals("flipBit") ||
-                        methodName.equals("setBit") ||
-                        methodName.equals("clearBit") ||
-                        methodName.equals("getBit") ||
-                        methodName.equals("binaryToDecimal") ||
-                        methodName.equals("convertBinaryToOctal") ||
-                        methodName.equals("decimal2octal") ||
-                        methodName.equals("convertOctalDigitToBinary") ||
-                        methodName.equals("convertOctalToDecimal") ||
-                        methodName.equals("valOfChar")
-                ) //
-                {
+                if (bypassMethodList.contains(methodName)) {
                     continue;
                 }
+
+                unitCountForFile += 1;
+                unitCountForProject += 1;
 
                 boolean isSimpleUnit = ITP4JavaTestDriverGenerator.isSimpleUnit((MethodDeclaration)method);
 
@@ -189,25 +193,61 @@ public class ITP4Java {
 
                     writeDataToFile("", constants.EXECUTION_RESULT_PATH, false);//clear file
 
-                    ConcolicTestResult testResult = startGeneratingForOneUnit(file.getAbsolutePath(), (MethodDeclaration) method, coverage);
+                    try {
+                        ConcolicTestResult testResult = startGeneratingForOneUnit(file.getAbsolutePath(), (MethodDeclaration) method, coverage);
 
-                    totalCoverage += testResult.getFullCoverage();
+                        totalCoverage += testResult.getFullCoverage();
 
-                    totalCoverageForFile += testResult.getFullCoverage();
+                        totalCoverageForFile += testResult.getFullCoverage();
+
+                        resultString.append("\n**********************\n");
+                        resultString.append("Test result for unit: " + getMethodSignature((MethodDeclaration) method) + "\n\n");
+                        resultString.append(testResult.getStringResult()).append("\n");
+
+                    }
+                    catch (Exception e) {
+                        exceptionUnitList.append(methodName).append("\n");
+                        System.out.println("exceptionUnitList: ");
+                        System.out.println(exceptionUnitList.toString());
+
+                        simpleUnitCountForFileWithException += 1;
+                        simpleUnitCountForProjectWithException += 1;
+
+                        System.out.println(e.getMessage());
+                        System.out.println(Arrays.toString(e.getStackTrace()));
+                    }
                 }
             }
 
-            writeDataToFile("unitCountForFile: " + file.getName() + ": " + unitCountForFile  + "\n", constants.ITP_TEST_RESULT_FILEPATH, true);
-            writeDataToFile("simpleUnitCountForFile: " + file.getName() + ": " + simpleUnitCountForFile  + "\n", constants.ITP_TEST_RESULT_FILEPATH, true);
-            writeDataToFile("averageCoverageForFile: " + file.getName() + ": " + (totalCoverageForFile /simpleUnitCountForFile)  + "%\n", constants.ITP_TEST_RESULT_FILEPATH, true);
+            if (simpleUnitCountForFile > 0 && simpleUnitCountForFileWithException <= 0)
+            {
+                writeDataToFile(resultString.toString(), constants.ITP_TEST_RESULT_FILEPATH, true);
+
+//                writeDataToFile("\n=========== o0o ===========\n", constants.ITP_TEST_RESULT_FILEPATH, true);
+//
+//                writeDataToFile("Test result for unit: " + getMethodSignature(method) + "\n\n", constants.ITP_TEST_RESULT_FILEPATH, true);
+//
+//                writeTestResultToFile(testResult, constants.ITP_TEST_RESULT_FILEPATH, true);
+
+
+                writeDataToFile("unitCountForFile: " + unitCountForFile  + "\n", constants.ITP_TEST_RESULT_FILEPATH, true);
+                writeDataToFile("simpleUnitCountForFile: " + simpleUnitCountForFile  + "\n", constants.ITP_TEST_RESULT_FILEPATH, true);
+                writeDataToFile("simpleUnitCountForFileWithException: " + simpleUnitCountForFileWithException  + "\n", constants.ITP_TEST_RESULT_FILEPATH, true);
+                writeDataToFile("totalCoverageForFile: " + totalCoverageForFile  + "\n", constants.ITP_TEST_RESULT_FILEPATH, true);
+                writeDataToFile("simpleUnitCountForFile - simpleUnitCountForFileWithException: " + (simpleUnitCountForFile - simpleUnitCountForFileWithException)  + "\n", constants.ITP_TEST_RESULT_FILEPATH, true);
+                writeDataToFile("averageCoverageForFile: " + file.getName() + ": " + (totalCoverageForFile /(simpleUnitCountForFile - simpleUnitCountForFileWithException))  + "%\n", constants.ITP_TEST_RESULT_FILEPATH, true);
+            }
 //            break;
 
         }
 
+        writeDataToFile("\n ****************** o0o ******************" + "\n", constants.ITP_TEST_RESULT_FILEPATH, true);
         writeDataToFile("unitCountForProject: " + unitCountForProject + "\n", constants.ITP_TEST_RESULT_FILEPATH, true);
         writeDataToFile("simpleUnitCountForProject: " + simpleUnitCountForProject + "\n", constants.ITP_TEST_RESULT_FILEPATH, true);
-
-        writeDataToFile("totalAverageCoverage: " + (totalCoverage /simpleUnitCountForProject)  + "%\n", constants.ITP_TEST_RESULT_FILEPATH, true);
+        writeDataToFile("simpleUnitCountForProjectWithException: " + simpleUnitCountForProjectWithException + "\n", constants.ITP_TEST_RESULT_FILEPATH, true);
+        writeDataToFile("totalCoverage: " + totalCoverage + "\n", constants.ITP_TEST_RESULT_FILEPATH, true);
+        writeDataToFile("simpleUnitCountForProject - simpleUnitCountForProjectWithException - 12: " + (simpleUnitCountForProject - simpleUnitCountForProjectWithException - 12) + "\n", constants.ITP_TEST_RESULT_FILEPATH, true);
+        writeDataToFile("totalAverageCoverage: " + (totalCoverage /(simpleUnitCountForProject - simpleUnitCountForProjectWithException ))  + "%\n", constants.ITP_TEST_RESULT_FILEPATH, true);
 
 
     }
@@ -320,11 +360,11 @@ public class ITP4Java {
 
         testResult.setFullCoverage(calculateFullTestSuiteCoverage());
 
-        writeDataToFile("\n=========== o0o ===========\n", constants.ITP_TEST_RESULT_FILEPATH, true);
-
-        writeDataToFile("Test result for file: " + filePath.substring(filePath.lastIndexOf("\\") + 1) + ", method: " + getMethodSignature(method) + "\n\n", constants.ITP_TEST_RESULT_FILEPATH, true);
-
-        writeTestResultToFile(testResult, constants.ITP_TEST_RESULT_FILEPATH, true);
+//        writeDataToFile("\n=========== o0o ===========\n", constants.ITP_TEST_RESULT_FILEPATH, true);
+//
+//        writeDataToFile("Test result for unit: " + getMethodSignature(method) + "\n\n", constants.ITP_TEST_RESULT_FILEPATH, true);
+//
+//        writeTestResultToFile(testResult, constants.ITP_TEST_RESULT_FILEPATH, true);
 
         return testResult;
     }
