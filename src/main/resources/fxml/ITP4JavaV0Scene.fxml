@@ -1,16 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.Cursor?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ChoiceBox?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ListView?>
-<?import javafx.scene.control.TreeView?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="608.0" prefWidth="872.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ITP4JavaV0Controller">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="608.0" prefWidth="872.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ITP4JavaV0Controller">
    <children>
       <Button layoutX="15.0" layoutY="14.0" mnemonicParsing="false" onMouseClicked="#chooseFileButtonClicked" text="Choose file">
          <cursor>
@@ -67,5 +62,6 @@
             <Font size="14.0" />
          </font>
       </Label>
+      <Button fx:id="btnStartGenerating" layoutX="714.0" layoutY="54.0" mnemonicParsing="false" onMouseClicked="#btnStartGeneratingClicked" prefHeight="26.0" prefWidth="154.0" text="Start generating" />
    </children>
 </AnchorPane>
