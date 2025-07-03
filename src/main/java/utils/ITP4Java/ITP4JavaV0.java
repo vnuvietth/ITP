@@ -324,7 +324,7 @@ public class ITP4JavaV0 {
 
             writeDataToFile("", FilePath.concreteExecuteResultPath, false);
 
-            ITP4JavaV0TestDriverGenerator.generateTestDriver((MethodDeclaration) testFunc,
+            ITP4JavaV0TestDriverGenerator.generateTestDriver((MethodDeclaration) method,
                     getCoverageType(coverage));
             markedStatements = ITP4JavaV0TestDriverRunner.runTestDriver();
 
