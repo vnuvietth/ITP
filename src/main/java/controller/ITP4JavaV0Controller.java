@@ -299,7 +299,7 @@ public class ITP4JavaV0Controller implements Initializable {
             String javaDirPath = CloneProjectUtil.getJavaDirPath(FilePath.uploadedProjectPath);
             if (javaDirPath.equals("")) throw new RuntimeException("Invalid project");
 
-            ITP4JavaV0.runITPv0ForProject(javaDirPath, Coverage.BRANCH, importStatement);
+            ITP4JavaV0.runITPv0ForProject(javaDirPath, Coverage.STATEMENT, importStatement);
         } catch (Exception e) {
             alertLabel.setTextFill(Paint.valueOf("red"));
             alertLabel.setText("Examined unit contains cases we haven't handle yet!");

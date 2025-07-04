@@ -19,6 +19,7 @@ public final class NTDUploadUtil {
             int count = 0;
             while ((zipEntry = zis.getNextEntry()) != null) {
                 // ...
+                System.out.println("zipEntry = " + zipEntry.getName());
                 count++;
                 File newFile = newFile(destDir, zipEntry);
                 if (zipEntry.isDirectory()) {
@@ -49,6 +50,8 @@ public final class NTDUploadUtil {
             zis.close();
             return unzipDestinationFolder;
         } catch (Exception e) {
+            System.out.printf("Exception: %s\n", e.getMessage());
+            e.printStackTrace();
             throw new RuntimeException(e.getMessage());
         }
     }

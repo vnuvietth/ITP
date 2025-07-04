@@ -3,6 +3,8 @@ package utils.ITP4Java.ITPTestDriver;
 import org.eclipse.jdt.core.dom.*;
 import utils.ITP4Java.common.ITPUtils;
 import utils.ITP4Java.common.constants;
+import utils.autoUnitTestUtil.dataStructure.ParamTestData;
+import utils.autoUnitTestUtil.dataStructure.TestData;
 import utils.autoUnitTestUtil.parser.ASTHelper;
 
 import java.io.IOException;
@@ -14,7 +16,7 @@ public final class Concolic4ITPTestDriverGenerator {
     private Concolic4ITPTestDriverGenerator() {
     }
 
-    public static void generateTestDriver(MethodDeclaration method, Object[] testData, ASTHelper.Coverage coverage) {
+    public static void generateTestDriver(MethodDeclaration method, TestData testData, ASTHelper.Coverage coverage) {
         StringBuilder result = new StringBuilder();
 
         String testDriverTemplateContent = readTestDriverTemplate();
@@ -43,19 +45,48 @@ public final class Concolic4ITPTestDriverGenerator {
         }
     }
 
-    private static String generateTestRunner(String methodName, Object[] testData) {
+    private static String generateTestRunner(String methodName, TestData testData) {
         StringBuilder result = new StringBuilder();
 //        result.append("    public static void main(String[] args) {\n");
 //        result.append("        writeDataToFile(\"\", \"core-engine/cfg/src/main/java/data/testDriverData/runTestDriverData.txt\", false);\n\n");
 //        result.append("        long startRunTestTime = System.nanoTime();\n\n");
         result.append("        Object output = ").append(methodName).append("(");
-        for(int i = 0; i < testData.length; i++) {
-            if(testData[i] instanceof Character) {
-                result.append("'").append(testData[i]).append("'");
-            } else {
-                result.append(testData[i]);
+        for(int i = 0; i < testData.getParamList().size(); i++) {
+
+            ParamTestData paramData = testData.getParamList().get(i);
+//            if(testData[i] instanceof Character) {
+//                result.append("'").append(testData[i]).append("'");
+//            }
+//            else if(testData[i] instanceof Float) {
+//                result.append(testData[i]).append("F");
+//            }
+//            else if(testData[i] instanceof String) {
+//                result.append("\"").append(testData[i]).append("\"");
+//            }
+//            else {
+//                result.append(testData[i]);
+//            }
+            if(paramData.getType().toString().equals("char")) {
+                result.append("'").append(paramData.getValue().toString().charAt(0)).append("'");
+            } else if(paramData.getType().toString().equals("java.lang.String")) {
+                result.append("\"").append(paramData.getValue().toString()).append("\"");
+            } else if(paramData.getType().toString().equals("String")) {
+                result.append("\"").append(paramData.getValue().toString()).append("\"");
+            } else if (paramData.getType().toString().equals("int")) {
+                result.append("Integer.parseInt(\"" + paramData.getValue().toString() + "\")");
+            } else if (paramData.getType().toString().equals("double")) {
+                result.append("Double.parseDouble(\"" + paramData.getValue().toString() + "\")");
+            } else if (paramData.getType().toString().equals("boolean")) {
+                result.append("Boolean.parseBoolean(\"" + paramData.getValue().toString() + "\")");
+            } else if (paramData.getType().toString().equals("long")) {
+                result.append("Long.parseLong(\"" + paramData.getValue().toString() + "\")");
+            } else if (paramData.getType().toString().equals("float")) {
+                result.append("Float.parseFloat(\"" + paramData.getValue().toString() + "\")");
             }
-            if(i != testData.length - 1) result.append(", ");
+
+
+
+            if(i != testData.getParamList().size() - 1) result.append(", ");
         }
         result.append("        );\n");
 //        result.append("        long endRunTestTime = System.nanoTime();\n\n");

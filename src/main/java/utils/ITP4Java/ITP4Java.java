@@ -139,6 +139,11 @@ public class ITP4Java {
         bypassMethodList.add("getImage");
         bypassMethodList.add("fermatPrimeChecking");
         bypassMethodList.add("minTrials");
+        bypassMethodList.add("perimeterIrregularPolygon");
+        bypassMethodList.add("calculatePi");
+        bypassMethodList.add("isOperator");
+
+        writeDataToFile("", constants.ITP_EXCEPTION_UNIT_FILEPATH, false);
 
         for (File file : files) {
             resultString.setLength(0);
@@ -215,6 +220,14 @@ public class ITP4Java {
 
                         long startRunTestTimeForUnit = System.nanoTime();
 
+                        if (methodName.equals("perimeterIrregularPolygon") ||
+                                methodName.equals("calculatePi") ||
+                                methodName.equals("isOperator")
+                        )
+                        {
+                            System.out.println("Method name = " + methodName);
+                        }
+
                         ConcolicTestResult testResult = startGeneratingForOneUnit(file.getAbsolutePath(), (MethodDeclaration) method, coverage);
 
                         long endRunTestTimeForUnit = System.nanoTime();
@@ -243,6 +256,8 @@ public class ITP4Java {
 
                         System.out.println(e.getMessage());
                         System.out.println(Arrays.toString(e.getStackTrace()));
+
+                        writeDataToFile(methodName + "\n", constants.ITP_EXCEPTION_UNIT_FILEPATH, true);
                     }
                 }
             }

@@ -97,6 +97,10 @@ public class ITP4JavaV0 {
         double runTestDuration = (endRunTestTime - startRunTestTime) / 1000000.0;
         float usedMem = ((float) totalUsedMem) / tickCount / 1024 / 1024;
 
+        writeDataToFile("***************** o0o *****************\n", constants.ITP_TEST_RESULT_FILEPATH, true);
+        writeDataToFile("ITP v0: runTestDuration: " + runTestDuration + " (ms)\n", constants.ITP_TEST_RESULT_FILEPATH, true);
+        writeDataToFile("ITP v0: usedMem: " + usedMem + " (MB)\n", constants.ITP_TEST_RESULT_FILEPATH, true);
+
 //        result.setTestingTime(runTestDuration);
 //        result.setUsedMemory(usedMem);
 
@@ -135,9 +139,13 @@ public class ITP4JavaV0 {
         bypassMethodList.add("getImage");
         bypassMethodList.add("fermatPrimeChecking");
         bypassMethodList.add("minTrials");
-//        bypassMethodList.add("encode");
+        bypassMethodList.add("perimeterIrregularPolygon");
+        bypassMethodList.add("calculatePi");
+        bypassMethodList.add("isOperator");
 
         //encode
+
+        writeDataToFile("", constants.ITP_EXCEPTION_UNIT_FILEPATH, false);
 
         for (File file : files) {
             resultString.setLength(0);
@@ -217,6 +225,14 @@ public class ITP4JavaV0 {
 
                         System.out.println("Start generating test data for: " + getMethodSignature((MethodDeclaration) method));
 
+                        if (methodName.equals("perimeterIrregularPolygon") ||
+                                methodName.equals("calculatePi") ||
+                                methodName.equals("isOperator")
+                        )
+                        {
+                            System.out.println("Method name = " + methodName);
+                        }
+
                         ConcolicTestResult testResult = startGeneratingITPv0ForOneUnit(file.getAbsolutePath(), (MethodDeclaration) method, coverage);
 
                         long endRunTestTimeForUnit = System.nanoTime();
@@ -245,6 +261,8 @@ public class ITP4JavaV0 {
 
                         System.out.println(e.getMessage());
                         System.out.println(Arrays.toString(e.getStackTrace()));
+
+                        writeDataToFile(methodName + "\n", constants.ITP_EXCEPTION_UNIT_FILEPATH, true);
                     }
                 }
             }

@@ -286,6 +286,57 @@ public final class Utils4TestDriver {
         return new TestData(paramList);
     }
 
+    public static TestData getParameterValue_Concolic4ITP(List<ASTNode> parameters) {
+        List<ParamTestData> paramList = new ArrayList<>();
+
+        Scanner scanner;
+        try {
+            scanner = new Scanner(new File(FilePath.generatedTestDataPath));
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+
+        for (int i = 0; i < parameters.size(); i++) {
+
+            String key = Utils4TestDriver.getParameterName(parameters.get(i));
+            Object value = null;
+
+            if (!scanner.hasNext()) {
+                value = createRandomVariableData(Utils4TestDriver.getParameterClass(parameters.get(i)));
+                continue;
+            }
+
+            String className = Utils4TestDriver.getParameterClass(parameters.get(i)).getName();
+
+            if ("int".equals(className)) {
+                value = scanner.nextInt();
+            } else if ("boolean".equals(className)) {
+                value = scanner.nextBoolean();
+            } else if ("byte".equals(className)) {
+                value = scanner.nextByte();
+            } else if ("short".equals(className)) {
+                value = scanner.nextShort();
+            } else if ("char".equals(className)) {
+                value = (char) scanner.nextInt();
+            } else if ("long".equals(className)) {
+                value = scanner.nextLong();
+            } else if ("float".equals(className)) {
+                value = scanner.nextFloat();
+            } else if ("double".equals(className)) {
+                value = scanner.nextDouble();
+            } else if ("void".equals(className)) {
+                value = null;
+            } else {
+                throw new RuntimeException("Unsupported type: " + className);
+            }
+
+            ParamTestData pair = new ParamTestData(key, className, value);
+            paramList.add(pair);
+        }
+
+        return new TestData(paramList);
+    }
+
     public static Object[] getParameterValue(Class<?>[] parameterClasses) {
         Object[] result = new Object[parameterClasses.length];
         Scanner scanner;
@@ -337,6 +388,29 @@ public final class Utils4TestDriver {
         }
 
         return result;
+    }
+
+
+    public static TestData createRandomTestData_Concolic4ITP(List<ASTNode> parameters) {
+
+        List<ParamTestData> parameterPairs = new ArrayList<>();
+
+        for (int i = 0; i < parameters.size(); i++) {
+
+            Class typeClass = getParameterClass(parameters.get(i));
+
+            Object object = createRandomVariableData4ITP(typeClass);
+
+            String className = typeClass.getName();
+
+            ParamTestData pair = new ParamTestData(Utils4TestDriver.getParameterName(parameters.get(i)), className, object);
+
+            parameterPairs.add(pair);
+        }
+
+        TestData testData = new TestData(parameterPairs);
+
+        return testData;
     }
 
     public static TestData createRandomTestData4ITP_V0(List<ASTNode> parameters) {
