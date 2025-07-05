@@ -2,17 +2,18 @@ package utils.ITP4Java.common;
 
 public interface constants {
     //General info start
-    String TEST_FOLDER = "\\sample\\Units-From-Leetcode-Java-Solutions.zip";
+//    String TEST_FOLDER = "\\sample\\Units-From-Leetcode-Java-Solutions.zip";
 
-    //String TEST_FOLDER = "\\sample\\Units-From-TheAlgorithms-Java.zip";
+    String TEST_FOLDER = "\\sample\\LeetCode-Java-Solutions-master.zip";
+
 //    String TEST_FOLDER = "\\sample\\Refactored-TheAlgorithms-Java.zip";
 
     String INSTRUMENTED_TESTING_UNIT_PLACEHOLDER = "%%INSTRUMENTED_TESTING_UNIT_PLACEHOLDER%%";
     String UNIT_CALLING_PLACEHOLDER = "%%UNIT_CALLING_PLACEHOLDER%%";
     String TEST_DATA_READING_PLACEHOLDER = "%%TEST_DATA_READING_PLACEHOLDER%%";
 
-//    String PROJECT_ROOT_DRIVE = "E:\\IdeaProjects\\NTD-Paper"; // At company
-    String PROJECT_ROOT_DRIVE = "D:\\QG25.09\\Code.VietTH\\NTD-Paper"; //At home
+    String PROJECT_ROOT_DRIVE = "E:\\IdeaProjects\\NTD-Paper"; // At company
+//    String PROJECT_ROOT_DRIVE = "D:\\QG25.09\\Code.VietTH\\NTD-Paper"; //At home
 
     //Test driver folder
     String TEST_DRIVER_FOLDER = "E:\\IdeaProjects\\testDriver";
@@ -97,4 +98,6 @@ public interface constants {
     String ITP_CLONED_PROJECT_CLASSPATH =  TEST_DRIVER_CLASSPATH_FOLDER;
 
     String ITP_TEST_RESULT_FILEPATH = TEST_DRIVER_FOLDER + "\\ITP_TestResult.txt";
+
+    String ITP_EXCEPTION_UNIT_FILEPATH = TEST_DRIVER_FOLDER + "\\ITP_ExceptionUnit.txt";
 }

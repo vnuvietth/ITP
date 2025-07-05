@@ -15,6 +15,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import utils.FilePath;
 import utils.ITP4Java.Concolic4ITP;
+import utils.ITP4Java.ITP4JavaV0;
 import utils.ITP4Java.common.constants;
 import utils.autoUnitTestUtil.concolicResult.ConcolicParameterData;
 import utils.autoUnitTestUtil.concolicResult.ConcolicTestData;
@@ -161,6 +162,10 @@ public class Concolic4ITPController implements Initializable {
         } catch (Exception e) {
             alertLabel.setTextFill(Paint.valueOf("red"));
             alertLabel.setText("INVALID PROJECT ZIP FILE (eg: not a zip file, project's source code contains cases we haven't handled, ...)");
+
+
+            System.out.printf("uploadFileButtonClicked. Exception: %s\n", e.getMessage());
+            e.printStackTrace();
         }
     }
 
@@ -254,33 +259,80 @@ public class Concolic4ITPController implements Initializable {
 
     @FXML
     void generateButtonClicked(MouseEvent event) {
+//        resetTestCaseDetailVBox();
+//        resetGeneratedTestCasesInfo();
+//
+//        ConcolicTestResult result;
+//        try {
+//            result = Concolic4ITP.runFullConcolic(choseUnit.getPath(), choseUnit.getMethodName(),
+//                    choseUnit.getClassName(), choseCoverage);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            alertLabel.setTextFill(Paint.valueOf("red"));
+//            alertLabel.setText("Examined unit contains cases we haven't handle yet!");
+//            return;
+//        }
+//
+//        allTestCasesCoverageLabel.setText("   All test cases coverage: " + result.getFullCoverage() + "%");
+//        allTestCasesCoverageLabel.setDisable(false);
+//
+//        testingTimeLabel.setText("   Testing time: " + result.getTestingTime() + "ms");
+//        testingTimeLabel.setDisable(false);
+//
+//        usedMemoryLabel.setText("   Used memory: " + result.getUsedMemory() + "MB");
+//        usedMemoryLabel.setDisable(false);
+//
+//
+//        testCaseListView.getItems().addAll(result.getFullTestData());
+    }
+
+    StringBuilder importStatement = new StringBuilder();
+
+    @FXML
+    void btnRunConcolic4ITPButtonClicked(MouseEvent event) {
         resetTestCaseDetailVBox();
         resetGeneratedTestCasesInfo();
 
         ConcolicTestResult result;
         try {
-            result = Concolic4ITP.runFullConcolic(choseUnit.getPath(), choseUnit.getMethodName(),
-                    choseUnit.getClassName(), choseCoverage);
+            String javaDirPath = CloneProjectUtil.getJavaDirPath(FilePath.uploadedProjectPath);
+            if (javaDirPath.equals("")) throw new RuntimeException("Invalid project");
+
+            Concolic4ITP.runConcolic4ITPForProject(javaDirPath, Coverage.BRANCH, importStatement);
         } catch (Exception e) {
-            e.printStackTrace();
             alertLabel.setTextFill(Paint.valueOf("red"));
             alertLabel.setText("Examined unit contains cases we haven't handle yet!");
+
+            System.out.println(e.getMessage());
+            e.printStackTrace();
             return;
         }
 
-        allTestCasesCoverageLabel.setText("   All test cases coverage: " + result.getFullCoverage() + "%");
+//        ConcolicTestResult result;
+//        try {
+//            result = Concolic4ITP.runConcolic4ITPForProject(choseUnit.getPath(), choseUnit.getMethodName(),
+//                    choseUnit.getClassName(), choseCoverage);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            alertLabel.setTextFill(Paint.valueOf("red"));
+//            alertLabel.setText("Examined unit contains cases we haven't handle yet!");
+//            return;
+//        }
+
+        alertLabel.setText("Concolic4ITP: Finish testing the selected project.");
         allTestCasesCoverageLabel.setDisable(false);
 
-        testingTimeLabel.setText("   Testing time: " + result.getTestingTime() + "ms");
+//        testingTimeLabel.setText("   Testing time: " + result.getTestingTime() + "ms");
         testingTimeLabel.setDisable(false);
 
-        usedMemoryLabel.setText("   Used memory: " + result.getUsedMemory() + "MB");
+//        usedMemoryLabel.setText("   Used memory: " + result.getUsedMemory() + "MB");
         usedMemoryLabel.setDisable(false);
 
 
-        testCaseListView.getItems().addAll(result.getFullTestData());
+//        testCaseListView.getItems().addAll(result.getFullTestData());
     }
 
+    //
     private void setTestCaseDetail(ConcolicTestData testData) {
         testCaseIDLabel.setText("   Test case ID: " + testData.getTestCaseID());
         sourceCodeCoverageLabel.setText("   Source code coverage: " + testData.getSourceCodeCoverage());

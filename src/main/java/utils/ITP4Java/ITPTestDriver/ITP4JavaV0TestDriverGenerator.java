@@ -73,7 +73,7 @@ public final class ITP4JavaV0TestDriverGenerator {
             SingleVariableDeclaration paramData = (SingleVariableDeclaration)paramList.get(i);
 
             if(paramData.getType().toString().equals("char")) {
-                unitCaller.append("'").append("param" + i).append("'");
+                unitCaller.append("param" + i).append(".charAt(0)");
             } else if(paramData.getType().toString().equals("String")) {
                 unitCaller.append("param" + i);
             } else if (paramData.getType().toString().equals("int")) {
