@@ -519,7 +519,9 @@ public final class CloneProjectUtil {
         if(block != null) {
             List<ASTNode> statements = block.statements();
             for (int i = 0; i < statements.size(); i++) {
-                result.append("\t").append(generateCodeForOneStatement(statements.get(i), ";"));
+
+                String temp = generateCodeForOneStatement(statements.get(i), ";");
+                result.append("\t").append(temp);
             }
         }
         result.append("}\n");
@@ -611,7 +613,9 @@ public final class CloneProjectUtil {
     private static String generateCodeForNormalStatement(ASTNode statement, String markMethodSeparator) {
         StringBuilder result = new StringBuilder();
 
-        result.append(generateCodeForMarkMethod(statement, markMethodSeparator));
+        String temp = generateCodeForMarkMethod(statement, markMethodSeparator);
+
+        result.append(temp);
         result.append(statement);
 
         return result.toString();
@@ -642,6 +646,11 @@ public final class CloneProjectUtil {
             newStatement.append(charAt);
         }
 
+        if (newStatement.indexOf("\"") >= 0 || newStatement.toString().contains("this.dinersOnTable.acquire();"))
+        {
+            System.out.println("newStatement: " + newStatement);
+        }
+
         result.append("mark(\"").append(newStatement).append("\", false, false)").append(markMethodSeparator).append("\n");
         totalFunctionStatement++;
         totalClassStatement++;
@@ -653,8 +662,36 @@ public final class CloneProjectUtil {
         totalFunctionStatement++;
         totalClassStatement++;
         totalFunctionBranch += 2;
-        return "((" + condition + ") && mark(\"" + condition + "\", true, false))" +
-                " || mark(\"" + condition + "\", false, true)";
+
+        String conditionString = condition.toString();
+
+        StringBuilder newCondition = new StringBuilder();
+
+        // Rewrite Statement for mark method
+        for (int i = 0; i < conditionString.length(); i++) {
+            char charAt = conditionString.charAt(i);
+
+            if (charAt == '\n') {
+                newCondition.append("\\n");
+                continue;
+            } else if (charAt == '"') {
+                newCondition.append("\\").append('"');
+                continue;
+            } else if (i != conditionString.length() - 1 && charAt == '\\' && conditionString.charAt(i + 1) == 'n') {
+                newCondition.append("\" + \"").append("\\n").append("\" + \"");
+                i++;
+                continue;
+            }
+
+            newCondition.append(charAt);
+        }
+
+
+        return "((" + conditionString + ") && mark(\"" + newCondition + "\", true, false))" +
+                " || mark(\"" + newCondition + "\", false, true)";
+
+//        return "((" + condition + ") && mark(\"" + condition + "\", true, false))" +
+//                " || mark(\"" + condition + "\", false, true)";
     }
 
     private static void writeDataToFile(String data, String path) {
