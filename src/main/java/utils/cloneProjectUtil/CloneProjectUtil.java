@@ -313,11 +313,19 @@ public final class CloneProjectUtil {
         for (ASTNode astNode : methods) {
             totalFunctionStatement = 0;
             totalFunctionBranch = 0;
+
             MethodDeclaration methodDeclaration = (MethodDeclaration) astNode;
+            String methodName = methodDeclaration.getName().toString();
+
+            if (methodName.equals("fizz"))
+            {
+                System.out.println("methodName = " + methodName);
+            }
+
             result.append(createCloneMethod(methodDeclaration));
             result.append(createTotalFunctionCoverageVariable(methodDeclaration, totalFunctionStatement, CoverageType.STATEMENT));
             result.append(createTotalFunctionCoverageVariable(methodDeclaration, totalFunctionBranch, CoverageType.BRANCH));
-            String methodName = methodDeclaration.getName().toString();
+
             Unit unit = new Unit(methodName, filePath, methodName, javaFile.getName() + ".java");
             javaFile.addUnit(unit);
         }
@@ -478,13 +486,25 @@ public final class CloneProjectUtil {
             cloneMethod.append(modifier).append(" ");
         }
 
+        StringBuilder throwsException = new StringBuilder();
+        if (method.thrownExceptionTypes().size() > 0) {
+
+            throwsException.append(" throws ");
+
+            for (int i = 0; i < method.thrownExceptionTypes().size() - 1; i++) {
+                throwsException.append(method.thrownExceptionTypes().get(i)).append(", ");
+            }
+
+            throwsException.append(method.thrownExceptionTypes().get(method.thrownExceptionTypes().size() - 1));
+        }
+
         cloneMethod.append(method.getReturnType2() != null ? method.getReturnType2() : "").append(" ").append(method.getName()).append("(");
         List<ASTNode> parameters = method.parameters();
         for (int i = 0; i < parameters.size(); i++) {
             cloneMethod.append(parameters.get(i));
             if (i != parameters.size() - 1) cloneMethod.append(", ");
         }
-        cloneMethod.append(")\n");
+        cloneMethod.append(")").append(" ").append(throwsException.toString()).append("\n");
 
         cloneMethod.append(generateCodeForBlock(method.getBody())).append("\n");
 
