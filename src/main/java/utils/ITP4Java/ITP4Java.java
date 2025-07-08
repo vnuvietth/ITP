@@ -113,7 +113,11 @@ public class ITP4Java {
     private static void generateTestDataForProject(String path, ITP4JavaController.Coverage coverage, StringBuilder importStatement) throws IOException, NoSuchFieldException, ClassNotFoundException, InterruptedException, InvocationTargetException, IllegalAccessException, NoSuchMethodException {
         ITP4JavaTestDriverGenerator.generateITPTestDriver(path, coverage, importStatement);
 
+        System.out.println("Finish generating the project test driver.");
+
         ITP4JavaTestDriverRunner.buildTestDriver();
+
+        System.out.println("Finish building the project test driver.");
 
         List<File> files = Utils.getJavaFiles(path);
 
@@ -142,6 +146,23 @@ public class ITP4Java {
         bypassMethodList.add("perimeterIrregularPolygon");
         bypassMethodList.add("calculatePi");
         bypassMethodList.add("isOperator");
+
+        //For LeetCode solution
+        bypassMethodList.add("countTriples");
+        bypassMethodList.add("generate");
+        bypassMethodList.add("fizzBuzz");
+        bypassMethodList.add("getRow");
+        bypassMethodList.add("divisorGame");
+        bypassMethodList.add("numOfArrays");
+        bypassMethodList.add("kInversePairs");
+        bypassMethodList.add("countAndSay");
+        bypassMethodList.add("getMoneyAmount");
+        bypassMethodList.add("knightDialer");
+        bypassMethodList.add("integerBreak");
+        bypassMethodList.add("knightProbability");
+        bypassMethodList.add("findContestMatch");
+
+        //
 
         writeDataToFile("", constants.ITP_EXCEPTION_UNIT_FILEPATH, false);
 
@@ -186,6 +207,11 @@ public class ITP4Java {
 
                 String methodName = ((MethodDeclaration)method).getName().getIdentifier();
 
+                if (methodName.equals("accountBalanceAfterPurchase"))
+                {
+                    System.out.println("methodName = " + methodName);
+                }
+
                 if (bypassMethodList.contains(methodName)) {
                     continue;
                 }
@@ -220,13 +246,16 @@ public class ITP4Java {
 
                         long startRunTestTimeForUnit = System.nanoTime();
 
-                        if (methodName.equals("perimeterIrregularPolygon") ||
-                                methodName.equals("calculatePi") ||
-                                methodName.equals("isOperator")
-                        )
-                        {
-                            System.out.println("Method name = " + methodName);
-                        }
+//                        if (methodName.equals("perimeterIrregularPolygon") ||
+//                                methodName.equals("calculatePi") ||
+//                                methodName.equals("isOperator")
+//                        )
+//                        {
+//                            System.out.println("Method name = " + methodName);
+//                        }
+
+                        System.out.println("simpleUnitCountForProject = " + simpleUnitCountForProject);
+                        System.out.println("simpleUnitCountForFile = " + simpleUnitCountForFile);
 
                         ConcolicTestResult testResult = startGeneratingForOneUnit(file.getAbsolutePath(), (MethodDeclaration) method, coverage);
 
