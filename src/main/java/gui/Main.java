@@ -37,6 +37,6 @@ public class Main extends Application {
 
     public static void main(String[] args) throws IOException {
         launch();
-        CloneProjectUtil.deleteFilesInDirectory(FilePath.clonedProjectPath);
+//        CloneProjectUtil.deleteFilesInDirectory(FilePath.clonedProjectPath);
     }
 }

@@ -250,6 +250,13 @@ public final class CloneProjectUtil {
         // Class type (interface/class) and class name
         ClassData classData = classDataArr.get(0);
 
+        String className = classData.getClassName();
+
+        if (className.equals("CategorizeBoxAccordingtoCriteria"))
+        {
+            System.out.println("className = " + className);
+        }
+
         result.append("public ").append(classData.getTypeOfClass()).append(" ").append(classData.getClassName());
 
         //Extensions
@@ -666,10 +673,15 @@ public final class CloneProjectUtil {
             newStatement.append(charAt);
         }
 
-        if (newStatement.indexOf("\"") >= 0 || newStatement.toString().contains("this.dinersOnTable.acquire();"))
+        if (stringStatement.contains("BULKY_DIMENSION_THRESHOLD"))
         {
-            System.out.println("newStatement: " + newStatement);
+            System.out.println("stringStatement = " + stringStatement);
         }
+
+//        if (newStatement.indexOf("\"") >= 0 || newStatement.toString().contains("this.dinersOnTable.acquire();"))
+//        {
+//            System.out.println("newStatement: " + newStatement);
+//        }
 
         result.append("mark(\"").append(newStatement).append("\", false, false)").append(markMethodSeparator).append("\n");
         totalFunctionStatement++;
