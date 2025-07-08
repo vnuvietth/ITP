@@ -19,7 +19,7 @@ public final class NTDUploadUtil {
             int count = 0;
             while ((zipEntry = zis.getNextEntry()) != null) {
                 // ...
-                System.out.println("zipEntry = " + zipEntry.getName());
+                System.out.println("Unziping file " + zipEntry.getName());
                 count++;
                 File newFile = newFile(destDir, zipEntry);
                 if (zipEntry.isDirectory()) {

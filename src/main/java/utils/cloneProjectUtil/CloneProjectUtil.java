@@ -252,10 +252,12 @@ public final class CloneProjectUtil {
 
         String className = classData.getClassName();
 
-        if (className.equals("CategorizeBoxAccordingtoCriteria"))
-        {
-            System.out.println("className = " + className);
-        }
+        System.out.println("Parsing class " + className + ".java...");
+
+//        if (className.equals("CategorizeBoxAccordingtoCriteria"))
+//        {
+//            System.out.println("className = " + className);
+//        }
 
         result.append("public ").append(classData.getTypeOfClass()).append(" ").append(classData.getClassName());
 
@@ -308,9 +310,15 @@ public final class CloneProjectUtil {
             @Override
             public boolean visit(TypeDeclaration node) {
                 for (MethodDeclaration method : node.getMethods()) {
-//                    if (!method.isConstructor()) {
-                    methods.add(method);
+
+                    String methodName = method.getName().toString();
+
+//                    if (methodName.equals("getNextMove"))
+//                    {
+//                        System.out.println("methodName = " + methodName);
 //                    }
+
+                    methods.add(method);
                 }
                 return true;
             }
@@ -324,10 +332,10 @@ public final class CloneProjectUtil {
             MethodDeclaration methodDeclaration = (MethodDeclaration) astNode;
             String methodName = methodDeclaration.getName().toString();
 
-            if (methodName.equals("fizz"))
-            {
-                System.out.println("methodName = " + methodName);
-            }
+//            if (methodName.equals("getNextMove"))
+//            {
+//                System.out.println("methodName = " + methodName);
+//            }
 
             result.append(createCloneMethod(methodDeclaration));
             result.append(createTotalFunctionCoverageVariable(methodDeclaration, totalFunctionStatement, CoverageType.STATEMENT));
