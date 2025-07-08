@@ -46,7 +46,7 @@ public final class NTDUploadUtil {
                     fos.close();
                 }
             }
-            System.out.println(count);
+            System.out.println("Total number of file: " + count);
             zis.close();
             return unzipDestinationFolder;
         } catch (Exception e) {

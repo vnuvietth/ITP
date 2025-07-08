@@ -88,6 +88,9 @@ public final class MarkedPath {
             rootNode = rootNode.getAfterStatementNode();
         }
         while (rootNode != null) {
+
+            System.out.println("In markPathToCFGV2 method: rootNode is " + rootNode.getContent());
+
             if (rootNode.getContent().equals("")) {
                 rootNode.setMarked(true);
                 rootNode = rootNode.getAfterStatementNode();

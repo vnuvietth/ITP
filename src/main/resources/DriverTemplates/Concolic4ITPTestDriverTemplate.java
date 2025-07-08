@@ -43,6 +43,8 @@ public class concolic4ITPTestDriver {
 
     public static void main(String[] args) {
 
+        System.out.println("concolic4ITPTestDriver starts...");
+
         writeDataToFile("", PATH_RESULT, false);
 
         long startRunTestTime = System.nanoTime();
@@ -60,6 +62,8 @@ public class concolic4ITPTestDriver {
         double runTestDuration = (endRunTestTime - startRunTestTime) / 1000000.0;
 
         writeDataToFile(runTestDuration + "===" + output, PATH_RESULT, true);
+
+        System.out.println("concolic4ITPTestDriver ends...");
 
     }
 

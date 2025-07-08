@@ -49,7 +49,7 @@ public class ITP_V0_TestDriver {
 
     public static void main(String[] args) throws IOException, ParseException {
 
-        System.out.println("Concolic4ITPTestDriver starts...");
+        System.out.println("ITP_V0_TestDriver starts...");
 
         writeDataToFile("", PATH_RESULT, false);
 
@@ -83,7 +83,7 @@ public class ITP_V0_TestDriver {
 
         writeDataToFile(runTestDuration + "===" + output, PATH_RESULT, true);
 
-        System.out.println("Concolic4ITPTestDriver ends...");
+        System.out.println("ITP_V0_TestDriver ends...");
 
     }
 
