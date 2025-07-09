@@ -161,6 +161,9 @@ public class ITP4Java {
         bypassMethodList.add("integerBreak");
         bypassMethodList.add("knightProbability");
         bypassMethodList.add("findContestMatch");
+        bypassMethodList.add("generateMatrix");
+        bypassMethodList.add("numTrees");
+        bypassMethodList.add("lexicalOrder");
 
         //
 
@@ -218,6 +221,8 @@ public class ITP4Java {
 
                 unitCountForFile += 1;
                 unitCountForProject += 1;
+
+                System.out.println("Processing method: " + ((MethodDeclaration)method).toString());
 
                 boolean isSimpleUnit = ITP4JavaTestDriverGenerator.isSimpleUnit((MethodDeclaration)method);
 
@@ -288,6 +293,10 @@ public class ITP4Java {
 
                         writeDataToFile(methodName + "\n", constants.ITP_EXCEPTION_UNIT_FILEPATH, true);
                     }
+                }
+                else
+                {
+                    System.out.println("Not simple unit.");
                 }
             }
 

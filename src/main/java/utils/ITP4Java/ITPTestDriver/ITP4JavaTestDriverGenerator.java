@@ -91,7 +91,7 @@ public final class ITP4JavaTestDriverGenerator {
     }
 
     public static boolean isSimpleUnit(MethodDeclaration method) {
-        System.out.println(method.toString());
+
 
         List<ASTNode> statements = method.getBody().statements();
 

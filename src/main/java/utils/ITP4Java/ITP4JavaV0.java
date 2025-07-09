@@ -143,6 +143,26 @@ public class ITP4JavaV0 {
         bypassMethodList.add("calculatePi");
         bypassMethodList.add("isOperator");
 
+        //For LeetCode solution
+        bypassMethodList.add("countTriples");
+        bypassMethodList.add("generate");
+        bypassMethodList.add("fizzBuzz");
+        bypassMethodList.add("getRow");
+        bypassMethodList.add("divisorGame");
+        bypassMethodList.add("numOfArrays");
+        bypassMethodList.add("kInversePairs");
+        bypassMethodList.add("countAndSay");
+        bypassMethodList.add("getMoneyAmount");
+        bypassMethodList.add("knightDialer");
+        bypassMethodList.add("integerBreak");
+        bypassMethodList.add("knightProbability");
+        bypassMethodList.add("findContestMatch");
+        bypassMethodList.add("generateMatrix");
+        bypassMethodList.add("numTrees");
+        bypassMethodList.add("lexicalOrder");
+
+        //
+
         //encode
 
         writeDataToFile("", constants.ITP_EXCEPTION_UNIT_FILEPATH, false);
@@ -195,6 +215,8 @@ public class ITP4JavaV0 {
 
                 unitCountForFile += 1;
                 unitCountForProject += 1;
+
+                System.out.println(((MethodDeclaration)method).toString());
 
                 boolean isSimpleUnit = ITP4JavaTestDriverGenerator.isSimpleUnit((MethodDeclaration)method);
 
@@ -264,6 +286,10 @@ public class ITP4JavaV0 {
 
                         writeDataToFile(methodName + "\n", constants.ITP_EXCEPTION_UNIT_FILEPATH, true);
                     }
+                }
+                else
+                {
+                    System.out.println("Not simple unit.");
                 }
             }
 
