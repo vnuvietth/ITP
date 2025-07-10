@@ -168,6 +168,7 @@ public class ITP4JavaController implements Initializable {
         } catch (Exception e) {
             alertLabel.setTextFill(Paint.valueOf("red"));
             alertLabel.setText("INVALID PROJECT ZIP FILE (eg: not a zip file, project's source code contains cases we haven't handled, ...)");
+            e.printStackTrace();
         }
     }
 

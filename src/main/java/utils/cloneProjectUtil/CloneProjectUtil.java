@@ -252,6 +252,11 @@ public final class CloneProjectUtil {
         };
         compilationUnit.accept(classVisitor);
 
+        if (classDataArr.size() <= 0)
+        {
+            return  result.toString();
+        }
+
         // Class type (interface/class) and class name
         ClassData classData = classDataArr.get(0);
 
@@ -284,6 +289,30 @@ public final class CloneProjectUtil {
         }
 
         result.append(" {\n");
+
+
+        List<ASTNode> fieldArr = new ArrayList<>();
+
+        ASTVisitor fieldVisitor = new ASTVisitor() {
+            @Override
+            public boolean visit(FieldDeclaration node) {
+//                classDataArr[0] = new ClassData(node);
+                fieldArr.add(node);
+                return true;
+            }
+        };
+        compilationUnit.accept(fieldVisitor);
+
+        if (fieldArr.size() <= 0)
+        {
+            System.out.println("Field not found");
+        }
+        else
+        {
+            for (int i = 0; i < fieldArr.size(); i++) {
+                System.out.println(fieldArr.get(i).toString());
+            }
+        }
 
         result.append(classData.getFields());
 

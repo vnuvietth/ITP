@@ -186,10 +186,10 @@ public class ITP4Java {
 //        bypassMethodList.add("mirrorReflection");
 
         //
-        //
-        //
-        //
-        //
+
+
+        //JAVA-Challenges-main
+        bypassMethodList.add("calculateGCD");
 
         writeDataToFile("", constants.ITP_EXCEPTION_UNIT_FILEPATH, false);
 

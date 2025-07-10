@@ -10,18 +10,23 @@ public interface constants {
     //https://github.com/TheAlgorithms/Java
 //    String TEST_FOLDER = "\\sample\\Refactored-TheAlgorithms-Java.zip";
 
-    //https://github.com/kishanrajput23/Java-Projects-Collections
-    //https://github.com/oussemamansouri/JAVA-Challenges
-    //https://github.com/hbelmiro/100DaysOfJava
 
-    String TEST_FOLDER = "\\sample\\Refactored-TheAlgorithms-Java.zip";
+    //https://github.com/oussemamansouri/JAVA-Challenges
+    //https://github.com/phishman3579/java-algorithms-implementation
+
+
+    String TEST_FOLDER = "\\sample\\java-algorithms-implementation-master.zip";
+
+//    String TEST_FOLDER = "\\sample\\JAVA-Challenges-main.zip";
+
+//    String TEST_FOLDER = "\\sample\\Refactored-TheAlgorithms-Java.zip";
 
     String INSTRUMENTED_TESTING_UNIT_PLACEHOLDER = "%%INSTRUMENTED_TESTING_UNIT_PLACEHOLDER%%";
     String UNIT_CALLING_PLACEHOLDER = "%%UNIT_CALLING_PLACEHOLDER%%";
     String TEST_DATA_READING_PLACEHOLDER = "%%TEST_DATA_READING_PLACEHOLDER%%";
 
-//    String PROJECT_ROOT_DRIVE = "E:\\IdeaProjects\\NTD-Paper"; // At company
-    String PROJECT_ROOT_DRIVE = "D:\\QG25.09\\Code.VietTH\\NTD-Paper"; //At home
+    String PROJECT_ROOT_DRIVE = "E:\\IdeaProjects\\NTD-Paper"; // At company
+//    String PROJECT_ROOT_DRIVE = "D:\\QG25.09\\Code.VietTH\\NTD-Paper"; //At home
 
     //Test driver folder
     String TEST_DRIVER_FOLDER = "E:\\IdeaProjects\\testDriver";
