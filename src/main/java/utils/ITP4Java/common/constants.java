@@ -2,11 +2,19 @@ package utils.ITP4Java.common;
 
 public interface constants {
     //General info start
+    //https://github.com/varunu28/LeetCode-Java-Solutions
 //    String TEST_FOLDER = "\\sample\\Units-From-Leetcode-Java-Solutions.zip";
 
-    String TEST_FOLDER = "\\sample\\LeetCode-Java-Solutions-master.zip";
+//    String TEST_FOLDER = "\\sample\\LeetCode-Java-Solutions-master.zip";
 
+    //https://github.com/TheAlgorithms/Java
 //    String TEST_FOLDER = "\\sample\\Refactored-TheAlgorithms-Java.zip";
+
+    //https://github.com/kishanrajput23/Java-Projects-Collections
+    //https://github.com/oussemamansouri/JAVA-Challenges
+    //https://github.com/hbelmiro/100DaysOfJava
+
+    String TEST_FOLDER = "\\sample\\Refactored-TheAlgorithms-Java.zip";
 
     String INSTRUMENTED_TESTING_UNIT_PLACEHOLDER = "%%INSTRUMENTED_TESTING_UNIT_PLACEHOLDER%%";
     String UNIT_CALLING_PLACEHOLDER = "%%UNIT_CALLING_PLACEHOLDER%%";

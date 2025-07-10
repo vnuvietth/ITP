@@ -127,6 +127,7 @@ public class ITP4JavaV0 {
         StringBuilder exceptionUnitList = new StringBuilder();
 
         ArrayList<String> bypassMethodList = new ArrayList<>();
+        bypassMethodList.add("main");
         bypassMethodList.add("indexOfRightMostSetBit");
         bypassMethodList.add("bpR");
         bypassMethodList.add("binomialCoefficient");
@@ -160,6 +161,23 @@ public class ITP4JavaV0 {
         bypassMethodList.add("generateMatrix");
         bypassMethodList.add("numTrees");
         bypassMethodList.add("lexicalOrder");
+        bypassMethodList.add("toHex");
+        bypassMethodList.add("countEven");
+        bypassMethodList.add("maxProduct");
+        bypassMethodList.add("rangeBitwiseAnd");
+        bypassMethodList.add("countGoodStrings");
+        bypassMethodList.add("new21Game");
+        bypassMethodList.add("numOfBurgers");
+        bypassMethodList.add("smallestNumber");
+        bypassMethodList.add("sumZero");
+        bypassMethodList.add("minCuttingCost");
+        bypassMethodList.add("isUgly");
+//        bypassMethodList.add("countDigits");
+//        bypassMethodList.add("minBitFlips");
+//        bypassMethodList.add("isThree");
+//        bypassMethodList.add("brokenCalc");
+//        bypassMethodList.add("minimumNumbers");
+//        bypassMethodList.add("mirrorReflection");
 
         //
 
@@ -247,9 +265,9 @@ public class ITP4JavaV0 {
 
                         System.out.println("Start generating test data for: " + getMethodSignature((MethodDeclaration) method));
 
-                        if (methodName.equals("perimeterIrregularPolygon") ||
-                                methodName.equals("calculatePi") ||
-                                methodName.equals("isOperator")
+                        if (methodName.equals("toHex") ||
+                                methodName.equals("countEven") ||
+                                methodName.equals("hammingDistance")
                         )
                         {
                             System.out.println("Method name = " + methodName);

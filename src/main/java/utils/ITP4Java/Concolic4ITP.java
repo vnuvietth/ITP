@@ -126,6 +126,7 @@ public class Concolic4ITP {
         StringBuilder exceptionUnitList = new StringBuilder();
 
         ArrayList<String> bypassMethodList = new ArrayList<>();
+        bypassMethodList.add("main");
         bypassMethodList.add("indexOfRightMostSetBit");
         bypassMethodList.add("bpR");
         bypassMethodList.add("binomialCoefficient");
@@ -159,6 +160,23 @@ public class Concolic4ITP {
         bypassMethodList.add("generateMatrix");
         bypassMethodList.add("numTrees");
         bypassMethodList.add("lexicalOrder");
+        bypassMethodList.add("toHex");
+        bypassMethodList.add("countEven");
+        bypassMethodList.add("maxProduct");
+        bypassMethodList.add("rangeBitwiseAnd");
+        bypassMethodList.add("countGoodStrings");
+        bypassMethodList.add("new21Game");
+        bypassMethodList.add("numOfBurgers");
+        bypassMethodList.add("smallestNumber");
+        bypassMethodList.add("sumZero");
+        bypassMethodList.add("minCuttingCost");
+        bypassMethodList.add("isUgly");
+//        bypassMethodList.add("countDigits");
+//        bypassMethodList.add("minBitFlips");
+//        bypassMethodList.add("isThree");
+//        bypassMethodList.add("brokenCalc");
+//        bypassMethodList.add("minimumNumbers");
+//        bypassMethodList.add("mirrorReflection");
 
         //
 
