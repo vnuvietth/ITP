@@ -119,6 +119,7 @@ public class Concolic4ITP {
         int unitCountForProject = 0;
         int simpleUnitCountForProject = 0;
         int simpleUnitCountForProjectWithException = 0;
+        int testDataCountForProject = 0;
 
         double totalCoverage = 0;
 
@@ -287,6 +288,14 @@ public class Concolic4ITP {
 
                         totalCoverageForFile += testResult.getFullCoverage();
 
+                        int testDataCountForUnit = testResult.getFullTestData().size();
+
+                        System.out.println("testDataCountForUnit = " + testDataCountForUnit);
+
+                        testDataCountForProject += testDataCountForUnit;
+
+                        System.out.println("testDataCountForProject = " + testDataCountForProject);
+
                         resultString.append("\n**********************\n");
                         resultString.append("Test result for unit: " + getMethodSignature((MethodDeclaration) method) + "\n\n");
                         resultString.append(testResult.getStringResult()).append("\n");
@@ -335,6 +344,8 @@ public class Concolic4ITP {
         writeDataToFile("simpleUnitCountForProjectWithException: " + simpleUnitCountForProjectWithException + "\n", constants.ITP_TEST_RESULT_FILEPATH, true);
         writeDataToFile("totalCoverage: " + totalCoverage + "\n", constants.ITP_TEST_RESULT_FILEPATH, true);
         writeDataToFile("simpleUnitCountForProject - simpleUnitCountForProjectWithException: " + (simpleUnitCountForProject - simpleUnitCountForProjectWithException) + "\n", constants.ITP_TEST_RESULT_FILEPATH, true);
+        writeDataToFile("testDataCountForProject: " + testDataCountForProject + "\n", constants.ITP_TEST_RESULT_FILEPATH, true);
+        writeDataToFile("Test data/(simpleUnitCountForProject - simpleUnitCountForProjectWithException): " + ((double)(testDataCountForProject/((double)(simpleUnitCountForProject - simpleUnitCountForProjectWithException)))) + "\n", constants.ITP_TEST_RESULT_FILEPATH, true);
         writeDataToFile("totalAverageCoverage: " + (totalCoverage /(simpleUnitCountForProject - simpleUnitCountForProjectWithException ))  + "%\n", constants.ITP_TEST_RESULT_FILEPATH, true);
 
 
