@@ -173,6 +173,7 @@ public class ITP4JavaV0 {
         bypassMethodList.add("sumZero");
         bypassMethodList.add("minCuttingCost");
         bypassMethodList.add("isUgly");
+        bypassMethodList.add("maxBottlesDrunk");
 //        bypassMethodList.add("countDigits");
 //        bypassMethodList.add("minBitFlips");
 //        bypassMethodList.add("isThree");
@@ -183,6 +184,11 @@ public class ITP4JavaV0 {
         //
 
         //encode
+        //JAVA-Challenges-main
+        bypassMethodList.add("calculateGCD");
+
+        //java-algorithms-implementation-master
+        bypassMethodList.add("polar");
 
         writeDataToFile("", constants.ITP_EXCEPTION_UNIT_FILEPATH, false);
 

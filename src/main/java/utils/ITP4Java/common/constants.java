@@ -5,7 +5,7 @@ public interface constants {
     //https://github.com/varunu28/LeetCode-Java-Solutions
 //    String TEST_FOLDER = "\\sample\\Units-From-Leetcode-Java-Solutions.zip";
 
-//    String TEST_FOLDER = "\\sample\\LeetCode-Java-Solutions-master.zip";
+    String TEST_FOLDER = "\\sample\\LeetCode-Java-Solutions-master.zip";
 
     //https://github.com/TheAlgorithms/Java
 //    String TEST_FOLDER = "\\sample\\Refactored-TheAlgorithms-Java.zip";
@@ -15,7 +15,7 @@ public interface constants {
     //https://github.com/phishman3579/java-algorithms-implementation
 
 
-    String TEST_FOLDER = "\\sample\\java-algorithms-implementation-master.zip";
+//    String TEST_FOLDER = "\\sample\\java-algorithms-implementation-master.zip";
 
 //    String TEST_FOLDER = "\\sample\\JAVA-Challenges-main.zip";
 
@@ -25,8 +25,8 @@ public interface constants {
     String UNIT_CALLING_PLACEHOLDER = "%%UNIT_CALLING_PLACEHOLDER%%";
     String TEST_DATA_READING_PLACEHOLDER = "%%TEST_DATA_READING_PLACEHOLDER%%";
 
-    String PROJECT_ROOT_DRIVE = "E:\\IdeaProjects\\NTD-Paper"; // At company
-//    String PROJECT_ROOT_DRIVE = "D:\\QG25.09\\Code.VietTH\\NTD-Paper"; //At home
+//    String PROJECT_ROOT_DRIVE = "E:\\IdeaProjects\\NTD-Paper"; // At company
+    String PROJECT_ROOT_DRIVE = "D:\\QG25.09\\Code.VietTH\\NTD-Paper"; //At home
 
     //Test driver folder
     String TEST_DRIVER_FOLDER = "E:\\IdeaProjects\\testDriver";

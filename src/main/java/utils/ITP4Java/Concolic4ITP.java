@@ -172,6 +172,8 @@ public class Concolic4ITP {
         bypassMethodList.add("sumZero");
         bypassMethodList.add("minCuttingCost");
         bypassMethodList.add("isUgly");
+        bypassMethodList.add("maxBottlesDrunk");
+
 //        bypassMethodList.add("countDigits");
 //        bypassMethodList.add("minBitFlips");
 //        bypassMethodList.add("isThree");
@@ -182,6 +184,11 @@ public class Concolic4ITP {
         //
 
         //encode
+        //JAVA-Challenges-main
+        bypassMethodList.add("calculateGCD");
+
+        //java-algorithms-implementation-master
+        bypassMethodList.add("polar");
 
         writeDataToFile("", constants.ITP_EXCEPTION_UNIT_FILEPATH, false);
 

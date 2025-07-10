@@ -298,7 +298,7 @@ public class Concolic4ITPController implements Initializable {
             String javaDirPath = CloneProjectUtil.getJavaDirPath(FilePath.uploadedProjectPath);
             if (javaDirPath.equals("")) throw new RuntimeException("Invalid project");
 
-            Concolic4ITP.runConcolic4ITPForProject(javaDirPath, Coverage.BRANCH, importStatement);
+            Concolic4ITP.runConcolic4ITPForProject(javaDirPath, Coverage.STATEMENT, importStatement);
         } catch (Exception e) {
             alertLabel.setTextFill(Paint.valueOf("red"));
             alertLabel.setText("Examined unit contains cases we haven't handle yet!");
