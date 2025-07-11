@@ -173,6 +173,7 @@ public class Concolic4ITP {
         bypassMethodList.add("minCuttingCost");
         bypassMethodList.add("isUgly");
         bypassMethodList.add("maxBottlesDrunk");
+        bypassMethodList.add("constructRectangle");
 
 //        bypassMethodList.add("countDigits");
 //        bypassMethodList.add("minBitFlips");

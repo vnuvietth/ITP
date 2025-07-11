@@ -179,6 +179,7 @@ public class ITP4Java {
         bypassMethodList.add("minCuttingCost");
         bypassMethodList.add("isUgly");
         bypassMethodList.add("maxBottlesDrunk");
+        bypassMethodList.add("constructRectangle");
 //        bypassMethodList.add("countDigits");
 //        bypassMethodList.add("minBitFlips");
 //        bypassMethodList.add("isThree");
