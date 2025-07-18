@@ -43,6 +43,22 @@ public class concolic4ITPTestDriver {
 
     public static void main(String[] args) {
 
+        try
+        {
+            //Setup start
+            //TODO: Initialize environment and parameter value
+            //Setup end
+            //TODO: Call test function
+            //Tear down start
+            //TODO: Clean up environment: freeing memory, file,...
+            //Tear down end
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            return;
+        }
+
         System.out.println("concolic4ITPTestDriver starts...");
 
         writeDataToFile("", PATH_RESULT, false);

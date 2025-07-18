@@ -29,6 +29,7 @@ import utils.uploadUtil.ConcolicUploadUtil;
 import utils.uploadUtil.NTDUploadUtil;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -159,6 +160,8 @@ public class Concolic4ITPController implements Initializable {
             projectTreeView.setRoot(rootFolder);
             alertLabel.setTextFill(Paint.valueOf("green"));
             alertLabel.setText("Upload time " + duration + "ms");
+
+            projectTreeView.setDisable(true);
         } catch (Exception e) {
             alertLabel.setTextFill(Paint.valueOf("red"));
             alertLabel.setText("INVALID PROJECT ZIP FILE (eg: not a zip file, project's source code contains cases we haven't handled, ...)");
@@ -332,6 +335,23 @@ public class Concolic4ITPController implements Initializable {
 //        testCaseListView.getItems().addAll(result.getFullTestData());
     }
 
+    @FXML
+    void btnViewTestReportButtonClicked(MouseEvent event) {
+        try {
+            // Create a File object to check existence
+            File file = new File(constants.ITP_TEST_RESULT_FILEPATH);
+            if (!file.exists()) {
+                System.err.println("The file does not exist: " + constants.ITP_TEST_RESULT_FILEPATH);
+                return;
+            }
+
+            // Use Runtime to open the file in Notepad
+            Process process = Runtime.getRuntime().exec("notepad \"" + constants.ITP_TEST_RESULT_FILEPATH + "\"");
+            System.out.println("File opened in Notepad.");
+        } catch (IOException e) {
+            System.err.println("Failed to open file in Notepad: " + e.getMessage());
+        }
+    }
     //
     private void setTestCaseDetail(ConcolicTestData testData) {
         testCaseIDLabel.setText("   Test case ID: " + testData.getTestCaseID());

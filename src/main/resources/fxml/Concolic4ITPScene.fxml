@@ -62,6 +62,7 @@
             <Font size="14.0" />
          </font>
       </Label>
-      <Button fx:id="btnRunConcolic4ITP" layoutX="696.0" layoutY="54.0" mnemonicParsing="false" onMouseClicked="#btnRunConcolic4ITPButtonClicked" prefHeight="26.0" prefWidth="164.0" text="Run Concolic4ITP testing" />
+      <Button fx:id="btnRunConcolic4ITP" layoutX="570.0" layoutY="54.0" mnemonicParsing="false" onMouseClicked="#btnRunConcolic4ITPButtonClicked" prefHeight="26.0" prefWidth="131.0" text="Run Concolic testing" />
+      <Button fx:id="btnViewReport" layoutX="720.0" layoutY="54.0" mnemonicParsing="false" onMouseClicked="#btnViewTestReportButtonClicked" prefHeight="25.0" prefWidth="131.0" text="View test report" />
    </children>
 </AnchorPane>

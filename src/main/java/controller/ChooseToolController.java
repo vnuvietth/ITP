@@ -46,7 +46,7 @@ public class ChooseToolController {
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
         scene = new Scene(root);
         stage.setResizable(false);
-        stage.setTitle("Concolic4ITP");
+        stage.setTitle("Concolic testing method");
         stage.setScene(scene);
         scene.getWindow().centerOnScreen();
         stage.show();
@@ -58,7 +58,7 @@ public class ChooseToolController {
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
         scene = new Scene(root);
         stage.setResizable(false);
-        stage.setTitle("ITP4Java");
+        stage.setTitle("ITP testing method");
         stage.setScene(scene);
         scene.getWindow().centerOnScreen();
         stage.show();
@@ -70,7 +70,7 @@ public class ChooseToolController {
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
         scene = new Scene(root);
         stage.setResizable(false);
-        stage.setTitle("ITP4Java v0");
+        stage.setTitle("ITP4v0 testing method");
         stage.setScene(scene);
         scene.getWindow().centerOnScreen();
         stage.show();

@@ -1,7 +1,7 @@
-# NTD-AUT: A Non-Test Driver Concolic-Based Unit Testing Method for Java Projects
+# ITP: An Effective Concolic-Based Method for Generating Test Data in Unit Testing of Java Projects
 ## USER MANUAL
 ### Required environment
-- Our implementation has been tested on the Windows, Intel®Core™i7-1165G7 CPU @ 2.80GHz, 16GBs RAM memory.
+- Our implementation has been tested on the Windows, Processor	12th Gen Intel(R) Core(TM) i7-1255U, 1700 Mhz, 10 Core(s), 12 Logical Processor(s), 16GBs RAM memory.
 - IntelliJ IDEA, which is available [here](https://www.jetbrains.com/idea/download/)
 - [Java 11 SDK](https://www.oracle.com/java/technologies/javase-jdk11-downloads.html)
 - [Download JavaFX SDK (Version: 17.0.10, Type: SDK)](https://gluonhq.com/products/javafx/)
@@ -16,8 +16,8 @@
    - Main class: `gui.Main`
    - Modify options -> Add VM options: `--module-path <path-to-lib-folder-of-javafx-sdk> --add-modules javafx.controls,javafx.fxml` (TODO: Change the path to your JavaFX SDK lib folder)
 4. Run the project, the tool will ask you to choose between two options:
-   - **Option 1**: NTD method
-   - **Option 2**: Traditional concolic method\
+   - **Option 1**: Concolic4ITP. This function implements the Concolic testing method.
+   - **Option 2**: ITP4V0. This function implements the ITPv0 testing method.
 ![image](./src/main/resources/img/choose-method.png)
 5. After choosing the method, the main screen looks like this:
 ![image](./src/main/resources/img/main-screen.png)
