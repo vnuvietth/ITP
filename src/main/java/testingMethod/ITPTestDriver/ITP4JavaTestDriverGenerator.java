@@ -1,9 +1,9 @@
-package utils.ITP4Java.ITPTestDriver;
+package testingMethod.ITPTestDriver;
 
 import controller.ITP4JavaController;
 import org.eclipse.jdt.core.dom.*;
-import utils.ITP4Java.common.ITPUtils;
-import utils.ITP4Java.common.constants;
+import utils.common.ITPUtils;
+import utils.common.constants;
 import utils.autoUnitTestUtil.cfg.*;
 import utils.autoUnitTestUtil.dataStructure.ParamTestData;
 import utils.autoUnitTestUtil.dataStructure.TestData;

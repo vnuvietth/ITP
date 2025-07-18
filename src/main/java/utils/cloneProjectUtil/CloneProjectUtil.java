@@ -2,10 +2,9 @@ package utils.cloneProjectUtil;
 import org.apache.commons.io.FileUtils;
 import org.eclipse.jdt.core.dom.*;
 import utils.FilePath;
-import utils.ITP4Java.common.constants;
+import utils.common.constants;
 import utils.cloneProjectUtil.projectTreeObjects.Folder;
 import utils.cloneProjectUtil.projectTreeObjects.JavaFile;
-import utils.cloneProjectUtil.projectTreeObjects.ProjectTreeObject;
 import utils.cloneProjectUtil.projectTreeObjects.Unit;
 
 import java.io.File;
@@ -13,7 +12,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.*;
 
 public final class CloneProjectUtil {

@@ -1,39 +1,57 @@
-package utils.ITP4Java.ITPTestDriver;
+package testingMethod.ITPTestDriver;
 
-import utils.ITP4Java.common.constants;
+import utils.common.constants;
 import utils.autoUnitTestUtil.dataStructure.MarkedStatement;
 
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public final class Concolic4ITPTestDriverRunner {
+public final class ITP4JavaTestDriverRunner {
     private static double runtime;
     private static String output;
-    private Concolic4ITPTestDriverRunner() {
+    private ITP4JavaTestDriverRunner() {
     }
 
-    public static List<MarkedStatement> runTestDriver() throws IOException, InterruptedException {
+    public static void buildTestDriver() throws IOException, InterruptedException {
 
-//        executeCommand("cd " + constants.CONCOLIC_TEST_DRIVER_FOLDER);
-//        executeCommand(constants.CONCOLIC_TEST_DRIVER_ROOT_DRIVE);
-
-        String buildCommand = constants.CONCOLIC_4ITP_BUILD_COMMAND;
+        String buildCommand = constants.ITP_BUILD_COMMAND;
 
         System.out.println(buildCommand);
 
-        executeCommand(buildCommand);
+        int executeResult = executeCommand(buildCommand);
 
-        String runCommand = constants.CONCOLIC_4ITP_RUN_COMMAND;
+        if (executeResult != 0) {
+            System.out.println("Execution failed with exit code " + executeResult);
+        }
+        else
+        {
+            System.out.println("Execution successful");
+        }
+    }
+
+    public static void runTestDriver() throws IOException, InterruptedException {
+
+        String runCommand = constants.ITP_RUN_COMMAND;
 
         System.out.println(runCommand);
 
-        executeCommand(runCommand);
+        int executeResult = executeCommand(runCommand);
+
+        if (executeResult != 0) {
+            System.out.println("Execution failed with exit code " + executeResult);
+        }
+        else
+        {
+            System.out.println("Execution successful");
+        }
+    }
+    public static List<MarkedStatement> getCoveredStatement() throws IOException, InterruptedException {
 
         return getMarkedStatement();
     }
 
-    private static void executeCommand(String command) throws IOException, InterruptedException {
+    private static int executeCommand(String command) throws IOException, InterruptedException {
         Process p = Runtime.getRuntime().exec(command, null, new File(constants.TEST_DRIVER_FOLDER));
 
         p.waitFor();
@@ -41,9 +59,17 @@ public final class Concolic4ITPTestDriverRunner {
         if (p.exitValue() != 0)
         {
             String result = new String(p.getErrorStream().readAllBytes());
-            System.out.println("Executing test driver, result = " + result);
-        }
+            System.out.println("Executing command: " + command);
+            System.out.println(" result = " + result);
 
+            return p.exitValue();
+        }
+        else {
+            String result = new String(p.getInputStream().readAllBytes());
+            System.out.println("Executing command: " + command);
+            System.out.println(" result = " + result);
+            return 0;
+        }
     }
 
     private static List<MarkedStatement> getMarkedStatement() {

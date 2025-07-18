@@ -2,9 +2,8 @@ package utils.autoUnitTestUtil.testDriver;
 
 import org.eclipse.jdt.core.dom.*;
 import utils.FilePath;
-import utils.ITP4Java.ITPTestDriver.ITP4JavaTestDriverGenerator;
-import utils.ITP4Java.ITPTestDriver.ITP4JavaV0TestDriverGenerator;
-import utils.ITP4Java.common.constants;
+import testingMethod.ITPTestDriver.ITP4JavaTestDriverGenerator;
+import utils.common.constants;
 import utils.autoUnitTestUtil.dataStructure.ITPTestData;
 import utils.autoUnitTestUtil.dataStructure.ParamTestData;
 import utils.autoUnitTestUtil.dataStructure.TestData;

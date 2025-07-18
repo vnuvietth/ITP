@@ -1,4 +1,4 @@
-package utils.ITP4Java.common;
+package utils.common;
 
 public interface constants {
     //General info start

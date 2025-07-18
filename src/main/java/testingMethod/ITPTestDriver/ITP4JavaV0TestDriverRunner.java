@@ -1,57 +1,38 @@
-package utils.ITP4Java.ITPTestDriver;
+package testingMethod.ITPTestDriver;
 
-import utils.ITP4Java.common.constants;
+import utils.common.constants;
 import utils.autoUnitTestUtil.dataStructure.MarkedStatement;
 
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public final class ITP4JavaTestDriverRunner {
+public final class ITP4JavaV0TestDriverRunner {
     private static double runtime;
     private static String output;
-    private ITP4JavaTestDriverRunner() {
+    private ITP4JavaV0TestDriverRunner() {
     }
+
 
     public static void buildTestDriver() throws IOException, InterruptedException {
 
-        String buildCommand = constants.ITP_BUILD_COMMAND;
+        String buildCommand = constants.ITP_V0_BUILD_COMMAND;
 
         System.out.println(buildCommand);
 
-        int executeResult = executeCommand(buildCommand);
-
-        if (executeResult != 0) {
-            System.out.println("Execution failed with exit code " + executeResult);
-        }
-        else
-        {
-            System.out.println("Execution successful");
-        }
+        executeCommand(buildCommand);
     }
 
     public static void runTestDriver() throws IOException, InterruptedException {
 
-        String runCommand = constants.ITP_RUN_COMMAND;
+        String runCommand = constants.ITP_V0_RUN_COMMAND;
 
         System.out.println(runCommand);
 
-        int executeResult = executeCommand(runCommand);
-
-        if (executeResult != 0) {
-            System.out.println("Execution failed with exit code " + executeResult);
-        }
-        else
-        {
-            System.out.println("Execution successful");
-        }
-    }
-    public static List<MarkedStatement> getCoveredStatement() throws IOException, InterruptedException {
-
-        return getMarkedStatement();
+        executeCommand(runCommand);
     }
 
-    private static int executeCommand(String command) throws IOException, InterruptedException {
+    private static void executeCommand(String command) throws IOException, InterruptedException {
         Process p = Runtime.getRuntime().exec(command, null, new File(constants.TEST_DRIVER_FOLDER));
 
         p.waitFor();
@@ -61,18 +42,17 @@ public final class ITP4JavaTestDriverRunner {
             String result = new String(p.getErrorStream().readAllBytes());
             System.out.println("Executing command: " + command);
             System.out.println(" result = " + result);
-
-            return p.exitValue();
         }
-        else {
+        else
+        {
             String result = new String(p.getInputStream().readAllBytes());
             System.out.println("Executing command: " + command);
             System.out.println(" result = " + result);
-            return 0;
         }
+
     }
 
-    private static List<MarkedStatement> getMarkedStatement() {
+    public static List<MarkedStatement> getMarkedStatement() {
         List<MarkedStatement> result = new ArrayList<>();
 
         String markedData = getDataFromFile(constants.EXECUTION_RESULT_PATH);

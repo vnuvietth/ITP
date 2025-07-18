@@ -1,16 +1,14 @@
-package utils.ITP4Java;
+package testingMethod;
 
 import controller.Concolic4ITPController;
-import controller.ITP4JavaV0Controller;
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.Block;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.MethodDeclaration;
-import utils.FilePath;
-import utils.ITP4Java.ITPTestDriver.Concolic4ITPTestDriverRunner;
-import utils.ITP4Java.ITPTestDriver.ITP4JavaTestDriverGenerator;
-import utils.ITP4Java.common.ITPUtils;
-import utils.ITP4Java.common.constants;
+import testingMethod.ITPTestDriver.Concolic4ITPTestDriverRunner;
+import testingMethod.ITPTestDriver.ITP4JavaTestDriverGenerator;
+import utils.common.ITPUtils;
+import utils.common.constants;
 import utils.autoUnitTestUtil.algorithms.FindPath;
 import utils.autoUnitTestUtil.algorithms.SymbolicExecution;
 import utils.autoUnitTestUtil.cfg.CfgBlockNode;
@@ -25,7 +23,7 @@ import utils.autoUnitTestUtil.dataStructure.Path;
 import utils.autoUnitTestUtil.dataStructure.TestData;
 import utils.autoUnitTestUtil.parser.ASTHelper;
 import utils.autoUnitTestUtil.parser.ProjectParser;
-import utils.ITP4Java.ITPTestDriver.Concolic4ITPTestDriverGenerator;
+import testingMethod.ITPTestDriver.Concolic4ITPTestDriverGenerator;
 import utils.autoUnitTestUtil.testDriver.Utils4TestDriver;
 import utils.autoUnitTestUtil.utils.Utils;
 import utils.uploadUtil.ConcolicUploadUtil;
@@ -38,7 +36,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
 
-import static utils.ITP4Java.ITPTestDriver.ITP4JavaTestDriverGenerator.*;
+import static testingMethod.ITPTestDriver.ITP4JavaTestDriverGenerator.*;
 
 public class Concolic4ITP {
     private static CompilationUnit compilationUnit;

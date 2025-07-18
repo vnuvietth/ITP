@@ -1,7 +1,6 @@
-package utils.ITP4Java.common;
+package utils.common;
 
 import java.io.FileWriter;
-import java.io.IOException;
 
 public class ITPUtils {
 

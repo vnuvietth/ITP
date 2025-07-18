@@ -1,8 +1,8 @@
-package utils.ITP4Java.ITPTestDriver;
+package testingMethod.ITPTestDriver;
 
 import org.eclipse.jdt.core.dom.*;
-import utils.ITP4Java.common.ITPUtils;
-import utils.ITP4Java.common.constants;
+import utils.common.ITPUtils;
+import utils.common.constants;
 import utils.autoUnitTestUtil.dataStructure.ParamTestData;
 import utils.autoUnitTestUtil.dataStructure.TestData;
 import utils.autoUnitTestUtil.parser.ASTHelper;
@@ -12,11 +12,11 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 
-public final class Concolic4ITPTestDriverGenerator {
-    private Concolic4ITPTestDriverGenerator() {
+public final class ITP4JavaV0TestDriverGenerator {
+    private ITP4JavaV0TestDriverGenerator() {
     }
 
-    public static void generateTestDriver(MethodDeclaration method, TestData testData, ASTHelper.Coverage coverage) {
+    public static void generateTestDriver(MethodDeclaration method, ASTHelper.Coverage coverage) {
         StringBuilder result = new StringBuilder();
 
         String testDriverTemplateContent = readTestDriverTemplate();
@@ -24,75 +24,95 @@ public final class Concolic4ITPTestDriverGenerator {
         String clonedMethod = createCloneMethod(method, coverage);
 
         String templateContent = testDriverTemplateContent.replace(constants.INSTRUMENTED_TESTING_UNIT_PLACEHOLDER, clonedMethod)
+                .replace(constants.ITP_V0_TEST_DATA_FILE_PATH_PLACEHOLDER, constants.ITP_V0_TEST_DATA_FILE_PATH_FOR_TEST_DRIVER)
                 .replace(constants.EXECUTION_RESULT_PATH_PLACEHOLDER, constants.EXECUTION_RESULT_PATH);
 
-        String unitCalling = generateTestRunner(method.getName().toString(), testData);
+        String testDataCallingString = generateTestDataReader(method);
 
-        String templateWithUnitCalling = templateContent.replace(constants.UNIT_CALLING_PLACEHOLDER, unitCalling);
+        String templateContentWithTestDataReading = templateContent.replace(constants.TEST_DATA_READING_PLACEHOLDER,testDataCallingString);
 
-        result.append(templateWithUnitCalling);
+//        String unitCalling = generateTestRunner(method.getName().toString(), testData);
+//
+//        String templateWithUnitCalling = templateContentWithTestDataReading.replace(constants.UNIT_CALLING_PLACEHOLDER, unitCalling);
 
-        ITPUtils.writeToFile(String.valueOf(result), constants.CONCOLIC_4ITP_TEST_DRIVER_PATH, false);
+        result.append(templateContentWithTestDataReading);
+
+        ITPUtils.writeToFile(String.valueOf(result), constants.ITP_V0_TEST_DRIVER_PATH, false);
 
     }
 
     private static String readTestDriverTemplate() {
         try
         {
-            return Files.readString(Path.of(constants.CONCOLIC_4ITP_TEST_DRIVER_TEMPLATE_PATH));
+            return Files.readString(Path.of(constants.ITP_V0_TEST_DRIVER_TEMPLATE_PATH));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
-    private static String generateTestRunner(String methodName, TestData testData) {
-        StringBuilder result = new StringBuilder();
-//        result.append("    public static void main(String[] args) {\n");
-//        result.append("        writeDataToFile(\"\", \"core-engine/cfg/src/main/java/data/testDriverData/runTestDriverData.txt\", false);\n\n");
-//        result.append("        long startRunTestTime = System.nanoTime();\n\n");
-        result.append("        Object output = ").append(methodName).append("(");
-        for(int i = 0; i < testData.getParamList().size(); i++) {
+    private static String generateTestDataReader(MethodDeclaration method) {
+        StringBuilder testDataReader = new StringBuilder();
+        StringBuilder unitCaller = new StringBuilder();
+        unitCaller.append("Object output = ").append(method.getName().toString()).append("(");
 
-            ParamTestData paramData = testData.getParamList().get(i);
-//            if(testData[i] instanceof Character) {
-//                result.append("'").append(testData[i]).append("'");
-//            }
-//            else if(testData[i] instanceof Float) {
-//                result.append(testData[i]).append("F");
-//            }
-//            else if(testData[i] instanceof String) {
-//                result.append("\"").append(testData[i]).append("\"");
-//            }
-//            else {
-//                result.append(testData[i]);
-//            }
-            if(paramData.getType().toString().equals("char")) {
-                result.append("'").append(paramData.getValue().toString().charAt(0)).append("'");
-            } else if(paramData.getType().toString().equals("java.lang.String")) {
-                result.append("\"").append(paramData.getValue().toString()).append("\"");
-            } else if(paramData.getType().toString().equals("String")) {
-                result.append("\"").append(paramData.getValue().toString()).append("\"");
-            } else if (paramData.getType().toString().equals("int")) {
-                result.append("Integer.parseInt(\"" + paramData.getValue().toString() + "\")");
-            } else if (paramData.getType().toString().equals("double")) {
-                result.append("Double.parseDouble(\"" + paramData.getValue().toString() + "\")");
-            } else if (paramData.getType().toString().equals("boolean")) {
-                result.append("Boolean.parseBoolean(\"" + paramData.getValue().toString() + "\")");
-            } else if (paramData.getType().toString().equals("long")) {
-                result.append("Long.parseLong(\"" + paramData.getValue().toString() + "\")");
-            } else if (paramData.getType().toString().equals("float")) {
-                result.append("Float.parseFloat(\"" + paramData.getValue().toString() + "\")");
+
+        List paramList = method.parameters();
+
+        for(int i = 0; i < method.parameters().size(); i++) {
+            String param = "String param" + i + " = (String) jsonObject.get(\"" + ((SingleVariableDeclaration)(method.parameters().get(i))).getName() + "\");";
+
+            if (i == 0) {
+                testDataReader.append(param + "\n");
+            }
+            else {
+                testDataReader.append("        " + param + "\n");
             }
 
+            testDataReader.append("        System.out.println(\"" + ((SingleVariableDeclaration)(method.parameters().get(i))).getName() + " = \" " + " + param" + i + ");\n");
 
+            SingleVariableDeclaration paramData = (SingleVariableDeclaration)paramList.get(i);
 
-            if(i != testData.getParamList().size() - 1) result.append(", ");
+            if(paramData.getType().toString().equals("char")) {
+                unitCaller.append("param" + i).append(".charAt(0)");
+            } else if(paramData.getType().toString().equals("String")) {
+                unitCaller.append("param" + i);
+            } else if (paramData.getType().toString().equals("int")) {
+                unitCaller.append("Integer.parseInt(param" + i + ")");
+            } else if (paramData.getType().toString().equals("double")) {
+                unitCaller.append("Double.parseDouble(param" + i + ")");
+            } else if (paramData.getType().toString().equals("boolean")) {
+                unitCaller.append("Boolean.parseBoolean(param" + i + ")");
+            } else if (paramData.getType().toString().equals("long")) {
+                unitCaller.append("Long.parseLong(param" + i + ")");
+            } else if (paramData.getType().toString().equals("float")) {
+                unitCaller.append("Float.parseFloat(param" + i + ")");
+            }
+            if(i != paramList.size() - 1) unitCaller.append(", ");
         }
-        result.append("        );\n");
-//        result.append("        long endRunTestTime = System.nanoTime();\n\n");
-//        result.append("        double runTestDuration = (endRunTestTime - startRunTestTime) / 1000000.0;\n\n");
-//        result.append("        writeDataToFile(runTestDuration + \"===\" + output, \"src/main/java/utils/autoUnitTestUtil/concreteExecuteResult.txt\", true);\n\n");
-//        result.append("    }\n");
+        testDataReader.append("\n");
+
+        unitCaller.append(");\n");
+
+        return testDataReader + "        " + unitCaller.toString();
+    }
+
+    private static String generateTestRunner(String methodName, TestData testData) {
+        StringBuilder result = new StringBuilder();
+        result.append("Object output = ").append(methodName).append("(");
+
+        List<ParamTestData> paramList = testData.getParamList();
+
+        for(int i = 0; i < paramList.size(); i++) {
+            ParamTestData param = paramList.get(i);
+
+            if(param.getValue() instanceof Character) {
+                result.append("'").append(param.getValue()).append("'");
+            } else {
+                result.append(param.getValue());
+            }
+            if(i != paramList.size() - 1) result.append(", ");
+        }
+        result.append(");\n");
         return result.toString();
     }
 
@@ -136,7 +156,7 @@ public final class Concolic4ITPTestDriverGenerator {
     private static String createCloneMethod(MethodDeclaration method, ASTHelper.Coverage coverage) {
         StringBuilder cloneMethod = new StringBuilder();
 
-        cloneMethod.append("    public static ").append(method.getReturnType2()).append(" ").append(method.getName()).append("(");
+        cloneMethod.append("public static ").append(method.getReturnType2()).append(" ").append(method.getName()).append("(");
         List<ASTNode> parameters = method.parameters();
         for (int i = 0; i < parameters.size(); i++) {
             cloneMethod.append(parameters.get(i));
@@ -238,7 +258,7 @@ public final class Concolic4ITPTestDriverGenerator {
         StringBuilder result = new StringBuilder();
 
         // Condition
-        result.append("    while (");
+        result.append("while (");
         result.append(generateCodeForCondition(whileStatement.getExpression(), coverage));
         result.append(") {\n\n");
 
@@ -267,7 +287,7 @@ public final class Concolic4ITPTestDriverGenerator {
     private static String generateCodeForNormalStatement(ASTNode statement, String markMethodSeparator) {
         StringBuilder result = new StringBuilder();
 
-        result.append(generateCodeForMarkMethod(statement, markMethodSeparator));
+        result.append("        " + generateCodeForMarkMethod(statement, markMethodSeparator));
         result.append(statement);
 
         return result.toString();

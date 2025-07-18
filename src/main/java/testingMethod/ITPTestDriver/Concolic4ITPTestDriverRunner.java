@@ -1,35 +1,36 @@
-package utils.ITP4Java.ITPTestDriver;
+package testingMethod.ITPTestDriver;
 
-import utils.ITP4Java.common.constants;
+import utils.common.constants;
 import utils.autoUnitTestUtil.dataStructure.MarkedStatement;
 
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public final class ITP4JavaV0TestDriverRunner {
+public final class Concolic4ITPTestDriverRunner {
     private static double runtime;
     private static String output;
-    private ITP4JavaV0TestDriverRunner() {
+    private Concolic4ITPTestDriverRunner() {
     }
 
+    public static List<MarkedStatement> runTestDriver() throws IOException, InterruptedException {
 
-    public static void buildTestDriver() throws IOException, InterruptedException {
+//        executeCommand("cd " + constants.CONCOLIC_TEST_DRIVER_FOLDER);
+//        executeCommand(constants.CONCOLIC_TEST_DRIVER_ROOT_DRIVE);
 
-        String buildCommand = constants.ITP_V0_BUILD_COMMAND;
+        String buildCommand = constants.CONCOLIC_4ITP_BUILD_COMMAND;
 
         System.out.println(buildCommand);
 
         executeCommand(buildCommand);
-    }
 
-    public static void runTestDriver() throws IOException, InterruptedException {
-
-        String runCommand = constants.ITP_V0_RUN_COMMAND;
+        String runCommand = constants.CONCOLIC_4ITP_RUN_COMMAND;
 
         System.out.println(runCommand);
 
         executeCommand(runCommand);
+
+        return getMarkedStatement();
     }
 
     private static void executeCommand(String command) throws IOException, InterruptedException {
@@ -40,19 +41,12 @@ public final class ITP4JavaV0TestDriverRunner {
         if (p.exitValue() != 0)
         {
             String result = new String(p.getErrorStream().readAllBytes());
-            System.out.println("Executing command: " + command);
-            System.out.println(" result = " + result);
-        }
-        else
-        {
-            String result = new String(p.getInputStream().readAllBytes());
-            System.out.println("Executing command: " + command);
-            System.out.println(" result = " + result);
+            System.out.println("Executing test driver, result = " + result);
         }
 
     }
 
-    public static List<MarkedStatement> getMarkedStatement() {
+    private static List<MarkedStatement> getMarkedStatement() {
         List<MarkedStatement> result = new ArrayList<>();
 
         String markedData = getDataFromFile(constants.EXECUTION_RESULT_PATH);
