@@ -18,14 +18,17 @@
 4. Run the project, the tool will ask you to choose between two options:
    - **Option 1**: Concolic4ITP. This function implements the Concolic testing method.
    - **Option 2**: ITP4V0. This function implements the ITPv0 testing method.
+   - **Option 3**: ITP. This function implements the ITP testing method.
 ![image](./src/main/resources/img/choose-method.png)
-5. After choosing the method, the main screen looks like this:
-![image](./src/main/resources/img/main-screen.png)
+5. After choosing a method, the main screen looks like this:
+!Concolic testing method: [image](./src/main/resources/img/Concolic.png)
+!ITPv0 testing method: [image](./src/main/resources/img/ITPv0.png)
+!ITP testing method: [image](./src/main/resources/img/ITP.png)
 6. Upload the project by clicking the `Choose file` button, then select the project folder.\
 Note:
    - We have provided some sample projects in the `sample` folder.
    - The project should be compressed into a zip file.
    - The project should contain the `java` folder, which contains the source code.
-7. After the project is uploaded, choose the unit and then choose the coverage criteria.
-8. Click the `Generate` button to start the testing process. The result will be displayed and you can click on each test case to see the details as well as below:
-![image](./src/main/resources/img/demo.png)
+7. After the project is uploaded, start testing by clicking on the button "Start Concolic testing", "Start ITPv0 testing", or "Start ITP testing" for each chosen testing method.
+8. Click the `View test report` button to check the test report when testing process finish. This will open the report using Notepad. 
+
