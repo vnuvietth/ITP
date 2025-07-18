@@ -21,9 +21,9 @@
    - **Option 3**: ITP. This function implements the ITP testing method.
 ![image](./src/main/resources/img/choose-method.png)
 5. After choosing a method, the main screen looks like this:
-!Concolic testing method: [image](./src/main/resources/img/Concolic.png)
-!ITPv0 testing method: [image](./src/main/resources/img/ITPv0.png)
-!ITP testing method: [image](./src/main/resources/img/ITP.png)
+Concolic testing method: ![image](./src/main/resources/img/Concolic.png)
+ITPv0 testing method: ![image](./src/main/resources/img/ITPv0.png)
+ITP testing method: ![image](./src/main/resources/img/ITP.png)
 6. Upload the project by clicking the `Choose file` button, then select the project folder.\
 Note:
    - We have provided some sample projects in the `sample` folder.
