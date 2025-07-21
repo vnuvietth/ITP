@@ -92,7 +92,7 @@ public class ITP4Java {
         float usedMem = ((float) totalUsedMem) / tickCount / 1024 / 1024;
 
         writeDataToFile("***************** o0o *****************\n", constants.ITP_TEST_RESULT_FILEPATH, true);
-        writeDataToFile("runTestDuration: " + runTestDuration + " (ms)\n", constants.ITP_TEST_RESULT_FILEPATH, true);
+        writeDataToFile("runTestDuration: " + (runTestDuration/(double)constants.NUMBER_OF_RUNTIMES) + " (ms)\n", constants.ITP_TEST_RESULT_FILEPATH, true);
         writeDataToFile("usedMem: " + usedMem + " (MB)\n", constants.ITP_TEST_RESULT_FILEPATH, true);
 
 //        result.setTestingTime(runTestDuration);
@@ -289,28 +289,36 @@ public class ITP4Java {
                         System.out.println("simpleUnitCountForProject = " + simpleUnitCountForProject);
                         System.out.println("simpleUnitCountForFile = " + simpleUnitCountForFile);
 
-                        ConcolicTestResult testResult = startGeneratingForOneUnit(file.getAbsolutePath(), (MethodDeclaration) method, coverage);
+                        ConcolicTestResult[] testResult = new ConcolicTestResult[constants.NUMBER_OF_RUNTIMES];
+                        int testDataCountForUnit = 0;
+
+                        for (int i = 0; i < constants.NUMBER_OF_RUNTIMES; i++)
+                        {
+                            testResult[i] = startGeneratingForOneUnit(file.getAbsolutePath(), (MethodDeclaration) method, coverage);
+
+                            totalCoverage += testResult[i].getFullCoverage();
+
+                            totalCoverageForFile += testResult[i].getFullCoverage();
+
+                            testDataCountForUnit += testResult[i].getFullTestData().size();
+                        }
 
                         long endRunTestTimeForUnit = System.nanoTime();
 
-                        double runTestDurationForUnit = (endRunTestTimeForUnit - startRunTestTimeForUnit) / 1000000.0;
-                        float usedMemForUnit = ((float) totalUsedMemForUnit) / tickCountForUnit / 1024 / 1024;
+                        double runTestDurationForUnit = (endRunTestTimeForUnit - startRunTestTimeForUnit) / 1000000.0/(double)constants.NUMBER_OF_RUNTIMES;
+                        float usedMemForUnit = ((float) totalUsedMemForUnit) / tickCountForUnit / 1024 / 1024/(float)constants.NUMBER_OF_RUNTIMES;
 
-                        totalCoverage += testResult.getFullCoverage();
 
-                        totalCoverageForFile += testResult.getFullCoverage();
+                        System.out.println("testDataCountForUnit = " + testDataCountForUnit/constants.NUMBER_OF_RUNTIMES);
 
-                        int testDataCountForUnit = testResult.getFullTestData().size();
-
-                        System.out.println("testDataCountForUnit = " + testDataCountForUnit);
-
-                        testDataCountForProject += testDataCountForUnit;
+                        testDataCountForProject += testDataCountForUnit/constants.NUMBER_OF_RUNTIMES;
 
                         System.out.println("testDataCountForProject = " + testDataCountForProject);
 
                         resultString.append("\n**********************\n");
                         resultString.append("Test result for unit: " + getMethodSignature((MethodDeclaration) method) + "\n\n");
-                        resultString.append(testResult.getStringResult()).append("\n");
+                        resultString.append(testResult[0].getStringResult()).append("\n");
+                        resultString.append("testDataCountForUnit: " + (testDataCountForUnit/constants.NUMBER_OF_RUNTIMES) + "\n");
                         resultString.append("runTestDurationForUnit: " + runTestDurationForUnit + " (ms)\n");
                         resultString.append("usedMemForUnit: " + usedMemForUnit + " (MB)\n");
                         resultString.append("***************** o0o *****************\n");
@@ -349,10 +357,10 @@ public class ITP4Java {
                 writeDataToFile("unitCountForFile: " + unitCountForFile  + "\n", constants.ITP_TEST_RESULT_FILEPATH, true);
                 writeDataToFile("simpleUnitCountForFile: " + simpleUnitCountForFile  + "\n", constants.ITP_TEST_RESULT_FILEPATH, true);
                 writeDataToFile("simpleUnitCountForFileWithException: " + simpleUnitCountForFileWithException  + "\n", constants.ITP_TEST_RESULT_FILEPATH, true);
-                writeDataToFile("totalCoverageForFile: " + totalCoverageForFile  + "\n", constants.ITP_TEST_RESULT_FILEPATH, true);
+                writeDataToFile("totalCoverageForFile: " + (totalCoverageForFile/(double)constants.NUMBER_OF_RUNTIMES)  + "\n", constants.ITP_TEST_RESULT_FILEPATH, true);
                 writeDataToFile("simpleUnitCountForFile - simpleUnitCountForFileWithException: " + (simpleUnitCountForFile - simpleUnitCountForFileWithException)  + "\n", constants.ITP_TEST_RESULT_FILEPATH, true);
-                writeDataToFile("Test data/(simpleUnitCountForProject - simpleUnitCountForProjectWithException): " + (testDataCountForProject/(simpleUnitCountForProject - simpleUnitCountForProjectWithException)) + "\n", constants.ITP_TEST_RESULT_FILEPATH, true);
-                writeDataToFile("averageCoverageForFile: " + file.getName() + ": " + (totalCoverageForFile /(simpleUnitCountForFile - simpleUnitCountForFileWithException))  + "%\n", constants.ITP_TEST_RESULT_FILEPATH, true);
+
+                writeDataToFile("averageCoverageForFile: " + file.getName() + ": " + (totalCoverageForFile /(simpleUnitCountForFile - simpleUnitCountForFileWithException)/(double)constants.NUMBER_OF_RUNTIMES)  + "%\n", constants.ITP_TEST_RESULT_FILEPATH, true);
             }
 //            break;
 
@@ -362,11 +370,11 @@ public class ITP4Java {
         writeDataToFile("unitCountForProject: " + unitCountForProject + "\n", constants.ITP_TEST_RESULT_FILEPATH, true);
         writeDataToFile("simpleUnitCountForProject: " + simpleUnitCountForProject + "\n", constants.ITP_TEST_RESULT_FILEPATH, true);
         writeDataToFile("simpleUnitCountForProjectWithException: " + simpleUnitCountForProjectWithException + "\n", constants.ITP_TEST_RESULT_FILEPATH, true);
-        writeDataToFile("totalCoverage: " + totalCoverage + "\n", constants.ITP_TEST_RESULT_FILEPATH, true);
+        writeDataToFile("totalCoverage: " + (totalCoverage/(double)constants.NUMBER_OF_RUNTIMES) + "\n", constants.ITP_TEST_RESULT_FILEPATH, true);
         writeDataToFile("simpleUnitCountForProject - simpleUnitCountForProjectWithException: " + (simpleUnitCountForProject - simpleUnitCountForProjectWithException) + "\n", constants.ITP_TEST_RESULT_FILEPATH, true);
         writeDataToFile("testDataCountForProject: " + testDataCountForProject + "\n", constants.ITP_TEST_RESULT_FILEPATH, true);
         writeDataToFile("Test data/(simpleUnitCountForProject - simpleUnitCountForProjectWithException): " + ((double)(testDataCountForProject/((double)(simpleUnitCountForProject - simpleUnitCountForProjectWithException)))) + "\n", constants.ITP_TEST_RESULT_FILEPATH, true);
-        writeDataToFile("totalAverageCoverage: " + (totalCoverage /(simpleUnitCountForProject - simpleUnitCountForProjectWithException ))  + "%\n", constants.ITP_TEST_RESULT_FILEPATH, true);
+        writeDataToFile("totalAverageCoverage: " + (totalCoverage/(double)constants.NUMBER_OF_RUNTIMES /(simpleUnitCountForProject - simpleUnitCountForProjectWithException ))  + "%\n", constants.ITP_TEST_RESULT_FILEPATH, true);
 
 
     }

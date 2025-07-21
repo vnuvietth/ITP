@@ -130,6 +130,17 @@ public class ConcolicTestData {
 
     @Override
     public String toString() {
-        return "Test case " + testCaseID + ": " + status + " - Required coverage: " + requiredCoverage + "%";
+
+        String ret = "Test case " + testCaseID + ": ";
+
+        if (parameterDataList.size() > 1) {
+            for (int i = 0; i < parameterDataList.size() - 1; i++) {
+                ret += parameterDataList.get(i).getName() + " = " + parameterDataList.get(i).getValue().toString() + ",";
+            }
+        }
+        ret += parameterDataList.get(parameterDataList.size() - 1).getName() + " = " + parameterDataList.get(parameterDataList.size() - 1).getValue().toString();
+        ret += "; Required coverage: " + requiredCoverage + "%";
+
+        return ret;
     }
 }
