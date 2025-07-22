@@ -172,6 +172,7 @@ public class Concolic4ITP {
         bypassMethodList.add("isUgly");
         bypassMethodList.add("maxBottlesDrunk");
         bypassMethodList.add("constructRectangle");
+        bypassMethodList.add("isThree");
 
 //        bypassMethodList.add("countDigits");
 //        bypassMethodList.add("minBitFlips");
@@ -348,7 +349,7 @@ public class Concolic4ITP {
                 writeDataToFile("simpleUnitCountForFileWithException: " + simpleUnitCountForFileWithException  + "\n", constants.ITP_TEST_RESULT_FILEPATH, true);
                 writeDataToFile("totalCoverageForFile: " + (totalCoverageForFile/(double) constants.NUMBER_OF_RUNTIMES) + "\n", constants.ITP_TEST_RESULT_FILEPATH, true);
                 writeDataToFile("simpleUnitCountForFile - simpleUnitCountForFileWithException: " + (simpleUnitCountForFile - simpleUnitCountForFileWithException)  + "\n", constants.ITP_TEST_RESULT_FILEPATH, true);
-                writeDataToFile("averageCoverageForFile: " + file.getName() + ": " + (totalCoverageForFile /(simpleUnitCountForFile - simpleUnitCountForFileWithException))  + "%\n", constants.ITP_TEST_RESULT_FILEPATH, true);
+                writeDataToFile("averageCoverageForFile: " + file.getName() + ": " + (totalCoverageForFile /(double) constants.NUMBER_OF_RUNTIMES /(simpleUnitCountForFile - simpleUnitCountForFileWithException))  + "%\n", constants.ITP_TEST_RESULT_FILEPATH, true);
             }
 //            break;
 

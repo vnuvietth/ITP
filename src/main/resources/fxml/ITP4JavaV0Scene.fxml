@@ -64,5 +64,11 @@
       </Label>
       <Button fx:id="btnStartGenerating" layoutX="570.0" layoutY="54.0" mnemonicParsing="false" onMouseClicked="#btnStartGeneratingClicked" prefHeight="26.0" prefWidth="131.0" text="Start ITPv0 testing" />
       <Button fx:id="btnViewReport" layoutX="720.0" layoutY="54.0" mnemonicParsing="false" onMouseClicked="#btnViewTestReportButtonClicked" prefHeight="25.0" prefWidth="131.0" text="View test report" />
+
+      <ChoiceBox fx:id="cboChooseCoverage" layoutX="570.0" layoutY="15.0" prefHeight="26.0" prefWidth="154.0">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </ChoiceBox>
    </children>
 </AnchorPane>

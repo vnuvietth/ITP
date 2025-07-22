@@ -61,6 +61,15 @@ public class Concolic4ITPController implements Initializable {
     private ChoiceBox<String> coverageChoiceBox;
 
     @FXML
+    private ChoiceBox<String> cboChooseCoverage;
+
+    @FXML
+    private Button btnViewReport;
+
+    @FXML
+    private Button btnRunConcolic4ITP;
+
+    @FXML
     private ListView<ConcolicTestData> testCaseListView;
 
     @FXML
@@ -112,6 +121,13 @@ public class Concolic4ITPController implements Initializable {
         usedMemoryLabel.setDisable(true);
         uploadFileButton.setDisable(false);
 
+
+        cboChooseCoverage.getItems().addAll("Statement coverage", "Branch coverage");
+        cboChooseCoverage.setOnAction(this::selectConcolic4ITPCoverage);
+        cboChooseCoverage.setDisable(true);
+        btnViewReport.setDisable(true);
+        btnRunConcolic4ITP.setDisable(true);
+
         filePreview.setText(constants.PROJECT_ROOT_DRIVE + constants.TEST_FOLDER);
 
         testCaseListView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<ConcolicTestData>() {
@@ -161,6 +177,10 @@ public class Concolic4ITPController implements Initializable {
             alertLabel.setText("Upload time " + duration + "ms");
 
             projectTreeView.setDisable(true);
+
+            cboChooseCoverage.setDisable(false);
+            btnRunConcolic4ITP.setDisable(true);
+            btnViewReport.setDisable(true);
         } catch (Exception e) {
             alertLabel.setTextFill(Paint.valueOf("red"));
             alertLabel.setText("INVALID PROJECT ZIP FILE (eg: not a zip file, project's source code contains cases we haven't handled, ...)");
@@ -259,6 +279,23 @@ public class Concolic4ITPController implements Initializable {
         }
     }
 
+    private void selectConcolic4ITPCoverage(ActionEvent actionEvent) {
+        String coverage = cboChooseCoverage.getValue();
+        if (coverage.equals("Statement coverage")) {
+            choseCoverage = Coverage.STATEMENT;
+            btnRunConcolic4ITP.setDisable(false);
+            btnViewReport.setDisable(false);
+        } else if (coverage.equals("Branch coverage")) {
+            choseCoverage = Coverage.BRANCH;
+            btnRunConcolic4ITP.setDisable(false);
+            btnViewReport.setDisable(false);
+        } else if (coverage.equals("")) {
+            // do nothing!
+        } else {
+            throw new RuntimeException("Invalid coverage");
+        }
+    }
+
     @FXML
     void generateButtonClicked(MouseEvent event) {
 //        resetTestCaseDetailVBox();
@@ -300,7 +337,7 @@ public class Concolic4ITPController implements Initializable {
             String javaDirPath = CloneProjectUtil.getJavaDirPath(FilePath.uploadedProjectPath);
             if (javaDirPath.equals("")) throw new RuntimeException("Invalid project");
 
-            Concolic4ITP.runConcolic4ITPForProject(javaDirPath, Coverage.STATEMENT, importStatement);
+            Concolic4ITP.runConcolic4ITPForProject(javaDirPath, choseCoverage, importStatement);
         } catch (Exception e) {
             alertLabel.setTextFill(Paint.valueOf("red"));
             alertLabel.setText("Examined unit contains cases we haven't handle yet!");

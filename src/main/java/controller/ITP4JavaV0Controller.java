@@ -61,6 +61,15 @@ public class ITP4JavaV0Controller implements Initializable {
     private ChoiceBox<String> coverageChoiceBox;
 
     @FXML
+    private ChoiceBox<String> cboChooseCoverage;
+
+    @FXML
+    private Button btnViewReport;
+
+    @FXML
+    private Button btnStartGenerating;
+
+    @FXML
     private ListView<ConcolicTestData> testCaseListView;
 
     @FXML
@@ -110,6 +119,13 @@ public class ITP4JavaV0Controller implements Initializable {
         allTestCasesCoverageLabel.setDisable(true);
         testingTimeLabel.setDisable(true);
         usedMemoryLabel.setDisable(true);
+
+
+        cboChooseCoverage.getItems().addAll("Statement coverage", "Branch coverage");
+        cboChooseCoverage.setOnAction(this::selectITPV0Coverage);
+        cboChooseCoverage.setDisable(true);
+        btnViewReport.setDisable(true);
+        btnStartGenerating.setDisable(true);
 
         filePreview.setText(constants.PROJECT_ROOT_DRIVE + constants.TEST_FOLDER);
 
@@ -165,6 +181,10 @@ public class ITP4JavaV0Controller implements Initializable {
             alertLabel.setText("Upload time " + duration + "ms");
 
             projectTreeView.setDisable(true);
+
+            cboChooseCoverage.setDisable(false);
+            btnStartGenerating.setDisable(true);
+            btnViewReport.setDisable(true);
         } catch (Exception e) {
             alertLabel.setTextFill(Paint.valueOf("red"));
             alertLabel.setText("INVALID PROJECT ZIP FILE (eg: not a zip file, project's source code contains cases we haven't handled, ...)");
@@ -259,6 +279,23 @@ public class ITP4JavaV0Controller implements Initializable {
         }
     }
 
+    private void selectITPV0Coverage(ActionEvent actionEvent) {
+        String coverage = cboChooseCoverage.getValue();
+        if (coverage.equals("Statement coverage")) {
+            choseCoverage = Coverage.STATEMENT;
+            btnStartGenerating.setDisable(false);
+            btnViewReport.setDisable(false);
+        } else if (coverage.equals("Branch coverage")) {
+            choseCoverage = Coverage.BRANCH;
+            btnStartGenerating.setDisable(false);
+            btnViewReport.setDisable(false);
+        } else if (coverage.equals("")) {
+            // do nothing!
+        } else {
+            throw new RuntimeException("Invalid coverage");
+        }
+    }
+
     @FXML
     void generateButtonClicked(MouseEvent event) {
 //        resetTestCaseDetailVBox();
@@ -302,7 +339,7 @@ public class ITP4JavaV0Controller implements Initializable {
             String javaDirPath = CloneProjectUtil.getJavaDirPath(FilePath.uploadedProjectPath);
             if (javaDirPath.equals("")) throw new RuntimeException("Invalid project");
 
-            ITP4JavaV0.runITPv0ForProject(javaDirPath, Coverage.STATEMENT, importStatement);
+            ITP4JavaV0.runITPv0ForProject(javaDirPath, choseCoverage, importStatement);
         } catch (Exception e) {
             alertLabel.setTextFill(Paint.valueOf("red"));
             alertLabel.setText("Examined unit contains cases we haven't handle yet!");
