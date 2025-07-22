@@ -77,6 +77,7 @@ public final class SymbolicExecution {
                         finalZ3Expression = ctx.mkAnd(finalZ3Expression, constrain);
                     }
                 }
+
             }
             currentNode = currentNode.getNext();
         }

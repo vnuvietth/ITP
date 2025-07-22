@@ -179,6 +179,13 @@ public class ITP4JavaV0 {
         bypassMethodList.add("numberOfMatches");
         bypassMethodList.add("sumBase");
         bypassMethodList.add("numWaterBottles");
+        bypassMethodList.add("arrangeCoins");
+        bypassMethodList.add("minBitFlips");
+        bypassMethodList.add("isPerfectSquare");
+        bypassMethodList.add("brokenCalc");
+        bypassMethodList.add("minMoves");
+        bypassMethodList.add("mirrorReflection");
+        bypassMethodList.add("kthFactor");
 
 //        bypassMethodList.add("countDigits");
 //        bypassMethodList.add("minBitFlips");

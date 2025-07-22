@@ -178,14 +178,22 @@ public class ITP4Java {
         bypassMethodList.add("isUgly");
         bypassMethodList.add("maxBottlesDrunk");
         bypassMethodList.add("constructRectangle");
-//        bypassMethodList.add("isThree");
+        bypassMethodList.add("isThree");
 
         bypassMethodList.add("trailingZeroes");
         bypassMethodList.add("numberOfMatches");
         bypassMethodList.add("sumBase");
         bypassMethodList.add("numWaterBottles");
-
-
+        bypassMethodList.add("arrangeCoins");
+        bypassMethodList.add("minBitFlips");
+        bypassMethodList.add("isPerfectSquare");
+        bypassMethodList.add("brokenCalc");
+        bypassMethodList.add("minMoves");
+        bypassMethodList.add("mirrorReflection");
+        bypassMethodList.add("kthFactor");
+        bypassMethodList.add("alternateDigitSum");
+        bypassMethodList.add("smallestRepunitDivByK");
+        bypassMethodList.add("confusingNumber");
 
 
 
@@ -307,19 +315,38 @@ public class ITP4Java {
                         resultString.append("\n**********************\n");
                         resultString.append("Test result for unit: " + getMethodSignature((MethodDeclaration) method) + "\n\n");
 
+                        boolean isException = true;
+
+                        double tempTotalCoverage = 0;
+                        double tempTotalCoverageForFile = 0;
+                        int tempTestDataCountForUnit = 0;
+
                         for (int i = 0; i < constants.NUMBER_OF_RUNTIMES; i++)
                         {
                             resultString.append("i = " + i + "\n");
 
                             testResult[i] = startGeneratingForOneUnit(file.getAbsolutePath(), (MethodDeclaration) method, coverage);
 
-                            totalCoverage += testResult[i].getFullCoverage();
+                            tempTotalCoverage += testResult[i].getFullCoverage();
 
-                            totalCoverageForFile += testResult[i].getFullCoverage();
+                            tempTotalCoverageForFile += testResult[i].getFullCoverage();
 
-                            testDataCountForUnit += testResult[i].getFullTestData().size();
+                            tempTestDataCountForUnit += testResult[i].getFullTestData().size();
 
                             resultString.append(testResult[i].getStringResult()).append("\n");
+                        }
+
+                        isException = false;
+
+                        if (!isException)
+                        {
+                            totalCoverage += tempTotalCoverage;
+
+                            totalCoverageForFile += tempTotalCoverageForFile;
+
+                            testDataCountForUnit += tempTestDataCountForUnit;
+
+                            resultString.append("totalCoverage = ").append(totalCoverage).append("\n");
                         }
 
                         long endRunTestTimeForUnit = System.nanoTime();
