@@ -178,7 +178,15 @@ public class ITP4Java {
         bypassMethodList.add("isUgly");
         bypassMethodList.add("maxBottlesDrunk");
         bypassMethodList.add("constructRectangle");
-        bypassMethodList.add("isThree");
+//        bypassMethodList.add("isThree");
+
+        bypassMethodList.add("trailingZeroes");
+        bypassMethodList.add("numberOfMatches");
+        bypassMethodList.add("sumBase");
+        bypassMethodList.add("numWaterBottles");
+
+
+
 
 
 //        bypassMethodList.add("countDigits");
@@ -240,10 +248,10 @@ public class ITP4Java {
 
                 String methodName = ((MethodDeclaration)method).getName().getIdentifier();
 
-                if (methodName.equals("accountBalanceAfterPurchase"))
-                {
-                    System.out.println("methodName = " + methodName);
-                }
+//                if (methodName.equals("isThree"))
+//                {
+//                    System.out.println("methodName = " + methodName);
+//                }
 
                 if (bypassMethodList.contains(methodName)) {
                     continue;
@@ -281,13 +289,14 @@ public class ITP4Java {
 
                         long startRunTestTimeForUnit = System.nanoTime();
 
-//                        if (methodName.equals("perimeterIrregularPolygon") ||
+                        if (methodName.equals("isThree")
+//                                ||
 //                                methodName.equals("calculatePi") ||
 //                                methodName.equals("isOperator")
-//                        )
-//                        {
-//                            System.out.println("Method name = " + methodName);
-//                        }
+                        )
+                        {
+                            System.out.println("Method name = " + methodName);
+                        }
 
                         System.out.println("simpleUnitCountForProject = " + simpleUnitCountForProject);
                         System.out.println("simpleUnitCountForFile = " + simpleUnitCountForFile);
@@ -295,8 +304,13 @@ public class ITP4Java {
                         ConcolicTestResult[] testResult = new ConcolicTestResult[constants.NUMBER_OF_RUNTIMES];
                         int testDataCountForUnit = 0;
 
+                        resultString.append("\n**********************\n");
+                        resultString.append("Test result for unit: " + getMethodSignature((MethodDeclaration) method) + "\n\n");
+
                         for (int i = 0; i < constants.NUMBER_OF_RUNTIMES; i++)
                         {
+                            resultString.append("i = " + i + "\n");
+
                             testResult[i] = startGeneratingForOneUnit(file.getAbsolutePath(), (MethodDeclaration) method, coverage);
 
                             totalCoverage += testResult[i].getFullCoverage();
@@ -304,6 +318,8 @@ public class ITP4Java {
                             totalCoverageForFile += testResult[i].getFullCoverage();
 
                             testDataCountForUnit += testResult[i].getFullTestData().size();
+
+                            resultString.append(testResult[i].getStringResult()).append("\n");
                         }
 
                         long endRunTestTimeForUnit = System.nanoTime();
@@ -318,9 +334,6 @@ public class ITP4Java {
 
                         System.out.println("testDataCountForProject = " + testDataCountForProject);
 
-                        resultString.append("\n**********************\n");
-                        resultString.append("Test result for unit: " + getMethodSignature((MethodDeclaration) method) + "\n\n");
-                        resultString.append(testResult[0].getStringResult()).append("\n");
                         resultString.append("testDataCountForUnit: " + (testDataCountForUnit/constants.NUMBER_OF_RUNTIMES) + "\n");
                         resultString.append("runTestDurationForUnit: " + runTestDurationForUnit + " (ms)\n");
                         resultString.append("usedMemForUnit: " + usedMemForUnit + " (MB)\n");
@@ -454,7 +467,9 @@ public class ITP4Java {
         boolean isTestedSuccessfully = true;
         int i = 5;
 
-        for (CfgNode uncoveredNode = findUncoverNode(cfgBeginNode, coverage); uncoveredNode != null; ) {
+        CfgNode uncoveredNode = findUncoverNode(cfgBeginNode, coverage);
+
+        while (uncoveredNode != null) {
 
             Path newPath = (new FindPath(cfgBeginNode, uncoveredNode, cfgEndNode)).getPath();
 

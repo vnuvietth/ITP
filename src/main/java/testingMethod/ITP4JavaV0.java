@@ -175,6 +175,11 @@ public class ITP4JavaV0 {
         bypassMethodList.add("constructRectangle");
         bypassMethodList.add("isThree");
 
+        bypassMethodList.add("trailingZeroes");
+        bypassMethodList.add("numberOfMatches");
+        bypassMethodList.add("sumBase");
+        bypassMethodList.add("numWaterBottles");
+
 //        bypassMethodList.add("countDigits");
 //        bypassMethodList.add("minBitFlips");
 //        bypassMethodList.add("isThree");
@@ -286,8 +291,12 @@ public class ITP4JavaV0 {
                         ConcolicTestResult[] testResult = new ConcolicTestResult[constants.NUMBER_OF_RUNTIMES];
                         int testDataCountForUnit = 0;
 
+                        resultString.append("\n**********************\n");
+                        resultString.append("Test result for unit: " + getMethodSignature((MethodDeclaration) method) + "\n\n");
+
                         for (int i = 0; i < constants.NUMBER_OF_RUNTIMES; i++)
                         {
+                            resultString.append("i = " + i + "\n");
                             testResult[i] = startGeneratingITPv0ForOneUnit(file.getAbsolutePath(), (MethodDeclaration) method, coverage);
 
                             totalCoverage += testResult[i].getFullCoverage();
@@ -295,6 +304,8 @@ public class ITP4JavaV0 {
                             totalCoverageForFile += testResult[i].getFullCoverage();
 
                             testDataCountForUnit += testResult[i].getFullTestData().size();
+
+                            resultString.append(testResult[i].getStringResult()).append("\n");
                         }
 
 
@@ -311,8 +322,7 @@ public class ITP4JavaV0 {
                         System.out.println("testDataCountForProject = " + testDataCountForProject);
 
                         resultString.append("\n**********************\n");
-                        resultString.append("Test result for unit: " + getMethodSignature((MethodDeclaration) method) + "\n\n");
-                        resultString.append(testResult[0].getStringResult()).append("\n");
+//                        resultString.append("Test result for unit: " + getMethodSignature((MethodDeclaration) method) + "\n\n");
                         resultString.append("testDataCountForUnit: " + (testDataCountForUnit/constants.NUMBER_OF_RUNTIMES) + "\n");
                         resultString.append("runTestDurationForUnit: " + runTestDurationForUnit + " (ms)\n");
                         resultString.append("usedMemForUnit: " + usedMemForUnit + " (MB)\n");

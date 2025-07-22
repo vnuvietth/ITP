@@ -3,9 +3,9 @@ package utils.common;
 public interface constants {
     //General info start
     //https://github.com/varunu28/LeetCode-Java-Solutions
-//    String TEST_FOLDER = "\\sample\\Units-From-Leetcode-Java-Solutions.zip";
+    String TEST_FOLDER = "\\sample\\Units-From-Leetcode-Java-Solutions.zip";
 
-    String TEST_FOLDER = "\\sample\\LeetCode-Java-Solutions-master.zip";
+//    String TEST_FOLDER = "\\sample\\LeetCode-Java-Solutions-master.zip";
 
     //https://github.com/TheAlgorithms/Java
 //    String TEST_FOLDER = "\\sample\\Refactored-TheAlgorithms-Java.zip";
@@ -77,10 +77,10 @@ public interface constants {
     String ITP_V0_RUN_COMMAND = "java " + constants.ITP_V0_TEST_DRIVER_CLASSPATH_RUN_PARAMETERS +
             constants.ITP_V0_BUILT_TEST_DRIVER_PATH;
 
-    int MAX_RANDOM_NUMBER = 1000;
+    int MAX_RANDOM_NUMBER = 10;
     int MIN_RANDOM_NUMBER = 1;
 
-    int MAX_RANDOM_CHAR = 127;
+    int MAX_RANDOM_CHAR = 40;
     int MIN_RANDOM_CHAR = 33;
 
     //ITP

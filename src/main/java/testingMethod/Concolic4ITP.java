@@ -174,6 +174,11 @@ public class Concolic4ITP {
         bypassMethodList.add("constructRectangle");
         bypassMethodList.add("isThree");
 
+        bypassMethodList.add("trailingZeroes");
+        bypassMethodList.add("numberOfMatches");
+        bypassMethodList.add("sumBase");
+        bypassMethodList.add("numWaterBottles");
+
 //        bypassMethodList.add("countDigits");
 //        bypassMethodList.add("minBitFlips");
 //        bypassMethodList.add("isThree");
@@ -287,9 +292,14 @@ public class Concolic4ITP {
                         ConcolicTestResult[] testResult = new ConcolicTestResult[constants.NUMBER_OF_RUNTIMES];
                         int testDataCountForUnit = 0;
 
+                        resultString.append("\n**********************\n");
+                        resultString.append("Test result for unit: " + getMethodSignature((MethodDeclaration) method) + "\n\n");
+
                         for (int i = 0; i < constants.NUMBER_OF_RUNTIMES; i++)
                         {
 //                            testResult[i] = startGeneratingITPv0ForOneUnit(file.getAbsolutePath(), (MethodDeclaration) method, coverage);
+
+                            resultString.append("i = " + i + "\n");
 
                             testResult[i] = startGenerating4OneUnit(file.getAbsolutePath(),
                                     (MethodDeclaration) method, coverage);
@@ -299,6 +309,8 @@ public class Concolic4ITP {
                             totalCoverageForFile += testResult[i].getFullCoverage();
 
                             testDataCountForUnit += testResult[i].getFullTestData().size();
+
+                            resultString.append(testResult[i].getStringResult()).append("\n");
                         }
 
                         long endRunTestTimeForUnit = System.nanoTime();
@@ -313,8 +325,8 @@ public class Concolic4ITP {
                         System.out.println("testDataCountForProject = " + testDataCountForProject);
 
                         resultString.append("\n**********************\n");
-                        resultString.append("Test result for unit: " + getMethodSignature((MethodDeclaration) method) + "\n\n");
-                        resultString.append(testResult[0].getStringResult()).append("\n");
+//                        resultString.append("Test result for unit: " + getMethodSignature((MethodDeclaration) method) + "\n\n");
+//                        resultString.append(testResult[0].getStringResult()).append("\n");
                         resultString.append("testDataCountForUnit: " + (testDataCountForUnit/constants.NUMBER_OF_RUNTIMES) + "\n");
                         resultString.append("runTestDurationForUnit: " + runTestDurationForUnit + " (ms)\n");
                         resultString.append("usedMemForUnit: " + usedMemForUnit + " (MB)\n");
