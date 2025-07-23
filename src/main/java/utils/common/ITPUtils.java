@@ -118,6 +118,7 @@ public class ITPUtils {
         bypassMethodList.add("numberOfChild");
         bypassMethodList.add("maxContainers");
         bypassMethodList.add("numberOfDays");
+        bypassMethodList.add("concatenatedBinary");
 
         //JAVA-Challenges-main
         bypassMethodList.add("calculateGCD");
