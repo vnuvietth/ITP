@@ -29,6 +29,6 @@ Note:
    - We have provided some sample projects in the `sample` folder.
    - The project should be compressed into a zip file.
    - The project should contain the `java` folder, which contains the source code.
-7. After the project is uploaded, start testing by clicking on the button "Start Concolic testing", "Start ITPv0 testing", or "Start ITP testing" for each chosen testing method.
+7. After the project is uploaded, you choose the coverage and start testing by clicking on the button "Start Concolic testing", "Start ITPv0 testing", or "Start ITP testing" for each chosen testing method.
 8. Click the `View test report` button to check the test report when testing process finish. This will open the report using Notepad. 
 

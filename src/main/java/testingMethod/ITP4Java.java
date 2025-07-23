@@ -7,6 +7,7 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.MethodDeclaration;
 import testingMethod.ITPTestDriver.ITP4JavaTestDriverGenerator;
 import testingMethod.ITPTestDriver.ITP4JavaTestDriverRunner;
+import utils.common.ITPUtils;
 import utils.common.constants;
 import utils.autoUnitTestUtil.algorithms.FindPath;
 import utils.autoUnitTestUtil.algorithms.SymbolicExecution;
@@ -129,89 +130,7 @@ public class ITP4Java {
         StringBuilder resultString = new StringBuilder();
         StringBuilder exceptionUnitList = new StringBuilder();
 
-        ArrayList<String> bypassMethodList = new ArrayList<>();
-        //main
-        bypassMethodList.add("main");
-        bypassMethodList.add("indexOfRightMostSetBit");
-        bypassMethodList.add("bpR");
-        bypassMethodList.add("binomialCoefficient");
-        bypassMethodList.add("leonardoNumber");
-        bypassMethodList.add("lucasSeries");
-        bypassMethodList.add("pascal");
-        bypassMethodList.add("TrinomialValue");
-        bypassMethodList.add("printTrinomial");
-        bypassMethodList.add("square_Root");
-        bypassMethodList.add("getImage");
-        bypassMethodList.add("fermatPrimeChecking");
-        bypassMethodList.add("minTrials");
-        bypassMethodList.add("perimeterIrregularPolygon");
-        bypassMethodList.add("calculatePi");
-        bypassMethodList.add("isOperator");
-
-        //For LeetCode solution
-        bypassMethodList.add("countTriples");
-        bypassMethodList.add("generate");
-        bypassMethodList.add("fizzBuzz");
-        bypassMethodList.add("getRow");
-        bypassMethodList.add("divisorGame");
-        bypassMethodList.add("numOfArrays");
-        bypassMethodList.add("kInversePairs");
-        bypassMethodList.add("countAndSay");
-        bypassMethodList.add("getMoneyAmount");
-        bypassMethodList.add("knightDialer");
-        bypassMethodList.add("integerBreak");
-        bypassMethodList.add("knightProbability");
-        bypassMethodList.add("findContestMatch");
-        bypassMethodList.add("generateMatrix");
-        bypassMethodList.add("numTrees");
-        bypassMethodList.add("lexicalOrder");
-        bypassMethodList.add("toHex");
-        bypassMethodList.add("countEven");
-        bypassMethodList.add("maxProduct");
-        bypassMethodList.add("rangeBitwiseAnd");
-        bypassMethodList.add("countGoodStrings");
-        bypassMethodList.add("new21Game");
-        bypassMethodList.add("numOfBurgers");
-        bypassMethodList.add("smallestNumber");
-        bypassMethodList.add("sumZero");
-        bypassMethodList.add("minCuttingCost");
-        bypassMethodList.add("isUgly");
-        bypassMethodList.add("maxBottlesDrunk");
-        bypassMethodList.add("constructRectangle");
-        bypassMethodList.add("isThree");
-
-        bypassMethodList.add("trailingZeroes");
-        bypassMethodList.add("numberOfMatches");
-        bypassMethodList.add("sumBase");
-        bypassMethodList.add("numWaterBottles");
-        bypassMethodList.add("arrangeCoins");
-        bypassMethodList.add("minBitFlips");
-        bypassMethodList.add("isPerfectSquare");
-        bypassMethodList.add("brokenCalc");
-        bypassMethodList.add("minMoves");
-        bypassMethodList.add("mirrorReflection");
-        bypassMethodList.add("kthFactor");
-        bypassMethodList.add("alternateDigitSum");
-        bypassMethodList.add("smallestRepunitDivByK");
-        bypassMethodList.add("confusingNumber");
-
-
-
-//        bypassMethodList.add("countDigits");
-//        bypassMethodList.add("minBitFlips");
-//        bypassMethodList.add("isThree");
-//        bypassMethodList.add("brokenCalc");
-//        bypassMethodList.add("minimumNumbers");
-//        bypassMethodList.add("mirrorReflection");
-
-        //
-
-
-        //JAVA-Challenges-main
-        bypassMethodList.add("calculateGCD");
-
-        //java-algorithms-implementation-master
-        bypassMethodList.add("polar");
+        ArrayList<String> bypassMethodList = ITPUtils.getByPassMethod();
 
         writeDataToFile("", constants.ITP_EXCEPTION_UNIT_FILEPATH, false);
 
