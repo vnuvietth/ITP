@@ -114,6 +114,10 @@ public class ITPUtils {
         bypassMethodList.add("nthUglyNumber");
         bypassMethodList.add("primePalindrome");
         bypassMethodList.add("primePalindrome");
+        bypassMethodList.add("coloredCells");
+        bypassMethodList.add("numberOfChild");
+        bypassMethodList.add("maxContainers");
+        bypassMethodList.add("numberOfDays");
 
         //JAVA-Challenges-main
         bypassMethodList.add("calculateGCD");
