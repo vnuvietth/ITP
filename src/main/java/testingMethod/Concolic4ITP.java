@@ -350,6 +350,9 @@ public class Concolic4ITP {
             throws InvocationTargetException, IllegalAccessException, ClassNotFoundException,
             NoSuchFieldException, IOException, InterruptedException, NoSuchMethodException
     {
+        long startTime = System.nanoTime();
+
+        writeDataToFile("Step 0: " + ((System.nanoTime() - startTime)/1000000) + " (ms)\n", constants.ITP_TEST_RESULT_FILEPATH, true);
 
         String methodName = method.getName().getIdentifier();
 //        String className = method.getParent().getNodeType().;
@@ -359,16 +362,30 @@ public class Concolic4ITP {
 
         ConcolicTestResult testResult = new ConcolicTestResult();
         int testCaseID = 1;
+
+        writeDataToFile("Step 1: " + ((System.nanoTime() - startTime)/1000000) + " (ms)\n", constants.ITP_TEST_RESULT_FILEPATH, true);
+
         TestData testData = Utils4TestDriver.createRandomTestData_Concolic4ITP(parameters);
+
+        writeDataToFile("Step 2: " + ((System.nanoTime() - startTime)/1000000) + " (ms)\n", constants.ITP_TEST_RESULT_FILEPATH, true);
 
         ITPUtils.writeToFile("", constants.EXECUTION_RESULT_PATH, false);
 
         Concolic4ITPTestDriverGenerator.generateTestDriver((MethodDeclaration) testFunc, testData, getCoverageType(coverage));
+
+        writeDataToFile("Step 3: " + ((System.nanoTime() - startTime)/1000000) + " (ms)\n", constants.ITP_TEST_RESULT_FILEPATH, true);
+
         List<MarkedStatement> markedStatements = Concolic4ITPTestDriverRunner.runTestDriver();
+
+        writeDataToFile("Step 4: " + ((System.nanoTime() - startTime)/1000000) + " (ms)\n", constants.ITP_TEST_RESULT_FILEPATH, true);
 
         MarkedPath.markPathToCFGV2(cfgBeginNode, markedStatements);
 
+        writeDataToFile("Step 5: " + ((System.nanoTime() - startTime)/1000000) + " (ms)\n", constants.ITP_TEST_RESULT_FILEPATH, true);
+
         List<CoveredStatement> coveredStatements = CoveredStatement.switchToCoveredStatementList(markedStatements);
+
+        writeDataToFile("Step 6: " + ((System.nanoTime() - startTime)/1000000) + " (ms)\n", constants.ITP_TEST_RESULT_FILEPATH, true);
 
         testResult.addToFullTestData(new ConcolicTestData(testData,
                 coveredStatements,
@@ -376,14 +393,22 @@ public class Concolic4ITP {
                 calculateRequiredCoverage(coverage), calculateFunctionCoverage(), calculateSourceCodeCoverage(),
                 testCaseID++));
 
+        writeDataToFile("Step 7: " + ((System.nanoTime() - startTime)/1000000) + " (ms)\n", constants.ITP_TEST_RESULT_FILEPATH, true);
+
         boolean isTestedSuccessfully = true;
         int i = 5;
 
         for (CfgNode uncoveredNode = findUncoverNode(cfgBeginNode, coverage); uncoveredNode != null; ) {
 
+            writeDataToFile("Step 8: " + ((System.nanoTime() - startTime)/1000000) + " (ms)\n", constants.ITP_TEST_RESULT_FILEPATH, true);
+
             Path newPath = (new FindPath(cfgBeginNode, uncoveredNode, cfgEndNode)).getPath();
 
+            writeDataToFile("Step 9: " + ((System.nanoTime() - startTime)/1000000) + " (ms)\n", constants.ITP_TEST_RESULT_FILEPATH, true);
+
             SymbolicExecution solution = new SymbolicExecution(newPath, parameters);
+
+            writeDataToFile("Step 10: " + ((System.nanoTime() - startTime)/1000000) + " (ms)\n", constants.ITP_TEST_RESULT_FILEPATH, true);
 
             if (solution.getModel() == null) {
                 isTestedSuccessfully = false;
@@ -392,14 +417,23 @@ public class Concolic4ITP {
 
             testData = Utils4TestDriver.getParameterValue_Concolic4ITP(parameters);
 
+            writeDataToFile("Step 11: " + ((System.nanoTime() - startTime)/1000000) + " (ms)\n", constants.ITP_TEST_RESULT_FILEPATH, true);
+
             ITPUtils.writeToFile("", constants.EXECUTION_RESULT_PATH, false);
 
             Concolic4ITPTestDriverGenerator.generateTestDriver((MethodDeclaration) testFunc, testData,
                     getCoverageType(coverage));
             markedStatements = Concolic4ITPTestDriverRunner.runTestDriver();
 
+            writeDataToFile("Step 12: " + ((System.nanoTime() - startTime)/1000000) + " (ms)\n", constants.ITP_TEST_RESULT_FILEPATH, true);
+
             MarkedPath.markPathToCFGV2(cfgBeginNode, markedStatements);
+
+            writeDataToFile("Step 13: " + ((System.nanoTime() - startTime)/1000000) + " (ms)\n", constants.ITP_TEST_RESULT_FILEPATH, true);
+
             coveredStatements = CoveredStatement.switchToCoveredStatementList(markedStatements);
+
+            writeDataToFile("Step 14: " + ((System.nanoTime() - startTime)/1000000) + " (ms)\n", constants.ITP_TEST_RESULT_FILEPATH, true);
 
             testResult.addToFullTestData(new ConcolicTestData(testData,
                     coveredStatements, Concolic4ITPTestDriverRunner.getOutput(),
@@ -408,12 +442,16 @@ public class Concolic4ITP {
 
             uncoveredNode = findUncoverNode(cfgBeginNode, coverage);
             System.out.println("Uncovered Node: " + uncoveredNode);
+
+            writeDataToFile("Step 15: " + ((System.nanoTime() - startTime)/1000000) + " (ms)\n", constants.ITP_TEST_RESULT_FILEPATH, true);
         }
 
         if (isTestedSuccessfully) System.out.println("Tested successfully with 100% coverage");
         else System.out.println("Test fail due to UNSATISFIABLE constraint");
 
         testResult.setFullCoverage(calculateFullTestSuiteCoverage());
+
+        writeDataToFile("Step 16: " + ((System.nanoTime() - startTime)/1000000) + " (ms)\n", constants.ITP_TEST_RESULT_FILEPATH, true);
 
         return testResult;
     }

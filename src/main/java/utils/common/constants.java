@@ -3,12 +3,12 @@ package utils.common;
 public interface constants {
     //General info start
     //https://github.com/varunu28/LeetCode-Java-Solutions
-//    String TEST_FOLDER = "\\sample\\Units-From-Leetcode-Java-Solutions.zip";
+    String TEST_FOLDER = "\\sample\\Units-From-Leetcode-Java-Solutions.zip";
 
 //    String TEST_FOLDER = "\\sample\\LeetCode-Java-Solutions-master.zip";
 
     //https://github.com/TheAlgorithms/Java
-    String TEST_FOLDER = "\\sample\\Refactored-TheAlgorithms-Java.zip";
+//    String TEST_FOLDER = "\\sample\\Refactored-TheAlgorithms-Java.zip";
 
 
     //https://github.com/oussemamansouri/JAVA-Challenges
