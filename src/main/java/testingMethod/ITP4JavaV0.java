@@ -97,7 +97,7 @@ public class ITP4JavaV0 {
         float usedMem = ((float) totalUsedMem) / tickCount / 1024 / 1024;
 
         writeDataToFile("***************** o0o *****************\n", constants.ITP_TEST_RESULT_FILEPATH, true);
-        writeDataToFile("ITP v0: runTestDuration: " + runTestDuration + " (ms)\n", constants.ITP_TEST_RESULT_FILEPATH, true);
+        writeDataToFile("ITP v0: runTestDuration: " + (runTestDuration/(double)constants.NUMBER_OF_RUNTIMES) + " (ms)\n", constants.ITP_TEST_RESULT_FILEPATH, true);
         writeDataToFile("ITP v0: usedMem: " + usedMem + " (MB)\n", constants.ITP_TEST_RESULT_FILEPATH, true);
 
 //        result.setTestingTime(runTestDuration);
