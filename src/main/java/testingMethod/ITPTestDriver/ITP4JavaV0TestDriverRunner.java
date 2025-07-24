@@ -18,7 +18,7 @@ public final class ITP4JavaV0TestDriverRunner {
 
         String buildCommand = constants.ITP_V0_BUILD_COMMAND;
 
-        System.out.println(buildCommand);
+//        System.out.println(buildCommand);
 
         executeCommand(buildCommand);
     }
@@ -27,7 +27,7 @@ public final class ITP4JavaV0TestDriverRunner {
 
         String runCommand = constants.ITP_V0_RUN_COMMAND;
 
-        System.out.println(runCommand);
+//        System.out.println(runCommand);
 
         executeCommand(runCommand);
     }

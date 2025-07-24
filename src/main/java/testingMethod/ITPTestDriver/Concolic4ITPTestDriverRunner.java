@@ -43,13 +43,13 @@ public final class Concolic4ITPTestDriverRunner {
 
         String buildCommand = constants.CONCOLIC_4ITP_BUILD_COMMAND;
 
-        System.out.println(buildCommand);
+//        System.out.println(buildCommand);
 
         executeCommand(buildCommand);
 
         String runCommand = constants.CONCOLIC_4ITP_RUN_COMMAND;
 
-        System.out.println(runCommand);
+//        System.out.println(runCommand);
 
         executeCommand(runCommand);
 

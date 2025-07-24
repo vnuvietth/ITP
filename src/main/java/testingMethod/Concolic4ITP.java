@@ -133,14 +133,14 @@ public class Concolic4ITP {
             System.out.println("Concolic4ITP:        //All units of file: " + file.getAbsolutePath().replace("\\", "\\\\") + "\n");
 
 
-            if (file.getAbsolutePath().equals("E:\\IdeaProjects\\testDriver\\uploadedProject\\Refactored-TheAlgorithms-Java\\src\\main\\java\\com\\thealgorithms\\strings\\zigZagPattern\\zigZagPattern.java") //||
-//                    file.getAbsolutePath().equals("E:\\IdeaProjects\\testDriver\\uploadedProject\\Refactored-TheAlgorithms-Java\\src\\main\\java\\com\\thealgorithms\\ciphers\\AffineCipher.java")
-            )
-            {
-                //for debugging purpose
-                int i = 0;
-                System.out.println(file.getAbsolutePath());
-            }
+//            if (file.getAbsolutePath().equals("E:\\IdeaProjects\\testDriver\\uploadedProject\\Refactored-TheAlgorithms-Java\\src\\main\\java\\com\\thealgorithms\\strings\\zigZagPattern\\zigZagPattern.java") //||
+////                    file.getAbsolutePath().equals("E:\\IdeaProjects\\testDriver\\uploadedProject\\Refactored-TheAlgorithms-Java\\src\\main\\java\\com\\thealgorithms\\ciphers\\AffineCipher.java")
+//            )
+//            {
+//                //for debugging purpose
+//                int i = 0;
+//                System.out.println(file.getAbsolutePath());
+//            }
 
             //String clonedMethod = createCloneMethod(method, coverage);
             double totalCoverageForFile = 0;
@@ -208,13 +208,13 @@ public class Concolic4ITP {
 
                         System.out.println("Start generating test data for: " + getMethodSignature((MethodDeclaration) method));
 
-                        if (methodName.equals("convertOctalToDecimal") ||
-                                methodName.equals("convertTurkishToLatin") ||
-                                methodName.equals("isPalindrome")
-                        )
-                        {
-                            System.out.println("Method name = " + methodName);
-                        }
+//                        if (methodName.equals("convertOctalToDecimal") ||
+//                                methodName.equals("convertTurkishToLatin") ||
+//                                methodName.equals("isPalindrome")
+//                        )
+//                        {
+//                            System.out.println("Method name = " + methodName);
+//                        }
 
 //                        ConcolicTestResult testResult = startGeneratingITPv0ForOneUnit(
 //                        file.getAbsolutePath(), (MethodDeclaration) method, coverage);

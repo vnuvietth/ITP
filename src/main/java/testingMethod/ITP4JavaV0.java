@@ -135,14 +135,14 @@ public class ITP4JavaV0 {
             System.out.println("ITP4 v0:        //All units of file: " + file.getAbsolutePath().replace("\\", "\\\\") + "\n");
 
 
-            if (file.getAbsolutePath().equals("E:\\IdeaProjects\\testDriver\\uploadedProject\\Refactored-TheAlgorithms-Java\\src\\main\\java\\com\\thealgorithms\\strings\\zigZagPattern\\zigZagPattern.java") //||
-//                    file.getAbsolutePath().equals("E:\\IdeaProjects\\testDriver\\uploadedProject\\Refactored-TheAlgorithms-Java\\src\\main\\java\\com\\thealgorithms\\ciphers\\AffineCipher.java")
-            )
-            {
-                //for debugging purpose
-                int i = 0;
-                System.out.println(file.getAbsolutePath());
-            }
+//            if (file.getAbsolutePath().equals("E:\\IdeaProjects\\testDriver\\uploadedProject\\Refactored-TheAlgorithms-Java\\src\\main\\java\\com\\thealgorithms\\strings\\zigZagPattern\\zigZagPattern.java") //||
+////                    file.getAbsolutePath().equals("E:\\IdeaProjects\\testDriver\\uploadedProject\\Refactored-TheAlgorithms-Java\\src\\main\\java\\com\\thealgorithms\\ciphers\\AffineCipher.java")
+//            )
+//            {
+//                //for debugging purpose
+//                int i = 0;
+//                System.out.println(file.getAbsolutePath());
+//            }
 
             //String clonedMethod = createCloneMethod(method, coverage);
             double totalCoverageForFile = 0;
@@ -209,15 +209,14 @@ public class ITP4JavaV0 {
                         long startRunTestTimeForUnit = System.nanoTime();
 
                         System.out.println("Start generating test data for: " + getMethodSignature((MethodDeclaration) method));
-
-                        if (methodName.equals("toHex") ||
-                                methodName.equals("countEven") ||
-                                methodName.equals("hammingDistance")
-                        )
-                        {
-                            System.out.println("Method name = " + methodName);
-                        }
-
+//
+//                        if (methodName.equals("toHex") ||
+//                                methodName.equals("countEven") ||
+//                                methodName.equals("hammingDistance")
+//                        )
+//                        {
+//                            System.out.println("Method name = " + methodName);
+//                        }
 
 
                         ConcolicTestResult[] testResult = new ConcolicTestResult[constants.NUMBER_OF_RUNTIMES];

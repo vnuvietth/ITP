@@ -68,7 +68,7 @@ public final class ITP4JavaV0TestDriverGenerator {
                 testDataReader.append("        " + param + "\n");
             }
 
-            testDataReader.append("        System.out.println(\"" + ((SingleVariableDeclaration)(paramList.get(i))).getName() + " = \" " + " + param" + i + ");\n");
+//            testDataReader.append("        System.out.println(\"" + ((SingleVariableDeclaration)(paramList.get(i))).getName() + " = \" " + " + param" + i + ");\n");
 
             SingleVariableDeclaration paramData = (SingleVariableDeclaration)paramList.get(i);
 
