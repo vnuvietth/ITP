@@ -43,12 +43,12 @@ public final class ITP4JavaV0TestDriverRunner {
             System.out.println("Executing command: " + command);
             System.out.println(" result = " + result);
         }
-        else
-        {
-            String result = new String(p.getInputStream().readAllBytes());
-            System.out.println("Executing command: " + command);
-            System.out.println(" result = " + result);
-        }
+//        else
+//        {
+//            String result = new String(p.getInputStream().readAllBytes());
+//            System.out.println("Executing command: " + command);
+//            System.out.println(" result = " + result);
+//        }
 
     }
 

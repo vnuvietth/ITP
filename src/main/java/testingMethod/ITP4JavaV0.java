@@ -319,13 +319,23 @@ public class ITP4JavaV0 {
 
         long startTime = System.nanoTime();
 
+        String className = getClassName(filePath);
+
+        String methodName = method.getName().toString();
+
         writeDataToFile("Step 0: " + ((System.nanoTime() - startTime)/1000000) + " (ms)\n", constants.ITP_TEST_RESULT_FILEPATH, true);
 
-        setup(filePath, getClassName(filePath), method.getName().toString());
-        setupCfgTree(coverage);
-        setupParameters(method.getName().toString());
+        setup(filePath, className, methodName);
 
-        setUpTestFunc(method.getName().toString());
+        writeDataToFile("Step 0.1: " + ((System.nanoTime() - startTime)/1000000) + " (ms)\n", constants.ITP_TEST_RESULT_FILEPATH, true);
+
+        setupCfgTree(coverage);
+
+        writeDataToFile("Step 0.2: " + ((System.nanoTime() - startTime)/1000000) + " (ms)\n", constants.ITP_TEST_RESULT_FILEPATH, true);
+
+        setupParameters(methodName);
+
+        setUpTestFunc(methodName);
 
         ConcolicTestResult testResult = new ConcolicTestResult();
         int testCaseID = 1;

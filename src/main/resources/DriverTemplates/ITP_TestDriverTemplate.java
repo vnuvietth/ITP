@@ -74,22 +74,22 @@ public class ITP_TestDriver {
     public static void main(String[] args) throws IOException, ParseException {
 
 
-        try
-        {
-            //Setup start
-            //TODO: Initialize environment
-            //Setup end
-            //TODO: Read input file
-            //TODO: Invoke the corresponding test driver block
-            //Tear down start
-            //TODO: Clean up environment: freeing memory, file,...
-            //Tear down end
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-            return;
-        }
+//        try
+//        {
+//            //Setup start
+//            //TODO: Initialize environment
+//            //Setup end
+//            //TODO: Read input file
+//            //TODO: Invoke the corresponding test driver block
+//            //Tear down start
+//            //TODO: Clean up environment: freeing memory, file,...
+//            //Tear down end
+//        }
+//        catch (Exception e)
+//        {
+//            e.printStackTrace();
+//            return;
+//        }
 
 
         System.out.println("ITP_TestDriver starts...");

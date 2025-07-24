@@ -58,8 +58,8 @@ public final class ITP4JavaV0TestDriverGenerator {
 
         List paramList = method.parameters();
 
-        for(int i = 0; i < method.parameters().size(); i++) {
-            String param = "String param" + i + " = (String) jsonObject.get(\"" + ((SingleVariableDeclaration)(method.parameters().get(i))).getName() + "\");";
+        for(int i = 0; i < paramList.size(); i++) {
+            String param = "String param" + i + " = (String) jsonObject.get(\"" + ((SingleVariableDeclaration)(paramList.get(i))).getName() + "\");";
 
             if (i == 0) {
                 testDataReader.append(param + "\n");
@@ -68,7 +68,7 @@ public final class ITP4JavaV0TestDriverGenerator {
                 testDataReader.append("        " + param + "\n");
             }
 
-            testDataReader.append("        System.out.println(\"" + ((SingleVariableDeclaration)(method.parameters().get(i))).getName() + " = \" " + " + param" + i + ");\n");
+            testDataReader.append("        System.out.println(\"" + ((SingleVariableDeclaration)(paramList.get(i))).getName() + " = \" " + " + param" + i + ");\n");
 
             SingleVariableDeclaration paramData = (SingleVariableDeclaration)paramList.get(i);
 

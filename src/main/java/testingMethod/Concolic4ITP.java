@@ -357,7 +357,13 @@ public class Concolic4ITP {
         String methodName = method.getName().getIdentifier();
 //        String className = method.getParent().getNodeType().;
         setup(path, getClassName(path), methodName);
+
+        writeDataToFile("Step 0.1: " + ((System.nanoTime() - startTime)/1000000) + " (ms)\n", constants.ITP_TEST_RESULT_FILEPATH, true);
+
         setupCfgTree(coverage);
+
+        writeDataToFile("Step 0.2: " + ((System.nanoTime() - startTime)/1000000) + " (ms)\n", constants.ITP_TEST_RESULT_FILEPATH, true);
+
         setupParameters(methodName);
 
         ConcolicTestResult testResult = new ConcolicTestResult();
