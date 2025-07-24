@@ -13,6 +13,29 @@ public final class Concolic4ITPTestDriverRunner {
     private Concolic4ITPTestDriverRunner() {
     }
 
+
+    public static void buildTestDriverConcolic4ITP() throws IOException, InterruptedException {
+        String buildCommand = constants.CONCOLIC_4ITP_BUILD_COMMAND;
+
+        System.out.println(buildCommand);
+
+        executeCommand(buildCommand);
+    }
+
+    public static void runTestDriverConcolic4ITP() throws IOException, InterruptedException {
+        String runCommand = constants.CONCOLIC_4ITP_RUN_COMMAND;
+
+        System.out.println(runCommand);
+
+        executeCommand(runCommand);
+    }
+
+
+
+    public static List<MarkedStatement> getMarkedStatementConcolic4ITP() throws IOException, InterruptedException {
+        return getMarkedStatement();
+    }
+
     public static List<MarkedStatement> runTestDriver() throws IOException, InterruptedException {
 
 //        executeCommand("cd " + constants.CONCOLIC_TEST_DRIVER_FOLDER);

@@ -375,7 +375,15 @@ public class Concolic4ITP {
 
         writeDataToFile("Step 3: " + ((System.nanoTime() - startTime)/1000000) + " (ms)\n", constants.ITP_TEST_RESULT_FILEPATH, true);
 
-        List<MarkedStatement> markedStatements = Concolic4ITPTestDriverRunner.runTestDriver();
+        Concolic4ITPTestDriverRunner.buildTestDriverConcolic4ITP();
+
+        writeDataToFile("Step 3.1: " + ((System.nanoTime() - startTime)/1000000) + " (ms)\n", constants.ITP_TEST_RESULT_FILEPATH, true);
+
+        Concolic4ITPTestDriverRunner.runTestDriverConcolic4ITP();
+
+        writeDataToFile("Step 3.2: " + ((System.nanoTime() - startTime)/1000000) + " (ms)\n", constants.ITP_TEST_RESULT_FILEPATH, true);
+
+        List<MarkedStatement> markedStatements = Concolic4ITPTestDriverRunner.getMarkedStatementConcolic4ITP();
 
         writeDataToFile("Step 4: " + ((System.nanoTime() - startTime)/1000000) + " (ms)\n", constants.ITP_TEST_RESULT_FILEPATH, true);
 
