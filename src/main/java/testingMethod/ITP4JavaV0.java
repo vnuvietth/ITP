@@ -228,7 +228,8 @@ public class ITP4JavaV0 {
                         for (int i = 0; i < constants.NUMBER_OF_RUNTIMES; i++)
                         {
                             resultString.append("i = " + i + "\n");
-                            testResult[i] = startGeneratingITPv0ForOneUnit(file.getAbsolutePath(), (MethodDeclaration) method, coverage);
+                            testResult[i] = startGeneratingITPv0ForOneUnit(file.getAbsolutePath(), (MethodDeclaration) method,
+                                    coverage, i);
 
                             totalCoverage += testResult[i].getFullCoverage();
 
@@ -308,7 +309,7 @@ public class ITP4JavaV0 {
     }
 
     private static ConcolicTestResult startGeneratingITPv0ForOneUnit(String filePath, MethodDeclaration method,
-                                                                     ITP4JavaV0Controller.Coverage coverage)
+                                                                     ITP4JavaV0Controller.Coverage coverage, int runningTime)
             throws InvocationTargetException, IllegalAccessException, ClassNotFoundException,
             NoSuchFieldException, IOException, InterruptedException, NoSuchMethodException {
 
@@ -349,12 +350,15 @@ public class ITP4JavaV0 {
 
         writeDataToFile("", constants.EXECUTION_RESULT_PATH, false);
 
-        ITP4JavaV0TestDriverGenerator.generateTestDriver((MethodDeclaration) method,
-                getCoverageType(coverage));
+        if (runningTime == 0)
+        {
+            ITP4JavaV0TestDriverGenerator.generateTestDriver((MethodDeclaration) method,
+                    getCoverageType(coverage));
 
 //        writeDataToFile("Step 3: " + ((System.nanoTime() - startTime)/1000000) + " (ms)\n", constants.ITP_TEST_RESULT_FILEPATH, true);
 
-        ITP4JavaV0TestDriverRunner.buildTestDriver();
+            ITP4JavaV0TestDriverRunner.buildTestDriver();
+        }
 
 //        writeDataToFile("Step 3.1: " + ((System.nanoTime() - startTime)/1000000) + " (ms)\n", constants.ITP_TEST_RESULT_FILEPATH, true);
 
