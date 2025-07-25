@@ -43,15 +43,15 @@ public final class ITP4JavaTestDriverGenerator {
 
 //            System.out.println("importStatement: " + importStatement);
 
-            if (//file.getAbsolutePath().equals("E:\\IdeaProjects\\testDriver\\uploadedProject\\Refactored-TheAlgorithms-Java\\src\\main\\java\\com\\thealgorithms\\ciphers\\Blowfish.java") ||
-                    file.getAbsolutePath().equals("E:\\IdeaProjects\\testDriver\\uploadedProject\\Refactored-TheAlgorithms-Java\\src\\main\\java\\com\\thealgorithms\\dynamicprogramming\\OptimalJobScheduling.java"))
-            {
-                int i = 0;
-                System.out.println(file.getAbsolutePath());
-            }
+//            if (//file.getAbsolutePath().equals("E:\\IdeaProjects\\testDriver\\uploadedProject\\Refactored-TheAlgorithms-Java\\src\\main\\java\\com\\thealgorithms\\ciphers\\Blowfish.java") ||
+//                    file.getAbsolutePath().equals("E:\\IdeaProjects\\testDriver\\uploadedProject\\Refactored-TheAlgorithms-Java\\src\\main\\java\\com\\thealgorithms\\dynamicprogramming\\OptimalJobScheduling.java"))
+//            {
+//                int i = 0;
+//                System.out.println(file.getAbsolutePath());
+//            }
 
             allUnitCallingBlocks.append("        //All units of file: " + file.getAbsolutePath().replace("\\", "\\\\") + "\n");
-            System.out.println("ITP4JavaTestDriverGenerator:        //All units of file: " + file.getAbsolutePath().replace("\\", "\\\\") + "\n");
+//            System.out.println("ITP4JavaTestDriverGenerator:        //All units of file: " + file.getAbsolutePath().replace("\\", "\\\\") + "\n");
 
             String absolutePath = file.getAbsolutePath();
 
@@ -59,7 +59,7 @@ public final class ITP4JavaTestDriverGenerator {
 
             for (ASTNode method : methodList) {
 
-                System.out.println("method name: " + ((MethodDeclaration) method).getName().getIdentifier());
+//                System.out.println("method name: " + ((MethodDeclaration) method).getName().getIdentifier());
 
                 if (((MethodDeclaration) method).isConstructor() || ((MethodDeclaration) method).getName().getIdentifier().equals("main") ||
                         getMethodSignature((MethodDeclaration) method).equals("static void writeDataToFile(String,String,boolean)") ||
@@ -606,7 +606,7 @@ public final class ITP4JavaTestDriverGenerator {
                 testDataReader.append("            " + param + "\n");
             }
 
-            testDataReader.append("            System.out.println(\"" + ((SingleVariableDeclaration) (method.parameters().get(i))).getName() + " = \" " + " + param" + i + ");\n");
+//            testDataReader.append("            System.out.println(\"" + ((SingleVariableDeclaration) (method.parameters().get(i))).getName() + " = \" " + " + param" + i + ");\n");
 
             SingleVariableDeclaration paramData = (SingleVariableDeclaration) method.parameters().get(i);
 
@@ -639,7 +639,7 @@ public final class ITP4JavaTestDriverGenerator {
         unitCaller.append(");\n\n");
 
         if (!method.getReturnType2().toString().contains("void")) {
-            unitCaller.append("\t\t\t\t\t\tSystem.out.println(\"output = \"  + output.toString());\n\n");
+//            unitCaller.append("\t\t\t\t\t\tSystem.out.println(\"output = \"  + output.toString());\n\n");
 
             unitCaller.append("\t\t\t\t\t\treturn output.toString();\n");
         } else {
@@ -651,9 +651,9 @@ public final class ITP4JavaTestDriverGenerator {
         StringBuilder unitcallingBlock = new StringBuilder();
         unitcallingBlock.append("        if (\"" + file.getAbsolutePath().replace("\\", "\\\\") + "\".equals(fileName) && \"" + methodSignature + "\".equals(functionName)) {\n");
 
-        unitcallingBlock.append(
-                "\t\t\t\t\t\n" +
-                        "            System.out.println(\"Executing unit: " + getMethodSignature(method) + " ...\");\n\n");
+//        unitcallingBlock.append(
+//                "\t\t\t\t\t\n" +
+//                        "            System.out.println(\"Executing unit: " + getMethodSignature(method) + " ...\");\n\n");
 
         String unitBlock = testDataReader + "    " + unitCaller.toString();
 

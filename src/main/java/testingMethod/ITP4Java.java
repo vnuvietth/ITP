@@ -112,11 +112,11 @@ public class ITP4Java {
     private static void generateTestDataForProject(String path, ITP4JavaController.Coverage coverage, StringBuilder importStatement) throws IOException, NoSuchFieldException, ClassNotFoundException, InterruptedException, InvocationTargetException, IllegalAccessException, NoSuchMethodException {
         ITP4JavaTestDriverGenerator.generateITPTestDriver(path, coverage, importStatement);
 
-        System.out.println("Finish generating the project test driver.");
+//        System.out.println("Finish generating the project test driver.");
 
         ITP4JavaTestDriverRunner.buildTestDriver();
 
-        System.out.println("Finish building the project test driver.");
+//        System.out.println("Finish building the project test driver.");
 
         List<File> files = Utils.getJavaFiles(path);
 
@@ -139,13 +139,13 @@ public class ITP4Java {
             System.out.println("ITP4Java:        //All units of file: " + file.getAbsolutePath().replace("\\", "\\\\") + "\n");
 
 
-            if (file.getAbsolutePath().equals("E:\\IdeaProjects\\testDriver\\uploadedProject\\Refactored-TheAlgorithms-Java\\src\\main\\java\\com\\thealgorithms\\audiofilters\\IIRFilter.java") //||
-//                    file.getAbsolutePath().equals("E:\\IdeaProjects\\testDriver\\uploadedProject\\Refactored-TheAlgorithms-Java\\src\\main\\java\\com\\thealgorithms\\ciphers\\AffineCipher.java")
-            )
-            {
-                int i = 0;
-                System.out.println(file.getAbsolutePath());
-            }
+//            if (file.getAbsolutePath().equals("E:\\IdeaProjects\\testDriver\\uploadedProject\\Refactored-TheAlgorithms-Java\\src\\main\\java\\com\\thealgorithms\\audiofilters\\IIRFilter.java") //||
+////                    file.getAbsolutePath().equals("E:\\IdeaProjects\\testDriver\\uploadedProject\\Refactored-TheAlgorithms-Java\\src\\main\\java\\com\\thealgorithms\\ciphers\\AffineCipher.java")
+//            )
+//            {
+//                int i = 0;
+//                System.out.println(file.getAbsolutePath());
+//            }
 
             //String clonedMethod = createCloneMethod(method, coverage);
             double totalCoverageForFile = 0;
@@ -216,17 +216,17 @@ public class ITP4Java {
 
                         long startRunTestTimeForUnit = System.nanoTime();
 
-                        if (methodName.equals("isThree")
-//                                ||
-//                                methodName.equals("calculatePi") ||
-//                                methodName.equals("isOperator")
-                        )
-                        {
-                            System.out.println("Method name = " + methodName);
-                        }
+//                        if (methodName.equals("isThree")
+////                                ||
+////                                methodName.equals("calculatePi") ||
+////                                methodName.equals("isOperator")
+//                        )
+//                        {
+//                            System.out.println("Method name = " + methodName);
+//                        }
 
-                        System.out.println("simpleUnitCountForProject = " + simpleUnitCountForProject);
-                        System.out.println("simpleUnitCountForFile = " + simpleUnitCountForFile);
+//                        System.out.println("simpleUnitCountForProject = " + simpleUnitCountForProject);
+//                        System.out.println("simpleUnitCountForFile = " + simpleUnitCountForFile);
 
                         ConcolicTestResult[] testResult = new ConcolicTestResult[constants.NUMBER_OF_RUNTIMES];
                         int testDataCountForUnit = 0;
@@ -274,11 +274,11 @@ public class ITP4Java {
                         float usedMemForUnit = ((float) totalUsedMemForUnit) / tickCountForUnit / 1024 / 1024/(float)constants.NUMBER_OF_RUNTIMES;
 
 
-                        System.out.println("testDataCountForUnit = " + testDataCountForUnit/constants.NUMBER_OF_RUNTIMES);
+//                        System.out.println("testDataCountForUnit = " + testDataCountForUnit/constants.NUMBER_OF_RUNTIMES);
 
                         testDataCountForProject += testDataCountForUnit/constants.NUMBER_OF_RUNTIMES;
 
-                        System.out.println("testDataCountForProject = " + testDataCountForProject);
+//                        System.out.println("testDataCountForProject = " + testDataCountForProject);
 
                         resultString.append("testDataCountForUnit: " + (testDataCountForUnit/constants.NUMBER_OF_RUNTIMES) + "\n");
                         resultString.append("runTestDurationForUnit: " + runTestDurationForUnit + " (ms)\n");

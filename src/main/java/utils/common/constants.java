@@ -21,7 +21,7 @@ public interface constants {
 
 //    String TEST_FOLDER = "\\sample\\Refactored-TheAlgorithms-Java.zip";
 
-    int NUMBER_OF_RUNTIMES = 10;
+    int NUMBER_OF_RUNTIMES = 1;
 
     String INSTRUMENTED_TESTING_UNIT_PLACEHOLDER = "%%INSTRUMENTED_TESTING_UNIT_PLACEHOLDER%%";
     String UNIT_CALLING_PLACEHOLDER = "%%UNIT_CALLING_PLACEHOLDER%%";
