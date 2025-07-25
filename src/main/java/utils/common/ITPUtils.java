@@ -37,6 +37,39 @@ public class ITPUtils {
         bypassMethodList.add("calculatePi");
         bypassMethodList.add("isOperator");
 
+        // Exception in Refactored-TheAlgorithms-Java
+        bypassMethodList.add("bruteforce");
+        bypassMethodList.add("valOfChar");
+        bypassMethodList.add("nthManShanksPrime");
+        bypassMethodList.add("uniquePaths2");
+        bypassMethodList.add("getMaxValue");
+        bypassMethodList.add("surfaceAreaCube");
+        bypassMethodList.add("surfaceAreaSphere");
+        bypassMethodList.add("surfaceAreaRectangle");
+        bypassMethodList.add("surfaceAreaCylinder");
+        bypassMethodList.add("surfaceAreaSquare");
+        bypassMethodList.add("surfaceAreaTriangle");
+        bypassMethodList.add("surfaceAreaParallelogram");
+        bypassMethodList.add("surfaceAreaTrapezium");
+        bypassMethodList.add("surfaceAreaCircle");
+        bypassMethodList.add("surfaceAreaHemisphere");
+        bypassMethodList.add("surfaceAreaCone");
+        bypassMethodList.add("binPow");
+        bypassMethodList.add("ceil");
+        bypassMethodList.add("factorial");
+        bypassMethodList.add("combinationsOptimized");
+        bypassMethodList.add("floor");
+        bypassMethodList.add("isHarshad");
+        bypassMethodList.add("lcm");
+        bypassMethodList.add("millerRabin");
+        bypassMethodList.add("isPrime");
+        bypassMethodList.add("sumOfSeries");
+        bypassMethodList.add("isPaired");
+        bypassMethodList.add("appendCount");
+        bypassMethodList.add("isDudeney");
+        bypassMethodList.add("getRandomScores");
+        bypassMethodList.add("isPalindrome");
+
         //For LeetCode solution
         bypassMethodList.add("countTriples");
         bypassMethodList.add("generate");
