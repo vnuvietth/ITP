@@ -37,7 +37,7 @@ public class ITPUtils {
         bypassMethodList.add("calculatePi");
         bypassMethodList.add("isOperator");
 
-        // Exception in Refactored-TheAlgorithms-Java
+        // Not processed data types in Refactored-TheAlgorithms-Java
         bypassMethodList.add("bruteforce");
         bypassMethodList.add("valOfChar");
         bypassMethodList.add("nthManShanksPrime");
@@ -117,7 +117,7 @@ public class ITPUtils {
         bypassMethodList.add("smallestRepunitDivByK");
         bypassMethodList.add("confusingNumber");
 
-        //Exception unit For LeetCode solution
+        //Not processed data types For LeetCode solution
         bypassMethodList.add("hasAlternatingBits");
         bypassMethodList.add("categorizeBox");
         bypassMethodList.add("countOperations");
