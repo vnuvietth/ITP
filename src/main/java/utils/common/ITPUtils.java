@@ -159,6 +159,15 @@ public class ITPUtils {
         //java-algorithms-implementation-master
         bypassMethodList.add("polar");
 
+        //Not processed data types For LeetCode solution
+        bypassMethodList.add("getNumberOfCoprimes");
+        bypassMethodList.add("gcdUsingEuclides");
+        bypassMethodList.add("powerOfTwoUsingBits");
+        bypassMethodList.add("fibonacciSequenceUsingLoop");
+        bypassMethodList.add("fibonacciSequenceUsingBinetsFormula");
+        bypassMethodList.add("powerOfTwoUsingLoop");
+
+
         return bypassMethodList;
     }
 }

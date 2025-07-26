@@ -8,15 +8,13 @@ public interface constants {
 //    String TEST_FOLDER = "\\sample\\LeetCode-Java-Solutions-master.zip";
 
     //https://github.com/TheAlgorithms/Java
-    String TEST_FOLDER = "\\sample\\Refactored-TheAlgorithms-Java.zip";
+//    String TEST_FOLDER = "\\sample\\Refactored-TheAlgorithms-Java.zip";
 
+
+//    https://github.com/phishman3579/java-algorithms-implementation
+    String TEST_FOLDER = "\\sample\\java-algorithms-implementation-master.zip";
 
     //https://github.com/oussemamansouri/JAVA-Challenges
-    //https://github.com/phishman3579/java-algorithms-implementation
-
-
-//    String TEST_FOLDER = "\\sample\\java-algorithms-implementation-master.zip";
-
 //    String TEST_FOLDER = "\\sample\\JAVA-Challenges-main.zip";
 
 //    String TEST_FOLDER = "\\sample\\Refactored-TheAlgorithms-Java.zip";
