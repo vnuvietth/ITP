@@ -153,13 +153,10 @@ public class ITPUtils {
         bypassMethodList.add("numberOfDays");
         bypassMethodList.add("concatenatedBinary");
 
-        //JAVA-Challenges-main
-        bypassMethodList.add("calculateGCD");
-
         //java-algorithms-implementation-master
         bypassMethodList.add("polar");
 
-        //Not processed data types For LeetCode solution
+        //Not processed data types For java-algorithms-implementation-master
         bypassMethodList.add("getNumberOfCoprimes");
         bypassMethodList.add("gcdUsingEuclides");
         bypassMethodList.add("powerOfTwoUsingBits");
@@ -168,6 +165,23 @@ public class ITPUtils {
         bypassMethodList.add("powerOfTwoUsingLoop");
 
 
+        //JAVA-Challenges-main
+        bypassMethodList.add("calculateGCD");
+
+        //Not processed data types For JAVA-Challenges-main
+        bypassMethodList.add("numberOfUniquePaths");
+        bypassMethodList.add("findSteps");
+        bypassMethodList.add("parenthesesCorrespondantes");
+
         return bypassMethodList;
     }
+
+    public static ArrayList<String> getByPassFiles() {
+        ArrayList<String> bypassFilesList = new ArrayList<>();
+
+//        bypassFilesList.add("RedisOutputStream.java");
+
+        return bypassFilesList;
+    }
+
 }

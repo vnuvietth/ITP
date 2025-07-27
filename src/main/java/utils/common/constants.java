@@ -7,19 +7,22 @@ public interface constants {
 
 //    String TEST_FOLDER = "\\sample\\LeetCode-Java-Solutions-master.zip";
 
+//    String TEST_FOLDER = "\\sample\\Refactored-TheAlgorithms-Java.zip";
+
     //https://github.com/TheAlgorithms/Java
 //    String TEST_FOLDER = "\\sample\\Refactored-TheAlgorithms-Java.zip";
 
 
 //    https://github.com/phishman3579/java-algorithms-implementation
-    String TEST_FOLDER = "\\sample\\java-algorithms-implementation-master.zip";
+//    String TEST_FOLDER = "\\sample\\java-algorithms-implementation-master.zip";
 
     //https://github.com/oussemamansouri/JAVA-Challenges
 //    String TEST_FOLDER = "\\sample\\JAVA-Challenges-main.zip";
 
-//    String TEST_FOLDER = "\\sample\\Refactored-TheAlgorithms-Java.zip";
+    //https://github.com/pedrovgs/Algorithms
+    String TEST_FOLDER = "\\sample\\Algorithms-master.zip";
 
-    int NUMBER_OF_RUNTIMES = 10;
+    int NUMBER_OF_RUNTIMES = 1;
 
     String INSTRUMENTED_TESTING_UNIT_PLACEHOLDER = "%%INSTRUMENTED_TESTING_UNIT_PLACEHOLDER%%";
     String UNIT_CALLING_PLACEHOLDER = "%%UNIT_CALLING_PLACEHOLDER%%";

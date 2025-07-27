@@ -2,6 +2,7 @@ package utils.cloneProjectUtil;
 import org.apache.commons.io.FileUtils;
 import org.eclipse.jdt.core.dom.*;
 import utils.FilePath;
+import utils.common.ITPUtils;
 import utils.common.constants;
 import utils.cloneProjectUtil.projectTreeObjects.Folder;
 import utils.cloneProjectUtil.projectTreeObjects.JavaFile;
@@ -109,6 +110,14 @@ public final class CloneProjectUtil {
                 existJavaFile = true;
                 totalClassStatement = 0;
                 String fileName = file.getName();
+
+                ArrayList<String> byPassFiles = ITPUtils.getByPassFiles();
+
+                if (byPassFiles.contains(fileName))
+                {
+                    continue;
+                }
+
                 JavaFile javaFile = new JavaFile(fileName.replace(".java", ""));
                 createCloneFile(destinationDirPath, fileName);
                 CompilationUnit compilationUnit = Parser.parseFileToCompilationUnit(originalDirPath + "\\" + fileName);
