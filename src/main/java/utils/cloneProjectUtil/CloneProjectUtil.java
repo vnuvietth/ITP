@@ -1,6 +1,7 @@
 package utils.cloneProjectUtil;
 import org.apache.commons.io.FileUtils;
 import org.eclipse.jdt.core.dom.*;
+import testingMethod.ITPTestDriver.ITP4JavaTestDriverGenerator;
 import utils.FilePath;
 import utils.common.ITPUtils;
 import utils.common.constants;
@@ -372,6 +373,14 @@ public final class CloneProjectUtil {
             totalFunctionBranch = 0;
 
             MethodDeclaration methodDeclaration = (MethodDeclaration) astNode;
+
+//            boolean isSimple = ITP4JavaTestDriverGenerator.isSimpleUnit((MethodDeclaration)methodDeclaration);
+//
+//            if (!isSimple)
+//            {
+//                continue;
+//            }
+
             String methodName = methodDeclaration.getName().toString();
 
 //            if (methodName.equals("getNextMove"))
