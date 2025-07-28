@@ -20,7 +20,13 @@ public interface constants {
 //    String TEST_FOLDER = "\\sample\\JAVA-Challenges-main.zip";
 
     //https://github.com/pedrovgs/Algorithms
-    String TEST_FOLDER = "\\sample\\Algorithms-master.zip";
+//    String TEST_FOLDER = "\\sample\\Algorithms-master.zip";
+
+    //https://github.com/pedrovgs/Algorithms
+    String TEST_FOLDER = "\\sample\\commons-numbers-master.zip";
+
+
+
 
     int NUMBER_OF_RUNTIMES = 1;
 
@@ -28,8 +34,8 @@ public interface constants {
     String UNIT_CALLING_PLACEHOLDER = "%%UNIT_CALLING_PLACEHOLDER%%";
     String TEST_DATA_READING_PLACEHOLDER = "%%TEST_DATA_READING_PLACEHOLDER%%";
 
-//    String PROJECT_ROOT_DRIVE = "E:\\IdeaProjects\\NTD-Paper"; // At company
-    String PROJECT_ROOT_DRIVE = "D:\\QG25.09\\Code.VietTH\\NTD-Paper"; //At home
+    String PROJECT_ROOT_DRIVE = "E:\\IdeaProjects\\NTD-Paper"; // At company
+//    String PROJECT_ROOT_DRIVE = "D:\\QG25.09\\Code.VietTH\\NTD-Paper"; //At home
 
     //Test driver folder
     String TEST_DRIVER_FOLDER = "E:\\IdeaProjects\\testDriver";

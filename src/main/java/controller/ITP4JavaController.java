@@ -28,8 +28,11 @@ import utils.uploadUtil.ConcolicUploadUtil;
 import utils.uploadUtil.NTDUploadUtil;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -168,6 +171,8 @@ public class ITP4JavaController implements Initializable {
             String javaDirPath = CloneProjectUtil.getJavaDirPath(FilePath.uploadedProjectPath);
             if (javaDirPath.equals("")) throw new RuntimeException("Invalid project");
 
+            writeDataToFile("", constants.ITP_EXCEPTION_UNIT_FILEPATH, false);
+
             Folder folder1 = CloneProjectUtil.cloneProject4ITP(javaDirPath, FilePath.clonedProjectPath, importStatement);
 
             Folder folder = ConcolicUploadUtil.createProjectTree(javaDirPath);
@@ -196,6 +201,20 @@ public class ITP4JavaController implements Initializable {
         }
     }
 
+
+    private static void writeDataToFile(String data, String path, boolean append) {
+        try {
+            if (!append)
+            {
+                Files.deleteIfExists(Paths.get(path));
+            }
+            FileWriter writer = new FileWriter(path, append);
+            writer.write(data);
+            writer.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
     private void reset() {
         projectTreeView.setRoot(null);
         coverageChoiceBox.setValue("");

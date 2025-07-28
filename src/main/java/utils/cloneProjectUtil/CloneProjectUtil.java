@@ -13,6 +13,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
 
 public final class CloneProjectUtil {
@@ -535,36 +536,51 @@ public final class CloneProjectUtil {
     }
 
     private static String createCloneMethod(MethodDeclaration method) {
-        StringBuilder cloneMethod = new StringBuilder();
 
-        List<ASTNode> modifiers = method.modifiers();
-        for(ASTNode modifier : modifiers) {
-            cloneMethod.append(modifier).append(" ");
-        }
+        String methodName = method.getName().toString();
+        try
+        {
+            StringBuilder cloneMethod = new StringBuilder();
 
-        StringBuilder throwsException = new StringBuilder();
-        if (method.thrownExceptionTypes().size() > 0) {
+            System.out.println("Clonning method: " + methodName);
 
-            throwsException.append(" throws ");
-
-            for (int i = 0; i < method.thrownExceptionTypes().size() - 1; i++) {
-                throwsException.append(method.thrownExceptionTypes().get(i)).append(", ");
+            List<ASTNode> modifiers = method.modifiers();
+            for(ASTNode modifier : modifiers) {
+                cloneMethod.append(modifier).append(" ");
             }
 
-            throwsException.append(method.thrownExceptionTypes().get(method.thrownExceptionTypes().size() - 1));
+            StringBuilder throwsException = new StringBuilder();
+            if (method.thrownExceptionTypes().size() > 0) {
+
+                throwsException.append(" throws ");
+
+                for (int i = 0; i < method.thrownExceptionTypes().size() - 1; i++) {
+                    throwsException.append(method.thrownExceptionTypes().get(i)).append(", ");
+                }
+
+                throwsException.append(method.thrownExceptionTypes().get(method.thrownExceptionTypes().size() - 1));
+            }
+
+            cloneMethod.append(method.getReturnType2() != null ? method.getReturnType2() : "").append(" ").append(method.getName()).append("(");
+            List<ASTNode> parameters = method.parameters();
+            for (int i = 0; i < parameters.size(); i++) {
+                cloneMethod.append(parameters.get(i));
+                if (i != parameters.size() - 1) cloneMethod.append(", ");
+            }
+            cloneMethod.append(")").append(" ").append(throwsException.toString()).append("\n");
+
+            cloneMethod.append(generateCodeForBlock(method.getBody())).append("\n");
+
+            return cloneMethod.toString();
+        }
+        catch (Exception e)
+        {
+            System.err.println("Error in processing: " + methodName + "; \n" + e.getMessage());
+            writeDataToFile(methodName + "\n", constants.ITP_EXCEPTION_UNIT_FILEPATH, true);
+
+            return "";
         }
 
-        cloneMethod.append(method.getReturnType2() != null ? method.getReturnType2() : "").append(" ").append(method.getName()).append("(");
-        List<ASTNode> parameters = method.parameters();
-        for (int i = 0; i < parameters.size(); i++) {
-            cloneMethod.append(parameters.get(i));
-            if (i != parameters.size() - 1) cloneMethod.append(", ");
-        }
-        cloneMethod.append(")").append(" ").append(throwsException.toString()).append("\n");
-
-        cloneMethod.append(generateCodeForBlock(method.getBody())).append("\n");
-
-        return cloneMethod.toString();
     }
 
     private static String generateCodeForOneStatement(ASTNode statement, String markMethodSeparator) {
@@ -781,6 +797,22 @@ public final class CloneProjectUtil {
             writer.write(data + "\n");
             writer.close();
         } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+
+    private static void writeDataToFile(String data, String path, boolean append) {
+        try {
+            if (!append)
+            {
+                Files.deleteIfExists(Paths.get(path));
+            }
+            FileWriter writer = new FileWriter(path, append);
+            writer.write(data);
+            writer.close();
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
