@@ -173,6 +173,10 @@ public class ITPUtils {
         bypassMethodList.add("findSteps");
         bypassMethodList.add("parenthesesCorrespondantes");
 
+        //Algorithms-master
+        bypassMethodList.add("calculate");
+
+
         return bypassMethodList;
     }
 
