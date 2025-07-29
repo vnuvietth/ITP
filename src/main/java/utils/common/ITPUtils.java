@@ -176,6 +176,9 @@ public class ITPUtils {
         //Algorithms-master
         bypassMethodList.add("calculate");
 
+        //Algorithms-master
+        bypassMethodList.add("value");
+
 
         return bypassMethodList;
     }
