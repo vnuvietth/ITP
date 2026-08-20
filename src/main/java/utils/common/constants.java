@@ -30,15 +30,20 @@ public interface constants {
     String TEST_DATA_READING_PLACEHOLDER = "%%TEST_DATA_READING_PLACEHOLDER%%";
 
 
-    String CLONED_PROJECT_PATH = "E:\\IdeaProjects\\testDriver\\clonedProject";
-    String UPLOADED_PROJECT_PATH = "E:\\IdeaProjects\\testDriver\\uploadedProject";
+    //At home
+//    String CLONED_PROJECT_PATH = "E:\\IdeaProjects\\testDriver\\clonedProject";
+//    String UPLOADED_PROJECT_PATH = "E:\\IdeaProjects\\testDriver\\uploadedProject";
 
-    String PROJECT_ROOT_DRIVE = "E:\\IdeaProjects\\NTD-Paper"; // At company
+    //at company
+    String CLONED_PROJECT_PATH = "D:\\IdeaProjects\\testDriver\\clonedProject";
+    String UPLOADED_PROJECT_PATH = "D:\\IdeaProjects\\testDriver\\uploadedProject";
+
+    String PROJECT_ROOT_DRIVE = "D:\\Code\\IdeaProjects\\ITP\\sample"; // At company
 //    String PROJECT_ROOT_DRIVE = "D:\\QG25.09\\Code.VietTH\\NTD-Paper"; //At home
 
     //Test driver folder
 //    String TEST_DRIVER_FOLDER = "E:\\IdeaProjects\\testDriver"; //at home
-    String TEST_DRIVER_FOLDER = "D:\\Code\\IdeaProjects\\testdriver"; //at company
+    String TEST_DRIVER_FOLDER = "D:\\IdeaProjects\\testDriver"; //at company
     String TEST_DRIVER_CLASSPATH_FOLDER = TEST_DRIVER_FOLDER + "\\target\\classes";
     String TEST_DRIVER_LIBRARY_FOLDER = PROJECT_ROOT_DRIVE + "\\src\\main\\resources\\testDriverLibraries";
     String UPLOADED_PROJECT_CLASSPATH = TEST_DRIVER_FOLDER + "\\target\\classes";
