@@ -96,8 +96,23 @@ public class ITP4Java {
         writeDataToFile("runTestDuration: " + (runTestDuration/(double)constants.NUMBER_OF_RUNTIMES) + " (ms)\n", constants.ITP_TEST_RESULT_FILEPATH, true);
         writeDataToFile("usedMem: " + usedMem + " (MB)\n", constants.ITP_TEST_RESULT_FILEPATH, true);
 
-//        result.setTestingTime(runTestDuration);
-//        result.setUsedMemory(usedMem);
+
+        writeDataToFile("\n", constants.ITP_TEST_RESULT_FILEPATH, true);
+        writeDataToFile("***************** o0o *****************\n", constants.ITP_TEST_RESULT_FILEPATH, true);
+
+
+        writeDataToFile("ITP4Java: runTestDuration: " + (runTestDuration/(double)constants.NUMBER_OF_RUNTIMES) + " (ms)\n", constants.ITP_TEST_RESULT_FILEPATH, true);
+        writeDataToFile("totalTimeForDriverGneration: " + (totalTimeForDriverGneration/(double)constants.NUMBER_OF_RUNTIMES) + " (ms)\n", constants.ITP_TEST_RESULT_FILEPATH, true);
+        writeDataToFile("totalTimeForDriverCompilation: " + (totalTimeForDriverCompilation/(double)constants.NUMBER_OF_RUNTIMES) + " (ms)\n", constants.ITP_TEST_RESULT_FILEPATH, true);
+        writeDataToFile("totalTimeForTestDataExecution: " + (totalTimeForTestDataExecution/(double)constants.NUMBER_OF_RUNTIMES) + " (ms)\n", constants.ITP_TEST_RESULT_FILEPATH, true);
+        writeDataToFile("totalTimeForCoverageAnalysis: " + (totalTimeForCoverageAnalysis/(double)constants.NUMBER_OF_RUNTIMES) + " (ms)\n", constants.ITP_TEST_RESULT_FILEPATH, true);
+        writeDataToFile("totalTimeForNewTestDataGeneration: " + (totalTimeForNewTestDataGeneration/(double)constants.NUMBER_OF_RUNTIMES) + " (ms)\n", constants.ITP_TEST_RESULT_FILEPATH, true);
+
+        totalTimeForOthers = runTestDuration - totalTimeForDriverGneration - totalTimeForDriverCompilation
+                - totalTimeForTestDataExecution - totalTimeForCoverageAnalysis
+                - totalTimeForNewTestDataGeneration;
+        writeDataToFile("totalTimeForOthers: " + (totalTimeForOthers/(double)constants.NUMBER_OF_RUNTIMES) + " (ms)\n", constants.ITP_TEST_RESULT_FILEPATH, true);
+
 
 //        return result;
         return null;
@@ -108,6 +123,20 @@ public class ITP4Java {
 
     static long totalUsedMemForUnit = 0;
     static long tickCountForUnit = 0;
+
+    //[VietTH] Danh sách các thành phần đóng góp vào time như sau:
+    // (1) driver generation,
+    static  double totalTimeForDriverGneration = 0;
+    // (2) compilation,
+    static  double totalTimeForDriverCompilation = 0;
+    // (3) execution,
+    static  double totalTimeForTestDataExecution = 0;
+    // (4) coverage analysis,
+    static  double totalTimeForCoverageAnalysis = 0;
+    // (5) new test data generation and
+    static  double totalTimeForNewTestDataGeneration = 0;
+    // (6) others
+    static  double totalTimeForOthers = 0; //random test data generation, file processing, report producing, v.v.
 
     private static void generateTestDataForProject(String path, ITP4JavaController.Coverage coverage, StringBuilder importStatement) throws IOException, NoSuchFieldException, ClassNotFoundException, InterruptedException, InvocationTargetException, IllegalAccessException, NoSuchMethodException {
         ITP4JavaTestDriverGenerator.generateITPTestDriver(path, coverage, importStatement);

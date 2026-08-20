@@ -145,6 +145,7 @@ public class ITP4JavaV0Controller implements Initializable {
 
     @FXML
     void chooseFileButtonClicked(MouseEvent event) {
+        fileChooser.setInitialDirectory(new File(constants.PROJECT_ROOT_DRIVE));
         choseFile = fileChooser.showOpenDialog(new Stage());
         if (choseFile != null) {
             filePreview.setText(choseFile.getAbsolutePath());

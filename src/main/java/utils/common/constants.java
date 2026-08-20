@@ -38,7 +38,7 @@ public interface constants {
     String CLONED_PROJECT_PATH = "D:\\IdeaProjects\\testDriver\\clonedProject";
     String UPLOADED_PROJECT_PATH = "D:\\IdeaProjects\\testDriver\\uploadedProject";
 
-    String PROJECT_ROOT_DRIVE = "D:\\Code\\IdeaProjects\\ITP\\sample"; // At company
+    String PROJECT_ROOT_DRIVE = "D:\\Code\\IdeaProjects\\ITP"; // At company
 //    String PROJECT_ROOT_DRIVE = "D:\\QG25.09\\Code.VietTH\\NTD-Paper"; //At home
 
     //Test driver folder
