@@ -37,6 +37,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static testingMethod.ITPTestDriver.ITP4JavaTestDriverGenerator.*;
 
@@ -260,7 +261,7 @@ public class Concolic4ITP {
 
                         System.out.println("Start generating test data for: " + getMethodSignature((MethodDeclaration) method));
 
-                        if (methodName.equals("calculate") //||
+                        if (methodName.equals("countBitsToOneBasedOnString") //||calculate
 //                                methodName.equals("convertTurkishToLatin") ||
 //                                methodName.equals("isPalindrome")
                         )
@@ -323,8 +324,10 @@ public class Concolic4ITP {
                         simpleUnitCountForFileWithException += 1;
                         simpleUnitCountForProjectWithException += 1;
 
-                        System.out.println(e.getMessage());
-                        System.out.println(Arrays.toString(e.getStackTrace()));
+                        System.err.println(e.getMessage());
+                        System.err.println(Arrays.stream(e.getStackTrace())
+                                .map(StackTraceElement::toString)
+                                .collect(Collectors.joining(System.lineSeparator())));
 
                         writeDataToFile(methodName + "\n", constants.ITP_EXCEPTION_UNIT_FILEPATH, true);
                     }
