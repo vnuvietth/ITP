@@ -61,6 +61,13 @@ public class Concolic4ITP {
             IllegalAccessException, ClassNotFoundException, NoSuchFieldException,
             InterruptedException {
 
+
+        totalTimeForDriverGneration = 0;
+        totalTimeForDriverCompilation = 0;
+        totalTimeForTestDataExecution = 0;
+        totalTimeForCoverageAnalysis = 0;
+        totalTimeForNewTestDataGeneration = 0;
+        totalTimeForOthers = 0;
 //        setup(path, className, methodName);
 //        setupCfgTree(coverage);
 //        setupParameters(methodName);

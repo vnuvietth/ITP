@@ -33,6 +33,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
 
+import static testingMethod.Concolic4ITP.MICRO_SECONDS;
 import static testingMethod.ITPTestDriver.ITP4JavaTestDriverGenerator.*;
 import static testingMethod.ITPTestDriver.ITP4JavaTestDriverRunner.runTestDriver;
 
@@ -58,6 +59,14 @@ public class ITP4Java {
             throws IOException, NoSuchMethodException, InvocationTargetException,
             IllegalAccessException, ClassNotFoundException, NoSuchFieldException,
             InterruptedException {
+
+
+        totalTimeForDriverGneration = 0;
+        totalTimeForDriverCompilation = 0;
+        totalTimeForTestDataExecution = 0;
+        totalTimeForCoverageAnalysis = 0;
+        totalTimeForNewTestDataGeneration = 0;
+        totalTimeForOthers = 0;
 
 //        setup(path, className, methodName);
 //        setupCfgTree(coverage);
@@ -114,6 +123,24 @@ public class ITP4Java {
         writeDataToFile("totalTimeForOthers: " + (totalTimeForOthers/(double)constants.NUMBER_OF_RUNTIMES) + " (ms)\n", constants.ITP_TEST_RESULT_FILEPATH, true);
 
 
+        writeDataToFile("\n", constants.ITP_TEST_RESULT_FILEPATH, true);
+        writeDataToFile("***************** o0o *****************\n", constants.ITP_TEST_RESULT_FILEPATH, true);
+
+
+        writeDataToFile("Concolic4ITP: runTestDuration: " + (runTestDuration/(double)constants.NUMBER_OF_RUNTIMES) + " (ms)\n", constants.ITP_TEST_RESULT_FILEPATH, true);
+        writeDataToFile("totalTimeForDriverGneration: " + (totalTimeForDriverGneration/(double)constants.NUMBER_OF_RUNTIMES) + " (ms)\n", constants.ITP_TEST_RESULT_FILEPATH, true);
+        writeDataToFile("totalTimeForDriverCompilation: " + (totalTimeForDriverCompilation/(double)constants.NUMBER_OF_RUNTIMES) + " (ms)\n", constants.ITP_TEST_RESULT_FILEPATH, true);
+        writeDataToFile("totalTimeForTestDataExecution: " + (totalTimeForTestDataExecution/(double)constants.NUMBER_OF_RUNTIMES) + " (ms)\n", constants.ITP_TEST_RESULT_FILEPATH, true);
+        writeDataToFile("totalTimeForCoverageAnalysis: " + (totalTimeForCoverageAnalysis/(double)constants.NUMBER_OF_RUNTIMES) + " (ms)\n", constants.ITP_TEST_RESULT_FILEPATH, true);
+        writeDataToFile("totalTimeForNewTestDataGeneration: " + (totalTimeForNewTestDataGeneration/(double)constants.NUMBER_OF_RUNTIMES) + " (ms)\n", constants.ITP_TEST_RESULT_FILEPATH, true);
+
+        totalTimeForOthers = runTestDuration - totalTimeForDriverGneration - totalTimeForDriverCompilation
+                - totalTimeForTestDataExecution - totalTimeForCoverageAnalysis
+                - totalTimeForNewTestDataGeneration;
+        writeDataToFile("totalTimeForOthers: " + (totalTimeForOthers/(double)constants.NUMBER_OF_RUNTIMES) + " (ms)\n", constants.ITP_TEST_RESULT_FILEPATH, true);
+
+
+
 //        return result;
         return null;
     }
@@ -139,11 +166,18 @@ public class ITP4Java {
     static  double totalTimeForOthers = 0; //random test data generation, file processing, report producing, v.v.
 
     private static void generateTestDataForProject(String path, ITP4JavaController.Coverage coverage, StringBuilder importStatement) throws IOException, NoSuchFieldException, ClassNotFoundException, InterruptedException, InvocationTargetException, IllegalAccessException, NoSuchMethodException {
+
+
+
+        long startTimeTestDriverGeneration = System.nanoTime();
         ITP4JavaTestDriverGenerator.generateITPTestDriver(path, coverage, importStatement);
 
+        totalTimeForDriverGneration += (System.nanoTime() - startTimeTestDriverGeneration)/MICRO_SECONDS;
 //        System.out.println("Finish generating the project test driver.");
 
+        long startTimeTestDriverCompilation = System.nanoTime();
         ITP4JavaTestDriverRunner.buildTestDriver();
+        totalTimeForDriverCompilation += (System.nanoTime() - startTimeTestDriverCompilation)/MICRO_SECONDS;
 
 //        System.out.println("Finish building the project test driver.");
 
@@ -427,8 +461,11 @@ public class ITP4Java {
         writeDataToFile(testData.toJSONString(), constants.ITP_TEST_DATA_FILE_PATH, false);
 
 //        ITP4JavaTestDriverRunner.buildTestDriver();
+        long startTimeTestDataExecution = System.nanoTime();
         runTestDriver();
+        totalTimeForTestDataExecution += (System.nanoTime() - startTimeTestDataExecution)/MICRO_SECONDS;
 
+        long startTimeCoverageAnalysis = System.nanoTime();
         List<MarkedStatement> markedStatements = ITP4JavaTestDriverRunner.getCoveredStatement();
 
         MarkedPath.markPathToCFGV2(cfgBeginNode, markedStatements);
@@ -444,8 +481,11 @@ public class ITP4Java {
 
         CfgNode uncoveredNode = findUncoverNode(cfgBeginNode, coverage);
 
+        totalTimeForCoverageAnalysis += (System.nanoTime() - startTimeCoverageAnalysis)/MICRO_SECONDS;
+
         while (uncoveredNode != null) {
 
+            long startTimeNewTestDataGeneration = System.nanoTime();
             Path newPath = (new FindPath(cfgBeginNode, uncoveredNode, cfgEndNode)).getPath();
 
             SymbolicExecution solution = new SymbolicExecution(newPath, parameters);
@@ -459,7 +499,14 @@ public class ITP4Java {
 
             writeDataToFile(testData.toJSONString(), constants.ITP_TEST_DATA_FILE_PATH, false);
 
+            totalTimeForNewTestDataGeneration += (System.nanoTime() - startTimeNewTestDataGeneration)/MICRO_SECONDS;
+
+            long startTimeTestDataExecution2 = System.nanoTime();
             runTestDriver();
+
+            totalTimeForTestDataExecution += (System.nanoTime() - startTimeTestDataExecution2)/MICRO_SECONDS;
+
+            long startTimeCoverageAnalysis2 = System.nanoTime();
 
             markedStatements = ITP4JavaTestDriverRunner.getCoveredStatement();
 
@@ -473,6 +520,7 @@ public class ITP4Java {
 
             uncoveredNode = findUncoverNode(cfgBeginNode, coverage);
             System.out.println("Uncovered Node: " + uncoveredNode);
+            totalTimeForCoverageAnalysis += (System.nanoTime() - startTimeCoverageAnalysis2)/MICRO_SECONDS;
         }
 
         if (isTestedSuccessfully) System.out.println("Tested successfully with 100% coverage");
