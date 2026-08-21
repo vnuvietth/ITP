@@ -90,6 +90,31 @@ public final class ITP4JavaTestDriverGenerator {
 
     }
 
+    public static boolean isInvocationUnit(MethodDeclaration method) {
+
+        List<ASTNode> statements = method.getBody().statements();
+
+        boolean isInvocationUnit = false;
+        for (ASTNode statement : statements) {
+            boolean isInvocationStatement = isInvocationStatement(statement);
+
+            if (isInvocationStatement) {
+                isInvocationUnit = true;
+                return isInvocationUnit;
+            }
+        }
+
+        return isInvocationUnit;
+    }
+
+    public static boolean isInvocationStatement(ASTNode statement) {
+        boolean isSimpleStatement = true;
+        if (statement instanceof MethodInvocation) {
+            return true;
+        }
+        return false;
+    }
+
     public static boolean isSimpleUnit(MethodDeclaration method) {
 
 

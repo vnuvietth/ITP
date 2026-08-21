@@ -29,6 +29,7 @@ import utils.autoUnitTestUtil.testDriver.Utils4TestDriver;
 import utils.autoUnitTestUtil.utils.Utils;
 import utils.uploadUtil.ConcolicUploadUtil;
 
+import java.io.Console;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -225,6 +226,12 @@ public class Concolic4ITP {
                 System.out.println(((MethodDeclaration)method).toString());
 
                 boolean isSimpleUnit = ITP4JavaTestDriverGenerator.isSimpleUnit((MethodDeclaration)method);
+
+//                boolean isInvocationUnit = ITP4JavaTestDriverGenerator.isInvocationUnit((MethodDeclaration)method);
+
+//                System.out.println("isInvocationUnit = " + isInvocationUnit + "; method name = " + methodName);
+
+//              //if (isInvocationUnit) {
 
                 if (isSimpleUnit) {
                     simpleUnitCountForProject += 1;

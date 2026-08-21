@@ -28,6 +28,7 @@ public final class SymbolicExecution {
 
     private Path testPath;
     private List<ASTNode> parameters;
+    private static CfgNode currentCfgNode;
 
     public SymbolicExecution(Path testPath, List<ASTNode> parameters) {
         this.testPath = testPath;
@@ -53,7 +54,9 @@ public final class SymbolicExecution {
         Expr finalZ3Expression = null;
 
         while (currentNode != null) {
-            CfgNode currentCfgNode = currentNode.getData();
+//            CfgNode currentCfgNode = currentNode.getData();
+
+            currentCfgNode = currentNode.getData();
 
             ASTNode astNode = currentCfgNode.getAst();
 
@@ -170,5 +173,9 @@ public final class SymbolicExecution {
 
     public Model getModel() {
         return model;
+    }
+
+    public static CfgNode getCurrentCfgNode() {
+        return currentCfgNode;
     }
 }

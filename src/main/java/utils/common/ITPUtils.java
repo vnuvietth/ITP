@@ -178,6 +178,7 @@ public class ITPUtils {
 //        Algorithms-master
 //        bypassMethodList.add("calculate");
         bypassMethodList.add("equalsWithRelativeTolerance");
+        bypassMethodList.add("evaluate");
 
         //Algorithms-master
         bypassMethodList.add("value");
