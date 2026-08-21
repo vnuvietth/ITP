@@ -66,8 +66,9 @@ public class ITP4Java {
         totalTimeForTestDataExecution = 0;
         totalTimeForCoverageAnalysis = 0;
         totalTimeForNewTestDataGeneration = 0;
-        totalTimeForOthers = 0;
 
+        totalTimeForOthers = 0;
+        int z = 0;
 //        setup(path, className, methodName);
 //        setupCfgTree(coverage);
 //        setupParameters(methodName);

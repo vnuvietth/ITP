@@ -120,6 +120,7 @@ public class Concolic4ITP {
                                     - totalTimeForNewTestDataGeneration;
         writeDataToFile("totalTimeForOthers: " + (totalTimeForOthers/(double)constants.NUMBER_OF_RUNTIMES) + " (ms)\n", constants.ITP_TEST_RESULT_FILEPATH, true);
 
+        int z = 0;
 
 //        result.setTestingTime(runTestDuration);
 //        result.setUsedMemory(usedMem);
