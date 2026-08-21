@@ -123,25 +123,6 @@ public class ITP4Java {
                 - totalTimeForNewTestDataGeneration;
         writeDataToFile("totalTimeForOthers: " + (totalTimeForOthers/(double)constants.NUMBER_OF_RUNTIMES) + " (ms)\n", constants.ITP_TEST_RESULT_FILEPATH, true);
 
-
-        writeDataToFile("\n", constants.ITP_TEST_RESULT_FILEPATH, true);
-        writeDataToFile("***************** o0o *****************\n", constants.ITP_TEST_RESULT_FILEPATH, true);
-
-
-        writeDataToFile("Concolic4ITP: runTestDuration: " + (runTestDuration/(double)constants.NUMBER_OF_RUNTIMES) + " (ms)\n", constants.ITP_TEST_RESULT_FILEPATH, true);
-        writeDataToFile("totalTimeForDriverGneration: " + (totalTimeForDriverGneration/(double)constants.NUMBER_OF_RUNTIMES) + " (ms)\n", constants.ITP_TEST_RESULT_FILEPATH, true);
-        writeDataToFile("totalTimeForDriverCompilation: " + (totalTimeForDriverCompilation/(double)constants.NUMBER_OF_RUNTIMES) + " (ms)\n", constants.ITP_TEST_RESULT_FILEPATH, true);
-        writeDataToFile("totalTimeForTestDataExecution: " + (totalTimeForTestDataExecution/(double)constants.NUMBER_OF_RUNTIMES) + " (ms)\n", constants.ITP_TEST_RESULT_FILEPATH, true);
-        writeDataToFile("totalTimeForCoverageAnalysis: " + (totalTimeForCoverageAnalysis/(double)constants.NUMBER_OF_RUNTIMES) + " (ms)\n", constants.ITP_TEST_RESULT_FILEPATH, true);
-        writeDataToFile("totalTimeForNewTestDataGeneration: " + (totalTimeForNewTestDataGeneration/(double)constants.NUMBER_OF_RUNTIMES) + " (ms)\n", constants.ITP_TEST_RESULT_FILEPATH, true);
-
-        totalTimeForOthers = runTestDuration - totalTimeForDriverGneration - totalTimeForDriverCompilation
-                - totalTimeForTestDataExecution - totalTimeForCoverageAnalysis
-                - totalTimeForNewTestDataGeneration;
-        writeDataToFile("totalTimeForOthers: " + (totalTimeForOthers/(double)constants.NUMBER_OF_RUNTIMES) + " (ms)\n", constants.ITP_TEST_RESULT_FILEPATH, true);
-
-
-
 //        return result;
         return null;
     }
