@@ -361,7 +361,7 @@ public final class ITP4JavaTestDriverGenerator {
 
         }
         else if (statement instanceof MethodInvocation) {
-            return false;
+            return true;
         } else if (statement instanceof BreakStatement) {
 
             isSimpleStatement = true;

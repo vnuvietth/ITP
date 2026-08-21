@@ -7,6 +7,7 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.MethodDeclaration;
 import testingMethod.ITPTestDriver.Concolic4ITPTestDriverRunner;
 import testingMethod.ITPTestDriver.ITP4JavaTestDriverGenerator;
+import utils.autoUnitTestUtil.cfg.utils.CfgUtils;
 import utils.common.ITPUtils;
 import utils.common.constants;
 import utils.autoUnitTestUtil.algorithms.FindPath;
@@ -127,6 +128,9 @@ public class Concolic4ITP {
 
 //        return result;
     }
+
+
+    static boolean allowHandleStubForLib = true;
 
     static long totalUsedMemForUnit = 0;
     static long tickCountForUnit = 0;
@@ -249,13 +253,13 @@ public class Concolic4ITP {
 
                         System.out.println("Start generating test data for: " + getMethodSignature((MethodDeclaration) method));
 
-//                        if (methodName.equals("convertOctalToDecimal") ||
+                        if (methodName.equals("calculate") //||
 //                                methodName.equals("convertTurkishToLatin") ||
 //                                methodName.equals("isPalindrome")
-//                        )
-//                        {
-//                            System.out.println("Method name = " + methodName);
-//                        }
+                        )
+                        {
+                            System.out.println("Method name = " + methodName);
+                        }
 
 //                        ConcolicTestResult testResult = startGeneratingITPv0ForOneUnit(
 //                        file.getAbsolutePath(), (MethodDeclaration) method, coverage);
@@ -634,6 +638,12 @@ public class Concolic4ITP {
         block.setAfterStatementNode(cfgEndNode);
 
         ASTHelper.generateCFG(block, compilationUnit, firstLine, getCoverageType(coverage));
+
+        if (allowHandleStubForLib) {
+
+            CfgUtils.funcAstNodeList = funcAstNodeList;
+            CfgUtils.modifyCfgWithStubVars(cfgBeginNode);
+        }
     }
 
     private static ASTHelper.Coverage getCoverageType(Concolic4ITPController.Coverage coverage) {
@@ -685,5 +695,14 @@ public class Concolic4ITP {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+
+    public static MethodDeclaration getTestFunc() {
+//        if (isSetup) {
+        return (MethodDeclaration) testFunc;
+//        } else {
+//            throw new RuntimeException("Value has not been setup");
+//        }
     }
 }
