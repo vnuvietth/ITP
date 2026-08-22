@@ -3,6 +3,7 @@ package utils.autoUnitTestUtil.testDriver;
 import org.eclipse.jdt.core.dom.*;
 import utils.autoUnitTestUtil.ast.Expression.Literal.LiteralNode;
 //import utils.autoUnitTestUtil.symbolicExecution.MemoryModel;
+import utils.autoUnitTestUtil.dataStructure.MemoryModel;
 import utils.autoUnitTestUtil.variable.Variable;
 
 import java.lang.reflect.Array;
@@ -39,23 +40,23 @@ public final class TestDriverUtils {
         return types;
     }
 
-//    public static Class<?>[] getVariableClasses(List<ASTNode> variables, MemoryModel memoryModel) {
-//        Class<?>[] types = new Class[variables.size()];
-//        for (int i = 0; i < variables.size(); i++) {
-//            ASTNode variableNode = variables.get(i);
-//            if (LiteralNode.isLiteral(variableNode)) {
-//                types[i] = LiteralNode.getLiteralClass(variableNode);
-//            } else if (variableNode instanceof Name) {
-//                String key = ((Name) variableNode).getFullyQualifiedName();
-//                Variable variable = memoryModel.getVariable(key);
-//                types[i] = getTypeClass(variable.getType());
-//            } else {
-//                throw new RuntimeException("Unsupported variable: " + variableNode.getClass());
-//            }
-//        }
-//
-//        return types;
-//    }
+    public static Class<?>[] getVariableClasses(List<ASTNode> variables, MemoryModel memoryModel) {
+        Class<?>[] types = new Class[variables.size()];
+        for (int i = 0; i < variables.size(); i++) {
+            ASTNode variableNode = variables.get(i);
+            if (LiteralNode.isLiteral(variableNode)) {
+                types[i] = LiteralNode.getLiteralClass(variableNode);
+            } else if (variableNode instanceof Name) {
+                String key = ((Name) variableNode).getFullyQualifiedName();
+                Variable variable = memoryModel.getVariable(key);
+                types[i] = getTypeClass(variable.getType());
+            } else {
+                throw new RuntimeException("Unsupported variable: " + variableNode.getClass());
+            }
+        }
+
+        return types;
+    }
 
     public static List<String> getParameterNames(List<ASTNode> parameters) {
         List<String> names = new ArrayList<>();

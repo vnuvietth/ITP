@@ -3,12 +3,18 @@ package utils.autoUnitTestUtil.variable;
 import com.microsoft.z3.Context;
 import com.microsoft.z3.Expr;
 import org.eclipse.jdt.core.dom.PrimitiveType;
+import org.eclipse.jdt.core.dom.Type;
 
 public class PrimitiveTypeVariable extends Variable {
     private PrimitiveType.Code code;
+    private PrimitiveType primitiveType;
 
     public PrimitiveTypeVariable(PrimitiveType.Code code, String name) {
         this.code = code;
+        super.setName(name);
+    }
+    public PrimitiveTypeVariable(PrimitiveType primitiveType, String name) {
+        this.primitiveType = primitiveType;
         super.setName(name);
     }
 
@@ -34,5 +40,10 @@ public class PrimitiveTypeVariable extends Variable {
 
     public PrimitiveType.Code getCode() {
         return code;
+    }
+
+    @Override
+    public Type getType() {
+        return this.primitiveType;
     }
 }

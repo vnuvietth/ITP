@@ -132,11 +132,11 @@ public final class ITP4JavaTestDriverGenerator {
 
         boolean isSimpleParameter = true;
 
-        if (((MethodDeclaration) method).parameters().isEmpty())
-        {
-            return false;
-        }
-        else
+//        if (((MethodDeclaration) method).parameters().isEmpty())
+//        {
+//            return false;
+//        }
+//        else
         {
             List<ASTNode> parameters = ((MethodDeclaration) method).parameters();
 
@@ -704,9 +704,10 @@ public final class ITP4JavaTestDriverGenerator {
                 for (int j = 0; j < parameterTypes.size(); j++) {
                     ASTNode parameter = parameterTypes.get(j);
 
-                    if (!parameter.getClass().isPrimitive())
+                    if (!((SingleVariableDeclaration) parameter).getType().isPrimitiveType())
                     {
-                        return null;
+//                        return null;
+                        break;
                     }
                 }
 

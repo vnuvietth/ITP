@@ -16,7 +16,8 @@ import static testingMethod.Concolic4ITP.getTestFunc;
 
 public final class CfgUtils {
     public static ArrayList<ASTNode> funcAstNodeList;
-
+    public static CompilationUnit compilationUnit;
+    public static ASTNode testFunc;
 
     public static void modifyCfgWithStubVars(CfgNode cfgBeginNode) {
         numberOfFunctionsCall = 1;

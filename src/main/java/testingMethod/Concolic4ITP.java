@@ -40,6 +40,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import static testingMethod.ITPTestDriver.ITP4JavaTestDriverGenerator.*;
+import static utils.common.constants.allowHandleStubForLib;
 
 public class Concolic4ITP {
     private static CompilationUnit compilationUnit;
@@ -132,7 +133,6 @@ public class Concolic4ITP {
     }
 
 
-    static boolean allowHandleStubForLib = true;
 
     static long totalUsedMemForUnit = 0;
     static long tickCountForUnit = 0;
@@ -261,7 +261,7 @@ public class Concolic4ITP {
 
                         System.out.println("Start generating test data for: " + getMethodSignature((MethodDeclaration) method));
 
-                        if (methodName.equals("countBitsToOneBasedOnString") //||calculate
+                        if (methodName.equals("remainderUnsigned") //||calculate
 //                                methodName.equals("convertTurkishToLatin") ||
 //                                methodName.equals("isPalindrome")
                         )
@@ -575,6 +575,10 @@ public class Concolic4ITP {
     private static void setup(String path, String className, String methodName) throws IOException {
         funcAstNodeList = ProjectParser.parseFile(path);
         compilationUnit = ProjectParser.parseFileToCompilationUnit(path);
+
+        CfgUtils.funcAstNodeList = funcAstNodeList;
+        CfgUtils.compilationUnit =  compilationUnit;
+
         classKey = (compilationUnit.getPackage() != null ? compilationUnit.getPackage().getName().toString() : "") + className.replace(".java", "") + "totalStatement";
         setUpTestFunc(methodName);
         MarkedPath.resetFullTestSuiteCoveredStatements();
@@ -618,6 +622,7 @@ public class Concolic4ITP {
         for (ASTNode func : funcAstNodeList) {
             if (((MethodDeclaration) func).getName().getIdentifier().equals(methodName)) {
                 testFunc = func;
+                CfgUtils.testFunc = testFunc;
             }
         }
     }

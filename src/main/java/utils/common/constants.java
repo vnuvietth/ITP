@@ -126,4 +126,7 @@ public interface constants {
     String ITP_TEST_RESULT_FILEPATH = TEST_DRIVER_FOLDER + "\\ITP_TestResult.txt";
 
     String ITP_EXCEPTION_UNIT_FILEPATH = TEST_DRIVER_FOLDER + "\\ITP_ExceptionUnit.txt";
+
+
+    boolean allowHandleStubForLib = true;
 }
