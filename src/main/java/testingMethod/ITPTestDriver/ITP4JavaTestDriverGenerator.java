@@ -90,6 +90,31 @@ public final class ITP4JavaTestDriverGenerator {
 
     }
 
+    public static boolean isInvocationUnit(MethodDeclaration method) {
+
+        List<ASTNode> statements = method.getBody().statements();
+
+        boolean isInvocationUnit = false;
+        for (ASTNode statement : statements) {
+            boolean isInvocationStatement = isInvocationStatement(statement);
+
+            if (isInvocationStatement) {
+                isInvocationUnit = true;
+                return isInvocationUnit;
+            }
+        }
+
+        return isInvocationUnit;
+    }
+
+    public static boolean isInvocationStatement(ASTNode statement) {
+        boolean isSimpleStatement = true;
+        if (statement instanceof MethodInvocation) {
+            return true;
+        }
+        return false;
+    }
+
     public static boolean isSimpleUnit(MethodDeclaration method) {
 
 
@@ -107,11 +132,11 @@ public final class ITP4JavaTestDriverGenerator {
 
         boolean isSimpleParameter = true;
 
-        if (((MethodDeclaration) method).parameters().isEmpty())
-        {
-            return false;
-        }
-        else
+//        if (((MethodDeclaration) method).parameters().isEmpty())
+//        {
+//            return false;
+//        }
+//        else
         {
             List<ASTNode> parameters = ((MethodDeclaration) method).parameters();
 
@@ -672,16 +697,17 @@ public final class ITP4JavaTestDriverGenerator {
 
             MethodDeclaration constructor = methodDeclarations[i];
 
-            if (constructor.isConstructor()) {
+            if (constructor.isConstructor() && isPublicMethod(constructor) ) {
 
                 List<ASTNode> parameterTypes = constructor.parameters();
 
                 for (int j = 0; j < parameterTypes.size(); j++) {
                     ASTNode parameter = parameterTypes.get(j);
 
-                    if (!parameter.getClass().isPrimitive())
+                    if (!((SingleVariableDeclaration) parameter).getType().isPrimitiveType())
                     {
-                        return null;
+//                        return null;
+                        break;
                     }
                 }
 
@@ -689,6 +715,21 @@ public final class ITP4JavaTestDriverGenerator {
             }
         }
         return null;
+    }
+
+    private static boolean isPublicMethod(MethodDeclaration methodDeclaration)
+    {
+        if (methodDeclaration.modifiers().size()  == 0)
+        {
+            return false;
+        }
+        for (int i = 0; i < methodDeclaration.modifiers().size(); i++) {
+            if (methodDeclaration.modifiers().get(i).toString().contains("public"))
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
     private static int getClassConstructorCount(MethodDeclaration method)

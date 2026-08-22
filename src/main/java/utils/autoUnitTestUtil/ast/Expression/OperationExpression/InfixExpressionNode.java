@@ -2,6 +2,8 @@ package utils.autoUnitTestUtil.ast.Expression.OperationExpression;
 
 import com.microsoft.z3.Context;
 import com.microsoft.z3.Expr;
+import org.eclipse.jdt.core.dom.Expression;
+import org.eclipse.jdt.core.dom.MethodInvocation;
 import utils.autoUnitTestUtil.ast.*;
 import utils.autoUnitTestUtil.ast.Expression.ExpressionNode;
 import utils.autoUnitTestUtil.ast.Expression.Literal.LiteralNode;
@@ -38,6 +40,22 @@ public class InfixExpressionNode extends OperationExpressionNode {
         return result;
     }
 
+    public static void replaceMethodInvocationWithStub(InfixExpression originInfixExpression, MethodInvocation originMethodInvocation, ASTNode replacement) {
+        Expression leftOperand = originInfixExpression.getLeftOperand();
+        Expression rightOperand = originInfixExpression.getRightOperand();
+        List<ASTNode> extendedOperands = originInfixExpression.extendedOperands();
+        if (leftOperand == originMethodInvocation)
+            originInfixExpression.setLeftOperand((Expression) replacement);
+        else if (rightOperand == originMethodInvocation) {
+            originInfixExpression.setRightOperand((Expression) replacement);
+        } else {
+            for (int i = 0; i < extendedOperands.size(); i++){
+                if (extendedOperands.get(i) == originMethodInvocation){
+                    extendedOperands.set(i, replacement);
+                }
+            }
+        }
+    }
     private static Expr createInfixZ3Expression(Context ctx, Expr Z3LeftOperand, InfixExpression.Operator operator, Expr Z3RightOperand) {
         if (operator.equals(InfixExpression.Operator.PLUS)) {
             return ctx.mkAdd(Z3LeftOperand, Z3RightOperand);
