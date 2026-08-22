@@ -2,6 +2,7 @@ package utils.autoUnitTestUtil.variable;
 
 import com.microsoft.z3.Context;
 import com.microsoft.z3.Expr;
+import org.eclipse.jdt.core.dom.Type;
 
 public abstract class Variable {
     private String name;
@@ -13,6 +14,8 @@ public abstract class Variable {
     public String getName() {
         return name;
     }
+
+    public abstract Type getType();
 
     public static Expr createZ3Variable(Variable variable, Context ctx){
         if(variable instanceof PrimitiveTypeVariable) {

@@ -1,11 +1,9 @@
 package utils.autoUnitTestUtil.ast.VariableDeclaration;
 
+import org.eclipse.jdt.core.dom.*;
 import utils.autoUnitTestUtil.ast.AstNode;
 import utils.autoUnitTestUtil.ast.Expression.ExpressionNode;
 import utils.autoUnitTestUtil.dataStructure.MemoryModel;
-import org.eclipse.jdt.core.dom.SingleVariableDeclaration;
-import org.eclipse.jdt.core.dom.VariableDeclaration;
-import org.eclipse.jdt.core.dom.VariableDeclarationFragment;
 
 import java.util.List;
 
@@ -22,6 +20,15 @@ public abstract class VariableDeclarationNode extends AstNode {
 //           /*????*/
         } else {
             throw new RuntimeException(variableDeclaration.getClass() + " is not a VariableDeclaration");
+        }
+    }
+    public static void replaceMethodInvocationWithStub(VariableDeclaration originVariableDeclaration, MethodInvocation originMethodInvocation, ASTNode replacement) {
+        if (originVariableDeclaration instanceof SingleVariableDeclaration) {
+            SingleVariableDeclarationNode.replaceMethodInvocationWithStub((SingleVariableDeclaration) originVariableDeclaration, originMethodInvocation, replacement);
+        } else if (originVariableDeclaration instanceof VariableDeclarationFragment) {
+            VariableDeclarationFragmentNode.replaceMethodInvocationWithStub((VariableDeclarationFragment) originVariableDeclaration, originMethodInvocation, replacement);
+        } else {
+            throw new RuntimeException(originVariableDeclaration.getClass() + " is not a VariableDeclaration");
         }
     }
 }

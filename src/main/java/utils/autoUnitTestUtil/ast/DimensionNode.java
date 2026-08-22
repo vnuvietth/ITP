@@ -1,5 +1,7 @@
 package utils.autoUnitTestUtil.ast;
 
+import org.eclipse.jdt.core.dom.ASTNode;
+import org.eclipse.jdt.core.dom.MethodInvocation;
 import utils.autoUnitTestUtil.ast.Expression.Literal.NumberLiteral.IntegerLiteralNode;
 import org.eclipse.jdt.core.dom.Dimension;
 
@@ -14,4 +16,7 @@ public class DimensionNode extends AstNode {
         return integerLiteralNode;
     }
 
+    public static void replaceMethodInvocationWithStub(ASTNode originStatement, MethodInvocation originMethodInvocation, ASTNode replacement) {
+
+    }
 }

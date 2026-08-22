@@ -211,9 +211,9 @@ public class Concolic4ITP {
 
                 String methodName = ((MethodDeclaration)method).getName().getIdentifier();
 
-                if (bypassMethodList.contains(methodName)) {
-                    continue;
-                }
+//                if (bypassMethodList.contains(methodName)) {
+//                    continue;
+//                }
 
                 unitCountForFile += 1;
                 unitCountForProject += 1;
@@ -312,15 +312,16 @@ public class Concolic4ITP {
                         simpleUnitCountForFileWithException += 1;
                         simpleUnitCountForProjectWithException += 1;
 
-                        System.out.println(e.getMessage());
-                        System.out.println(Arrays.toString(e.getStackTrace()));
+                        System.err.println(e.getMessage());
+//                        System.err.println(Arrays.toString(e.getStackTrace()));
+                        e.printStackTrace();
 
                         writeDataToFile(methodName + "\n", constants.ITP_EXCEPTION_UNIT_FILEPATH, true);
                     }
                 }
                 else
                 {
-                    System.out.println("Not simple unit.");
+                    System.out.println(methodName + " is not simple unit.");
                 }
             }
 
