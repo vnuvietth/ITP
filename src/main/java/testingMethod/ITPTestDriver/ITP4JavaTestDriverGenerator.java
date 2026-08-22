@@ -386,7 +386,7 @@ public final class ITP4JavaTestDriverGenerator {
 
         }
         else if (statement instanceof MethodInvocation) {
-            return true;
+            return false;
         } else if (statement instanceof BreakStatement) {
 
             isSimpleStatement = true;
@@ -697,7 +697,7 @@ public final class ITP4JavaTestDriverGenerator {
 
             MethodDeclaration constructor = methodDeclarations[i];
 
-            if (constructor.isConstructor()) {
+            if (constructor.isConstructor() && isPublicMethod(constructor) ) {
 
                 List<ASTNode> parameterTypes = constructor.parameters();
 
@@ -715,6 +715,21 @@ public final class ITP4JavaTestDriverGenerator {
             }
         }
         return null;
+    }
+
+    private static boolean isPublicMethod(MethodDeclaration methodDeclaration)
+    {
+        if (methodDeclaration.modifiers().size()  == 0)
+        {
+            return false;
+        }
+        for (int i = 0; i < methodDeclaration.modifiers().size(); i++) {
+            if (methodDeclaration.modifiers().get(i).toString().contains("public"))
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
     private static int getClassConstructorCount(MethodDeclaration method)
