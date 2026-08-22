@@ -12,7 +12,7 @@ import utils.autoUnitTestUtil.testDriver.TestDriverUtils;
 import java.util.ArrayList;
 import java.util.List;
 
-import static testingMethod.Concolic4ITP.getTestFunc;
+//import static testingMethod.Concolic4ITP.getTestFunc;
 
 public final class CfgUtils {
     public static ArrayList<ASTNode> funcAstNodeList;
@@ -209,7 +209,7 @@ public final class CfgUtils {
 
         AST ast = methodInvocation.getAST();
 
-        addStubVariableToParameterList(stubName, funcReturnType, ast);
+//        addStubVariableToParameterList(stubName, funcReturnType, ast);
         return replaceMethodInvocationWithStub(methodInvocation, stubName, ast, isChildNode);
     }
 
@@ -222,11 +222,11 @@ public final class CfgUtils {
         } else return simpleName;
     }
 
-    private static void addStubVariableToParameterList(String stubName, Type funcReturnType, AST ast) {
-        MethodDeclaration methodDeclaration = getTestFunc();
-        SingleVariableDeclaration singleVariableDeclaration = ast.newSingleVariableDeclaration();
-        singleVariableDeclaration.setName(ast.newSimpleName(stubName));
-        singleVariableDeclaration.setType(TestDriverUtils.cloneTypeAST(funcReturnType, ast));
-        methodDeclaration.parameters().add(singleVariableDeclaration);
-    }
+//    private static void addStubVariableToParameterList(String stubName, Type funcReturnType, AST ast) {
+//        MethodDeclaration methodDeclaration = getTestFunc();
+//        SingleVariableDeclaration singleVariableDeclaration = ast.newSingleVariableDeclaration();
+//        singleVariableDeclaration.setName(ast.newSimpleName(stubName));
+//        singleVariableDeclaration.setType(TestDriverUtils.cloneTypeAST(funcReturnType, ast));
+//        methodDeclaration.parameters().add(singleVariableDeclaration);
+//    }
 }
