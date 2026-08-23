@@ -112,6 +112,13 @@ public class ITPUtils {
         bypassMethodList.add("divisionUsingShift");
 
 
+        //JAVA-Challenges-main
+        bypassMethodList.add("fibonacciSequence");
+        bypassMethodList.add("numberOfUniquePaths");
+        bypassMethodList.add("parenthesesCorrespondantes");
+        bypassMethodList.add("performOperation");
+        bypassMethodList.add("isOperator");
+
 
         return bypassMethodList;
     }
