@@ -319,7 +319,7 @@ public final class CloneProjectUtil {
         else
         {
             for (int i = 0; i < fieldArr.size(); i++) {
-                System.out.println(fieldArr.get(i).toString());
+//                System.out.println(fieldArr.get(i).toString());
             }
         }
 

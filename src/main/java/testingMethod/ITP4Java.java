@@ -213,10 +213,12 @@ public class ITP4Java {
                 if (((MethodDeclaration) method).isConstructor() || ((MethodDeclaration) method).getName().getIdentifier().equals("main") ||
                         ITP4JavaTestDriverGenerator.getMethodSignature((MethodDeclaration)method).equals("static void writeDataToFile(String,String,boolean)") ||
                         (ITP4JavaTestDriverGenerator.getMethodSignature((MethodDeclaration)method).equals("static boolean mark(String,boolean,boolean)")) ||
-                        !(getMethodAccessModifier((MethodDeclaration)method).equals("public"))
+                        !(getMethodAccessModifier((MethodDeclaration)method).equals("public"))||
+                        !ITP4JavaTestDriverGenerator.driverContainsMethod(method)
                 ) {
                     continue;
                 }
+
 
                 String methodName = ((MethodDeclaration)method).getName().getIdentifier();
 
@@ -225,9 +227,9 @@ public class ITP4Java {
                     System.out.println("methodName = " + methodName);
                 }
 
-//                if (bypassMethodList.contains(methodName)) {
-//                    continue;
-//                }
+                if (bypassMethodList.contains(methodName)) {
+                    continue;
+                }
 
                 unitCountForFile += 1;
                 unitCountForProject += 1;
@@ -428,9 +430,9 @@ public class ITP4Java {
             throws InvocationTargetException, IllegalAccessException, ClassNotFoundException,
             NoSuchFieldException, IOException, InterruptedException, NoSuchMethodException {
 
+        testFunc = method;
         setup(filePath, getClassName(filePath), method.getName().toString());
         setupCfgTree(coverage);
-        testFunc = method;
 
         setupParameters(method.getName().toString());
 

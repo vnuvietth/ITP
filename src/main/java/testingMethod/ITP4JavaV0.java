@@ -211,9 +211,9 @@ public class ITP4JavaV0 {
 
                 String methodName = ((MethodDeclaration)method).getName().getIdentifier();
 
-//                if (bypassMethodList.contains(methodName)) {
-//                    continue;
-//                }
+                if (bypassMethodList.contains(methodName)) {
+                    continue;
+                }
 
                 unitCountForFile += 1;
                 unitCountForProject += 1;

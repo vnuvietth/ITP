@@ -22,8 +22,24 @@ public final class ITP4JavaTestDriverGenerator {
     private ITP4JavaTestDriverGenerator() {
     }
 
+    public static List<ASTNode> activeMethodList = new ArrayList<>();
+
+    public static boolean driverContainsMethod(ASTNode method)
+    {
+        for (int i = 0; i < activeMethodList.size(); i++)
+        {
+            if (activeMethodList.get(i).toString().equals(method.toString()))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public static void generateITPTestDriver(String clonedJavaDirPath, ITP4JavaController.Coverage coverage, StringBuilder importStatement) {
         StringBuilder result = new StringBuilder();
+
+        activeMethodList.clear();
 
         String testDriverTemplateContent = readTestDriverTemplate();
 
@@ -79,7 +95,10 @@ public final class ITP4JavaTestDriverGenerator {
                 if (isSimpleUnit) {
                     String unitCallingBlock = generateTestDataReader((MethodDeclaration) method, file);
 
-                    allUnitCallingBlocks.append(unitCallingBlock + "\n\n");
+                    if (!"".equals(unitCallingBlock)) {
+                        allUnitCallingBlocks.append(unitCallingBlock + "\n\n");
+                        activeMethodList.add(method);
+                    }
                 }
 
             }
@@ -588,21 +607,30 @@ public final class ITP4JavaTestDriverGenerator {
             }
         }
 
+        boolean notHaveConstructor = false;
+
         if (method.getReturnType2().toString().contains("void")) {
             if (isStatic) {
                 unitCaller.append("        ").append(className + "." + method.getName().toString()).append("(");
             } else {
                 if (constructor == null && countConstructor <= 0) {
-                    unitCaller.append("        ").append(className + " object = new " + className + "();\n");//need to get constructor
-                    unitCaller.append("        ").append("object." + method.getName().toString()).append("(");
+                    notHaveConstructor = true;
+//                    unitCaller.append("        ").append(className + " object = new " + className + "();\n");//need to get constructor
+//                    unitCaller.append("        ").append("object." + method.getName().toString()).append("(");
                 }
                 else
                 {
                     String objectCreationString = generateObjectCreationString(method);
 
-                    unitCaller.append(objectCreationString);
+                    if (!"".equals(objectCreationString)) {
+                        unitCaller.append(objectCreationString);
 
-                    unitCaller.append("        ").append("object." + method.getName().toString()).append("(");
+                        unitCaller.append("        ").append("object." + method.getName().toString()).append("(");
+                    }
+                    else
+                    {
+                        notHaveConstructor = true;
+                    }
                 }
             }
         } else {
@@ -610,17 +638,23 @@ public final class ITP4JavaTestDriverGenerator {
                 unitCaller.append("        Object output = ").append(className + "." + method.getName().toString()).append("(");
             } else {
                 if (constructor == null && countConstructor <= 0) {
-                    unitCaller.append("        ").append(className + " object = new " + className + "();\n");
-                    unitCaller.append("            Object output = ").append("object." + method.getName().toString()).append("(");
+                    notHaveConstructor = true;
+//                    unitCaller.append("        ").append(className + " object = new " + className + "();\n");
+//                    unitCaller.append("            Object output = ").append("object." + method.getName().toString()).append("(");
                 }
                 else
                 {
                     String objectCreationString = generateObjectCreationString(method);
 
-                    unitCaller.append(objectCreationString);
+                    if (!"".equals(objectCreationString)) {
+                        unitCaller.append(objectCreationString);
 
-                    unitCaller.append("            Object output = ").append("object." + method.getName().toString()).append("(");
-
+                        unitCaller.append("            Object output = ").append("object." + method.getName().toString()).append("(");
+                    }
+                    else
+                    {
+                        notHaveConstructor = true;
+                    }
                 }
             }
 
@@ -628,68 +662,63 @@ public final class ITP4JavaTestDriverGenerator {
 
         //List<ParamTestData> paramList = testData.getParamList();
 
-        for (int i = 0; i < method.parameters().size(); i++) {
-            String param = "String param" + i + " = (String) jsonObject.get(\"" + ((SingleVariableDeclaration) (method.parameters().get(i))).getName() + "\");";
+        if (!notHaveConstructor) {
+            for (int i = 0; i < method.parameters().size(); i++) {
+                String param = "String param" + i + " = (String) jsonObject.get(\"" + ((SingleVariableDeclaration) (method.parameters().get(i))).getName() + "\");";
 
-            if (i == 0) {
-                testDataReader.append("            " + param + "\n");
+                if (i == 0) {
+                    testDataReader.append("            " + param + "\n");
+                } else {
+                    testDataReader.append("            " + param + "\n");
+                }
+                SingleVariableDeclaration paramData = (SingleVariableDeclaration) method.parameters().get(i);
+
+                if (paramData.getType().toString().equals("char")) {
+                    unitCaller.append("param" + i).append(".charAt(0)");
+                } else if (paramData.getType().toString().equals("String")) {
+                    unitCaller.append("param" + i);
+                } else if (paramData.getType().toString().equals("int")) {
+                    unitCaller.append("Integer.parseInt(param" + i + ")");
+                } else if (paramData.getType().toString().equals("double")) {
+                    unitCaller.append("Double.parseDouble(param" + i + ")");
+                } else if (paramData.getType().toString().equals("boolean")) {
+                    unitCaller.append("Boolean.parseBoolean(param" + i + ")");
+                } else if (paramData.getType().toString().equals("long")) {
+                    unitCaller.append("Long.parseLong(param" + i + ")");
+                } else if (paramData.getType().toString().equals("float")) {
+                    unitCaller.append("Float.parseFloat(param" + i + ")");
+                }
+                if (i != method.parameters().size() - 1) unitCaller.append(", ");
+            }
+            testDataReader.append("\n");
+
+            unitCaller.append(");\n\n");
+        }
+
+        if (!notHaveConstructor)
+        {
+            if (!method.getReturnType2().toString().contains("void")) {
+                unitCaller.append("\t\t\t\t\t\treturn output.toString();\n");
             } else {
-                testDataReader.append("            " + param + "\n");
+                unitCaller.append("\t\t\t\t\t\treturn \"0\";\n");
             }
-
-//            testDataReader.append("            System.out.println(\"" + ((SingleVariableDeclaration) (method.parameters().get(i))).getName() + " = \" " + " + param" + i + ");\n");
-
-            SingleVariableDeclaration paramData = (SingleVariableDeclaration) method.parameters().get(i);
-
-//            System.out.println("paramData.getName() = " + paramData.getName() + "; paramData.getType() = " + paramData.getType());
-
-//            System.out.println("paramData.getType() = " + paramData.getType().toString());
-
-//            String sss = "test";
-//            sss.charAt(0)
-
-            if (paramData.getType().toString().equals("char")) {
-                unitCaller.append("param" + i).append(".charAt(0)");
-            } else if (paramData.getType().toString().equals("String")) {
-                unitCaller.append("param" + i);
-            } else if (paramData.getType().toString().equals("int")) {
-                unitCaller.append("Integer.parseInt(param" + i + ")");
-            } else if (paramData.getType().toString().equals("double")) {
-                unitCaller.append("Double.parseDouble(param" + i + ")");
-            } else if (paramData.getType().toString().equals("boolean")) {
-                unitCaller.append("Boolean.parseBoolean(param" + i + ")");
-            } else if (paramData.getType().toString().equals("long")) {
-                unitCaller.append("Long.parseLong(param" + i + ")");
-            } else if (paramData.getType().toString().equals("float")) {
-                unitCaller.append("Float.parseFloat(param" + i + ")");
-            }
-            if (i != method.parameters().size() - 1) unitCaller.append(", ");
         }
-        testDataReader.append("\n");
-
-        unitCaller.append(");\n\n");
-
-        if (!method.getReturnType2().toString().contains("void")) {
-//            unitCaller.append("\t\t\t\t\t\tSystem.out.println(\"output = \"  + output.toString());\n\n");
-
-            unitCaller.append("\t\t\t\t\t\treturn output.toString();\n");
-        } else {
-            unitCaller.append("\t\t\t\t\t\treturn \"0\";\n");
-        }
-
-        String methodSignature = getMethodSignature(method);
 
         StringBuilder unitcallingBlock = new StringBuilder();
-        unitcallingBlock.append("        if (\"" + file.getAbsolutePath().replace("\\", "\\\\") + "\".equals(fileName) && \"" + methodSignature + "\".equals(functionName)) {\n");
+
+        if (!unitCaller.isEmpty()) {
+            String methodSignature = getMethodSignature(method);
+            unitcallingBlock.append("        if (\"" + file.getAbsolutePath().replace("\\", "\\\\") + "\".equals(fileName) && \"" + methodSignature + "\".equals(functionName)) {\n");
 
 //        unitcallingBlock.append(
 //                "\t\t\t\t\t\n" +
 //                        "            System.out.println(\"Executing unit: " + getMethodSignature(method) + " ...\");\n\n");
 
-        String unitBlock = testDataReader + "    " + unitCaller.toString();
+            String unitBlock = testDataReader + "    " + unitCaller.toString();
 
-        unitcallingBlock.append(unitBlock);
-        unitcallingBlock.append("        }\n\n");
+            unitcallingBlock.append(unitBlock);
+            unitcallingBlock.append("        }\n\n");
+        }
 
         return unitcallingBlock.toString();
     }
