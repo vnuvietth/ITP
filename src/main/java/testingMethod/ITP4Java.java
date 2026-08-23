@@ -175,6 +175,8 @@ public class ITP4Java {
         StringBuilder resultString = new StringBuilder();
         StringBuilder exceptionUnitList = new StringBuilder();
 
+        StringBuilder testedUnitList = new StringBuilder();
+
         ArrayList<String> bypassMethodList = ITPUtils.getByPassMethod();
 
         writeDataToFile("", constants.ITP_EXCEPTION_UNIT_FILEPATH, false);
@@ -293,6 +295,8 @@ public class ITP4Java {
 
                             testResult[i] = startGeneratingForOneUnit(file.getAbsolutePath(), (MethodDeclaration) method, coverage);
 
+                            testedUnitList.append(methodName).append("\n");
+
                             tempTotalCoverage += testResult[i].getFullCoverage();
 
                             tempTotalCoverageForFile += testResult[i].getFullCoverage();
@@ -387,6 +391,8 @@ public class ITP4Java {
         writeDataToFile("totalAverageCoverage: " + (totalCoverage/(double)constants.NUMBER_OF_RUNTIMES /(simpleUnitCountForProject - simpleUnitCountForProjectWithException ))  + "%\n", constants.ITP_TEST_RESULT_FILEPATH, true);
 
 
+        System.out.println("testedUnitList: " + testedUnitList.toString());
+        System.out.println("exceptionUnitList: " + exceptionUnitList.toString());
     }
 
 //    public static ConcolicTestResult runFullConcolic(String path, String methodName, String className,
