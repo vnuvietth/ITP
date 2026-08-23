@@ -211,9 +211,9 @@ public class Concolic4ITP {
 
                 String methodName = ((MethodDeclaration)method).getName().getIdentifier();
 
-                if (bypassMethodList.contains(methodName)) {
-                    continue;
-                }
+//                if (bypassMethodList.contains(methodName)) {
+//                    continue;
+//                }
 
                 unitCountForFile += 1;
                 unitCountForProject += 1;
@@ -249,11 +249,13 @@ public class Concolic4ITP {
 
                         System.out.println("Start generating test data for: " + getMethodSignature((MethodDeclaration) method));
 
-                        if (methodName.equals("pow")
-                        )
-                        {
-                            System.out.println("Method name = " + methodName);
-                        }
+//                        if (methodName.equals("convertOctalToDecimal") ||
+//                                methodName.equals("convertTurkishToLatin") ||
+//                                methodName.equals("isPalindrome")
+//                        )
+//                        {
+//                            System.out.println("Method name = " + methodName);
+//                        }
 
 //                        ConcolicTestResult testResult = startGeneratingITPv0ForOneUnit(
 //                        file.getAbsolutePath(), (MethodDeclaration) method, coverage);
@@ -304,16 +306,14 @@ public class Concolic4ITP {
                     }
                     catch (Exception e) {
                         exceptionUnitList.append(methodName).append("\n");
-
-                        System.out.println("Exception in processing unit: " + methodName);
                         System.out.println("exceptionUnitList: ");
                         System.out.println(exceptionUnitList.toString());
 
                         simpleUnitCountForFileWithException += 1;
                         simpleUnitCountForProjectWithException += 1;
 
-                        System.err.println(e.getMessage());
-                        e.printStackTrace();
+                        System.out.println(e.getMessage());
+                        System.out.println(Arrays.toString(e.getStackTrace()));
 
                         writeDataToFile(methodName + "\n", constants.ITP_EXCEPTION_UNIT_FILEPATH, true);
                     }

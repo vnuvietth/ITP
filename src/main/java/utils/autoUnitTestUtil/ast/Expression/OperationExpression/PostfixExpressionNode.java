@@ -2,6 +2,9 @@ package utils.autoUnitTestUtil.ast.Expression.OperationExpression;
 
 import com.microsoft.z3.Context;
 import com.microsoft.z3.Expr;
+import org.eclipse.jdt.core.dom.ASTNode;
+import org.eclipse.jdt.core.dom.Expression;
+import org.eclipse.jdt.core.dom.MethodInvocation;
 import utils.autoUnitTestUtil.ast.AstNode;
 import utils.autoUnitTestUtil.ast.Expression.ExpressionNode;
 import utils.autoUnitTestUtil.ast.Expression.Literal.LiteralNode;
@@ -23,6 +26,11 @@ public class PostfixExpressionNode extends OperationExpressionNode {
         return Z3Operand;
     }
 
+    public static void replaceMethodInvocationWithStub(PostfixExpression originPostfixExpression, MethodInvocation originMethodInvocation, ASTNode replacement) {
+        Expression operand = originPostfixExpression.getOperand();
+        if (operand == originMethodInvocation)
+            originPostfixExpression.setOperand((Expression) replacement);
+    }
     public static ExpressionNode executePostfixExpression(PostfixExpression postfixExpression, MemoryModel memoryModel) {
         PostfixExpressionNode postfixExpressionNode = new PostfixExpressionNode();
         postfixExpressionNode.operand = (ExpressionNode) ExpressionNode.executeExpression(postfixExpression.getOperand(), memoryModel);

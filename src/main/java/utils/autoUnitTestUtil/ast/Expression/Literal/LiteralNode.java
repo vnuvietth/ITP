@@ -523,4 +523,23 @@ public abstract class LiteralNode extends ExpressionNode {
                 astNode instanceof NullLiteral ||
                 astNode instanceof TypeLiteral);
     }
+
+    public static Class<?> getLiteralClass(ASTNode literal) {
+        if (literal instanceof NumberLiteral) {
+            NumberLiteral numberLiteral = (NumberLiteral) literal;
+            if (NumberLiteralNode.isIntegerValue(numberLiteral.getToken())) {
+                return int.class;
+            } else {
+                return double.class;
+            }
+        } else if (literal instanceof CharacterLiteral) {
+            return char.class;
+        } else if (literal instanceof BooleanLiteral) {
+            return boolean.class;
+        } else if (literal instanceof StringLiteral) {
+            return String.class;
+        } else {
+            throw new RuntimeException("Unsupported Literal: " + literal.getClass());
+        }
+    }
 }

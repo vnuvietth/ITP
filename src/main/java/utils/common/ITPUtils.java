@@ -37,6 +37,8 @@ public class ITPUtils {
         bypassMethodList.add("calculatePi");
         bypassMethodList.add("isOperator");
 
+        bypassMethodList.add("compareTo");
+
         // Not processed data types in Refactored-TheAlgorithms-Java
         bypassMethodList.add("bruteforce");
         bypassMethodList.add("valOfChar");
@@ -173,8 +175,10 @@ public class ITPUtils {
         bypassMethodList.add("findSteps");
         bypassMethodList.add("parenthesesCorrespondantes");
 
-        //Algorithms-master
-        bypassMethodList.add("calculate");
+//        Algorithms-master
+//        bypassMethodList.add("calculate");
+        bypassMethodList.add("equalsWithRelativeTolerance");
+        bypassMethodList.add("evaluate");
 
         //Algorithms-master
         bypassMethodList.add("value");
