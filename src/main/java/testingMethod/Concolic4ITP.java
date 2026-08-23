@@ -354,7 +354,7 @@ public class Concolic4ITP {
         writeDataToFile("Test data/(simpleUnitCountForProject - simpleUnitCountForProjectWithException): " + ((double)(testDataCountForProject/((double)(simpleUnitCountForProject - simpleUnitCountForProjectWithException)))) + "\n", constants.ITP_TEST_RESULT_FILEPATH, true);
         writeDataToFile("totalAverageCoverage: " + (totalCoverage/(double)constants.NUMBER_OF_RUNTIMES /(simpleUnitCountForProject - simpleUnitCountForProjectWithException ))  + "%\n", constants.ITP_TEST_RESULT_FILEPATH, true);
 
-        System.out.println("testedUnitList: " + testedUnitList.toString());
+        System.out.println("Concolic4ITP: testedUnitList: \n" + testedUnitList.toString());
         System.out.println("exceptionUnitList: " + exceptionUnitList.toString());
     }
 
