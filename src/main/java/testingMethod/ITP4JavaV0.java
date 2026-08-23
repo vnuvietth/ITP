@@ -365,6 +365,7 @@ public class ITP4JavaV0 {
 //        writeDataToFile("Step 0: " + ((System.nanoTime() - startTime)/1000000) + " (ms)\n", constants.ITP_TEST_RESULT_FILEPATH, true);
 
         setup(filePath, className, methodName);
+        testFunc = method;
 
 //        writeDataToFile("Step 0.1: " + ((System.nanoTime() - startTime)/1000000) + " (ms)\n", constants.ITP_TEST_RESULT_FILEPATH, true);
 
@@ -374,7 +375,7 @@ public class ITP4JavaV0 {
 
         setupParameters(methodName);
 
-        setUpTestFunc(methodName);
+//        setUpTestFunc(methodName);
 
         ConcolicTestResult testResult = new ConcolicTestResult();
         int testCaseID = 1;
@@ -645,7 +646,8 @@ public class ITP4JavaV0 {
         funcAstNodeList = ProjectParser.parseFile(path);
         compilationUnit = ProjectParser.parseFileToCompilationUnit(path);
         classKey = (compilationUnit.getPackage() != null ? compilationUnit.getPackage().getName().toString() : "") + className.replace(".java", "") + "totalStatement";
-        setUpTestFunc(methodName);
+//        setUpTestFunc(methodName);
+
         MarkedPath.resetFullTestSuiteCoveredStatements();
     }
 
@@ -685,13 +687,13 @@ public class ITP4JavaV0 {
         return (totalCoveredStatement * 100.0) / (totalClassStatement * 1.0);
     }
 
-    private static void setUpTestFunc(String methodName) {
-        for (ASTNode func : funcAstNodeList) {
-            if (((MethodDeclaration) func).getName().getIdentifier().equals(methodName)) {
-                testFunc = func;
-            }
-        }
-    }
+//    private static void setUpTestFunc(String methodName) {
+//        for (ASTNode func : funcAstNodeList) {
+//            if (((MethodDeclaration) func).getName().getIdentifier().equals(methodName)) {
+//                testFunc = func;
+//            }
+//        }
+//    }
 
     private static void setupParameters(String methodName) throws ClassNotFoundException, NoSuchMethodException {
         parameters = ((MethodDeclaration) testFunc).parameters();
