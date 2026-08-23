@@ -18,7 +18,7 @@ public interface constants {
 //    String TEST_FOLDER = "\\sample\\Algorithms-master.zip";
 
     //https://github.com/pedrovgs/Algorithms
-    String TEST_FOLDER = "\\sample\\JAVA-Challenges-main.zip";
+    String TEST_FOLDER = "\\sample\\LeetCode-Java-Solutions-master.zip";
 
 
 
