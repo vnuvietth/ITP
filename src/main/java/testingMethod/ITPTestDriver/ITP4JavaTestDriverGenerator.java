@@ -153,15 +153,15 @@ public final class ITP4JavaTestDriverGenerator {
                 }
             }
 
-            Integer countConstructor = getClassConstructorCount((MethodDeclaration) method);
-
-            MethodDeclaration classConstructor = getClassSimpleConstructor((MethodDeclaration) method);
-
-            if (classConstructor == null && countConstructor > 0)
-            {
-                isSimpleParameter = false;
-                return isSimpleParameter;
-            }
+//            Integer countConstructor = getClassConstructorCount((MethodDeclaration) method);
+//
+//            MethodDeclaration classConstructor = getClassSimpleConstructor((MethodDeclaration) method);
+//
+//            if (classConstructor == null && countConstructor > 0)
+//            {
+//                isSimpleParameter = false;
+//                return isSimpleParameter;
+//            }
 
         }
 

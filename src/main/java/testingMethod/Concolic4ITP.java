@@ -211,14 +211,21 @@ public class Concolic4ITP {
 
                 String methodName = ((MethodDeclaration)method).getName().getIdentifier();
 
-                if (bypassMethodList.contains(methodName)) {
-                    continue;
-                }
+//                if (bypassMethodList.contains(methodName)) {
+//                    continue;
+//                }
 
                 unitCountForFile += 1;
                 unitCountForProject += 1;
 
                 System.out.println(((MethodDeclaration)method).toString());
+
+
+                if (methodName.equals("equalsIncludingNaN")
+                )
+                {
+                    System.out.println("Method name = " + methodName);
+                }
 
                 boolean isSimpleUnit = ITP4JavaTestDriverGenerator.isSimpleUnit((MethodDeclaration)method);
 
@@ -249,11 +256,6 @@ public class Concolic4ITP {
 
                         System.out.println("Start generating test data for: " + getMethodSignature((MethodDeclaration) method));
 
-                        if (methodName.equals("pow")
-                        )
-                        {
-                            System.out.println("Method name = " + methodName);
-                        }
 
 //                        ConcolicTestResult testResult = startGeneratingITPv0ForOneUnit(
 //                        file.getAbsolutePath(), (MethodDeclaration) method, coverage);
@@ -396,10 +398,11 @@ public class Concolic4ITP {
 //        writeDataToFile("Step 0: " + ((System.nanoTime() - startTime)/1000000) + " (ms)\n", constants.ITP_TEST_RESULT_FILEPATH, true);
 
         String methodName = method.getName().getIdentifier();
-//        String className = method.getParent().getNodeType().;
-        setup(path, getClassName(path), methodName);
 
         testFunc = method;
+        parameters = method.parameters();
+//        String className = method.getParent().getNodeType().;
+        setup(path, getClassName(path), methodName);
 
 //        writeDataToFile("Step 0.1: " + ((System.nanoTime() - startTime)/1000000) + " (ms)\n", constants.ITP_TEST_RESULT_FILEPATH, true);
 
@@ -408,7 +411,6 @@ public class Concolic4ITP {
 //        writeDataToFile("Step 0.2: " + ((System.nanoTime() - startTime)/1000000) + " (ms)\n", constants.ITP_TEST_RESULT_FILEPATH, true);
 
 //        setupParameters(methodName);
-        parameters = method.parameters();
 
         ConcolicTestResult testResult = new ConcolicTestResult();
         int testCaseID = 1;
@@ -604,20 +606,20 @@ public class Concolic4ITP {
         return (totalCoveredStatement * 100.0) / (totalClassStatement * 1.0);
     }
 
-    private static void setUpTestFunc(String methodName) {
-        for (ASTNode func : funcAstNodeList) {
-            if (((MethodDeclaration) func).getName().getIdentifier().equals(methodName)) {
-                testFunc = func;
-            }
-        }
-    }
+//    private static void setUpTestFunc(String methodName) {
+//        for (ASTNode func : funcAstNodeList) {
+//            if (((MethodDeclaration) func).getName().getIdentifier().equals(methodName)) {
+//                testFunc = func;
+//            }
+//        }
+//    }
 
-    private static void setupParameters(String methodName) throws ClassNotFoundException, NoSuchMethodException {
-        parameters = ((MethodDeclaration) testFunc).parameters();
-//        parameterClasses = Utils4TestDriver.getParameterClasses(parameters);
-//        parameterNames = Utils4TestDriver.getParameterNames(parameters);
-//        method = Class.forName(fullyClonedClassName).getDeclaredMethod(methodName, parameterClasses);
-    }
+//    private static void setupParameters(String methodName) throws ClassNotFoundException, NoSuchMethodException {
+//        parameters = ((MethodDeclaration) testFunc).parameters();
+////        parameterClasses = Utils4TestDriver.getParameterClasses(parameters);
+////        parameterNames = Utils4TestDriver.getParameterNames(parameters);
+////        method = Class.forName(fullyClonedClassName).getDeclaredMethod(methodName, parameterClasses);
+//    }
 
     private static void setupCfgTree(Concolic4ITPController.Coverage coverage) {
         Block functionBlock = Utils.getFunctionBlock(testFunc);
