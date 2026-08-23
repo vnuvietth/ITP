@@ -332,14 +332,15 @@ public class ITP4Java {
                     }
                     catch (Exception e) {
                         exceptionUnitList.append(methodName).append("\n");
+                        System.out.println("Exception in unit: " + methodName);
                         System.out.println("exceptionUnitList: ");
                         System.out.println(exceptionUnitList.toString());
 
                         simpleUnitCountForFileWithException += 1;
                         simpleUnitCountForProjectWithException += 1;
 
-                        System.out.println(e.getMessage());
-                        System.out.println(Arrays.toString(e.getStackTrace()));
+                        System.err.println(e.getMessage());
+                        e.printStackTrace();
 
                         writeDataToFile(methodName + "\n", constants.ITP_EXCEPTION_UNIT_FILEPATH, true);
                     }
@@ -429,9 +430,8 @@ public class ITP4Java {
 
         setup(filePath, getClassName(filePath), method.getName().toString());
         setupCfgTree(coverage);
-        setupParameters(method.getName().toString());
+        testFunc = method;
 
-        setUpTestFunc(method.getName().toString());
         setupParameters(method.getName().toString());
 
         Boolean isTestDriverBuilt = false;
@@ -568,11 +568,12 @@ public class ITP4Java {
     }
 
 
-    private static void setup(String path, String className, String methodName) throws IOException {
+    private static void setup(String path, String className, String methodName)
+            throws IOException {
         funcAstNodeList = ProjectParser.parseFile(path);
         compilationUnit = ProjectParser.parseFileToCompilationUnit(path);
         classKey = (compilationUnit.getPackage() != null ? compilationUnit.getPackage().getName().toString() : "") + className.replace(".java", "") + "totalStatement";
-        setUpTestFunc(methodName);
+//        setUpTestFunc(methodName);
         MarkedPath.resetFullTestSuiteCoveredStatements();
     }
 

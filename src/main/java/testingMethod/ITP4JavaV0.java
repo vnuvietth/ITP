@@ -301,14 +301,16 @@ public class ITP4JavaV0 {
                     }
                     catch (Exception e) {
                         exceptionUnitList.append(methodName).append("\n");
+                        System.out.println("Exception in Unit: " + methodName);
                         System.out.println("exceptionUnitList: ");
                         System.out.println(exceptionUnitList.toString());
 
                         simpleUnitCountForFileWithException += 1;
                         simpleUnitCountForProjectWithException += 1;
 
-                        System.out.println(e.getMessage());
-                        System.out.println(Arrays.toString(e.getStackTrace()));
+                        System.err.println(e.getMessage());
+//                        System.out.println(Arrays.toString(e.getStackTrace()));
+                        e.printStackTrace();
 
                         writeDataToFile(methodName + "\n", constants.ITP_EXCEPTION_UNIT_FILEPATH, true);
                     }
