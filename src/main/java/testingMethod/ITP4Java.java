@@ -224,7 +224,7 @@ public class ITP4Java {
 
                 String methodName = ((MethodDeclaration)method).getName().getIdentifier();
 
-                if (methodName.equals("isThree"))
+                if (methodName.equals("divideIterative"))
                 {
                     System.out.println("methodName = " + methodName);
                 }
