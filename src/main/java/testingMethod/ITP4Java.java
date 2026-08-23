@@ -220,14 +220,14 @@ public class ITP4Java {
 
                 String methodName = ((MethodDeclaration)method).getName().getIdentifier();
 
-//                if (methodName.equals("isThree"))
-//                {
-//                    System.out.println("methodName = " + methodName);
-//                }
-
-                if (bypassMethodList.contains(methodName)) {
-                    continue;
+                if (methodName.equals("isThree"))
+                {
+                    System.out.println("methodName = " + methodName);
                 }
+
+//                if (bypassMethodList.contains(methodName)) {
+//                    continue;
+//                }
 
                 unitCountForFile += 1;
                 unitCountForProject += 1;

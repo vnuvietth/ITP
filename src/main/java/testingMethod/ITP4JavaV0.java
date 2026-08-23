@@ -220,6 +220,13 @@ public class ITP4JavaV0 {
 
                 System.out.println(((MethodDeclaration)method).toString());
 
+
+                if (methodName.equals("getLongIndex")
+                )
+                {
+                    System.out.println("Method name = " + methodName);
+                }
+
                 boolean isSimpleUnit = ITP4JavaTestDriverGenerator.isSimpleUnit((MethodDeclaration)method);
 
                 if (isSimpleUnit) {
@@ -249,13 +256,6 @@ public class ITP4JavaV0 {
 
                         System.out.println("Start generating test data for: " + getMethodSignature((MethodDeclaration) method));
 //
-//                        if (methodName.equals("toHex") ||
-//                                methodName.equals("countEven") ||
-//                                methodName.equals("hammingDistance")
-//                        )
-//                        {
-//                            System.out.println("Method name = " + methodName);
-//                        }
 
 
                         ConcolicTestResult[] testResult = new ConcolicTestResult[constants.NUMBER_OF_RUNTIMES];

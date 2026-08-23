@@ -67,6 +67,12 @@ public final class ITP4JavaTestDriverGenerator {
                         !(getMethodAccessModifier((MethodDeclaration) method).equals("public"))
                 )
                     continue;
+                String methodName = ((MethodDeclaration) method).getName().getIdentifier();
+
+                if (methodName.equals("isThree"))
+                {
+                    System.out.println("methodName = " + methodName);
+                }
 
                 boolean isSimpleUnit = ITP4JavaTestDriverGenerator.isSimpleUnit((MethodDeclaration) method);
 
@@ -701,17 +707,22 @@ public final class ITP4JavaTestDriverGenerator {
 
                 List<ASTNode> parameterTypes = constructor.parameters();
 
+                boolean isSimpleParam = true;
+
                 for (int j = 0; j < parameterTypes.size(); j++) {
                     ASTNode parameter = parameterTypes.get(j);
 
                     if (!((SingleVariableDeclaration) parameter).getType().isPrimitiveType())
                     {
 //                        return null;
+                        isSimpleParam = false;
                         break;
                     }
                 }
 
-                return methodDeclarations[i];
+                if (isSimpleParam) {
+                    return methodDeclarations[i];
+                }
             }
         }
         return null;
