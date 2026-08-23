@@ -306,14 +306,15 @@ public class Concolic4ITP {
                     }
                     catch (Exception e) {
                         exceptionUnitList.append(methodName).append("\n");
+                        System.out.println("Exception in unit: " + methodName);
                         System.out.println("exceptionUnitList: ");
                         System.out.println(exceptionUnitList.toString());
 
                         simpleUnitCountForFileWithException += 1;
                         simpleUnitCountForProjectWithException += 1;
 
-                        System.out.println(e.getMessage());
-                        System.out.println(Arrays.toString(e.getStackTrace()));
+                        System.err.println(e.getMessage());
+                        e.printStackTrace();
 
                         writeDataToFile(methodName + "\n", constants.ITP_EXCEPTION_UNIT_FILEPATH, true);
                     }
