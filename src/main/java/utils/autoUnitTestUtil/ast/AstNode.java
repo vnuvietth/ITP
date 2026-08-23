@@ -24,4 +24,16 @@ public abstract class AstNode {
         }
     }
 
+
+    public static void replaceMethodInvocationWithStub(ASTNode originStatement, MethodInvocation originMethodInvocation, ASTNode replacement) {
+        if(originStatement instanceof Expression) {
+            ExpressionNode.replaceMethodInvocationWithStub((Expression) originStatement, originMethodInvocation, replacement);
+        } else if (originStatement instanceof Statement) {
+            StatementNode.replaceMethodInvocationWithStub((Statement) originStatement, originMethodInvocation, replacement);
+        } else if (originStatement instanceof VariableDeclaration) {
+            VariableDeclarationNode.replaceMethodInvocationWithStub((VariableDeclaration) originStatement, originMethodInvocation, replacement);
+        } else if (originStatement instanceof Dimension) {
+            DimensionNode.replaceMethodInvocationWithStub((Dimension) originStatement, originMethodInvocation, replacement);
+        }
+    }
 }

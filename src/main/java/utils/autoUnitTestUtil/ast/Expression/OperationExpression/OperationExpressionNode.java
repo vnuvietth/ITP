@@ -116,4 +116,18 @@ public abstract class OperationExpressionNode extends ExpressionNode {
             throw new RuntimeException(operand.getClass() + " is Invalid expressionNode");
         }
     }
+
+    public static void replaceMethodInvocationWithStub(Expression originExpression, MethodInvocation originMethodInvocation, ASTNode replacement) {
+        if (originExpression instanceof InfixExpression) {
+            InfixExpressionNode.replaceMethodInvocationWithStub((InfixExpression) originExpression, originMethodInvocation, replacement);
+        } else if (originExpression instanceof PrefixExpression) {
+            PrefixExpressionNode.replaceMethodInvocationWithStub((PrefixExpression) originExpression, originMethodInvocation, replacement);
+        } else if (originExpression instanceof PostfixExpression) {
+            PostfixExpressionNode.replaceMethodInvocationWithStub((PostfixExpression) originExpression, originMethodInvocation, replacement);
+        } else if (originExpression instanceof ParenthesizedExpression) {
+            ParenthesizedExpressionNode.replaceMethodInvocationWithStub((ParenthesizedExpression) originExpression, originMethodInvocation, replacement);
+        } else {
+            throw new RuntimeException(originExpression.getClass() + " is not an OperationExpression!!!");
+        }
+    }
 }

@@ -56,4 +56,14 @@ public abstract class ExpressionNode extends AstNode {
                 (expression instanceof ParenthesizedExpression);
     }
 
+
+    public static void replaceMethodInvocationWithStub(Expression originExpression, MethodInvocation originMethodInvocation, ASTNode replacement) {
+        if (isOperationExpression(originExpression)) {
+            OperationExpressionNode.replaceMethodInvocationWithStub(originExpression, originMethodInvocation, replacement);
+        } else if (originExpression instanceof Assignment) {
+            AssignmentNode.replaceMethodInvocationWithStub((Assignment) originExpression, originMethodInvocation, replacement);
+        } else if (originExpression instanceof VariableDeclarationExpression) {
+            VariableDeclarationExpressionNode.replaceMethodInvocationWithStub((VariableDeclarationExpression) originExpression, originMethodInvocation, replacement);
+        }
+    }
 }

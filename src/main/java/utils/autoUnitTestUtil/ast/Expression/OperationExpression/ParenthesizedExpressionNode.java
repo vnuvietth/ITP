@@ -2,6 +2,9 @@ package utils.autoUnitTestUtil.ast.Expression.OperationExpression;
 
 import com.microsoft.z3.Context;
 import com.microsoft.z3.Expr;
+import org.eclipse.jdt.core.dom.ASTNode;
+import org.eclipse.jdt.core.dom.Expression;
+import org.eclipse.jdt.core.dom.MethodInvocation;
 import utils.autoUnitTestUtil.ast.Expression.ExpressionNode;
 import utils.autoUnitTestUtil.ast.Expression.Literal.LiteralNode;
 import utils.autoUnitTestUtil.dataStructure.MemoryModel;
@@ -17,6 +20,13 @@ public class ParenthesizedExpressionNode extends OperationExpressionNode {
 
         Expr Z3Operand = OperationExpressionNode.createZ3Expression(operand, ctx, vars, memoryModel);
         return Z3Operand;
+    }
+
+
+    public static void replaceMethodInvocationWithStub(ParenthesizedExpression originParenthesizedExpression, MethodInvocation originMethodInvocation, ASTNode replacement) {
+        Expression expression = originParenthesizedExpression.getExpression();
+        if (expression == originMethodInvocation)
+            originParenthesizedExpression.setExpression((Expression) replacement);
     }
 
     public static ExpressionNode executeParenthesizedExpression(ParenthesizedExpression parenthesizedExpression, MemoryModel memoryModel) {
