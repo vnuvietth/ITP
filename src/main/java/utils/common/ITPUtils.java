@@ -96,6 +96,20 @@ public class ITPUtils {
         bypassMethodList.add("merge");
 
 
+        //java-algorithms-implementation-master
+        bypassMethodList.add("addEdge");
+        bypassMethodList.add("getNumberOfCoprimes");
+        bypassMethodList.add("divisionUsingLoop");
+        bypassMethodList.add("gcdUsingEuclides");
+        bypassMethodList.add("modularAbs");
+        bypassMethodList.add("multiplyUsingLoopWithIntegerInput");
+        bypassMethodList.add("isPrime");
+        bypassMethodList.add("toString");
+        bypassMethodList.add("polar");
+        bypassMethodList.add("powerOfTwoUsingBits");
+        bypassMethodList.add("fibonacciSequenceUsingLoop");
+        bypassMethodList.add("fibonacciSequenceUsingBinetsFormula");
+        bypassMethodList.add("divisionUsingShift");
 
 
 
