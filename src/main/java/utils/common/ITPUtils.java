@@ -226,6 +226,12 @@ public class ITPUtils {
         bypassMethodList.add("appendCount");
 
 
+        //JOML
+        bypassMethodList.add("testPoint");
+        bypassMethodList.add("testSphere");
+        bypassMethodList.add("intersectSphere");
+
+
         return bypassMethodList;
     }
 
