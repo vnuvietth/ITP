@@ -18,10 +18,11 @@ public interface constants {
 //    String TEST_FOLDER = "\\sample\\Algorithms-master.zip";
 
     //https://github.com/pedrovgs/Algorithms
-    String TEST_FOLDER = "\\sample\\java-util-master.zip";
+    String TEST_FOLDER = "\\sample\\intro-to-java-programming-master.zip";
 
     //https://github.com/jdereg/java-util/tree/master
 
+    //https://github.com/HarryDulaney/intro-to-java-programming/tree/master
 
     int NUMBER_OF_RUNTIMES = 1;
 
