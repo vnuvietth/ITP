@@ -209,7 +209,8 @@ public class ITPUtils {
         bypassMethodList.add("getMoneyAmount");
         bypassMethodList.add("findContestMatch");
         bypassMethodList.add("helper");
-
+        bypassMethodList.add("commonFactors");
+        bypassMethodList.add("getShiftedChar");
 
 
         //Refactored-TheAlgorithms-Java

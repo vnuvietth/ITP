@@ -18,7 +18,7 @@ public interface constants {
 //    String TEST_FOLDER = "\\sample\\Algorithms-master.zip";
 
     //https://github.com/pedrovgs/Algorithms
-    String TEST_FOLDER = "\\sample\\intro-to-java-programming-master.zip";
+    String TEST_FOLDER = "\\sample\\LeetCode-Java-Solutions-master.zip";
 
     //https://github.com/jdereg/java-util/tree/master
 
@@ -32,19 +32,19 @@ public interface constants {
 
 
     //At home
-    String CLONED_PROJECT_PATH = "E:\\IdeaProjects\\testDriver\\clonedProject";
-    String UPLOADED_PROJECT_PATH = "E:\\IdeaProjects\\testDriver\\uploadedProject";
+//    String CLONED_PROJECT_PATH = "E:\\IdeaProjects\\testDriver\\clonedProject";
+//    String UPLOADED_PROJECT_PATH = "E:\\IdeaProjects\\testDriver\\uploadedProject";
 
     //at company
-//    String CLONED_PROJECT_PATH = "D:\\IdeaProjects\\testDriver\\clonedProject";
-//    String UPLOADED_PROJECT_PATH = "D:\\IdeaProjects\\testDriver\\uploadedProject";
+    String CLONED_PROJECT_PATH = "D:\\IdeaProjects\\testDriver\\clonedProject";
+    String UPLOADED_PROJECT_PATH = "D:\\IdeaProjects\\testDriver\\uploadedProject";
 
-//    String PROJECT_ROOT_DRIVE = "D:\\Code\\IdeaProjects\\ITP"; // At company
-    String PROJECT_ROOT_DRIVE = "D:\\QG25.09\\Code.VietTH\\NTD-Paper"; //At home
+    String PROJECT_ROOT_DRIVE = "D:\\Code\\IdeaProjects\\ITP"; // At company
+//    String PROJECT_ROOT_DRIVE = "D:\\QG25.09\\Code.VietTH\\NTD-Paper"; //At home
 
     //Test driver folder
-    String TEST_DRIVER_FOLDER = "E:\\IdeaProjects\\testDriver"; //at home
-//    String TEST_DRIVER_FOLDER = "D:\\IdeaProjects\\testDriver"; //at company
+//    String TEST_DRIVER_FOLDER = "E:\\IdeaProjects\\testDriver"; //at home
+    String TEST_DRIVER_FOLDER = "D:\\IdeaProjects\\testDriver"; //at company
     String TEST_DRIVER_CLASSPATH_FOLDER = TEST_DRIVER_FOLDER + "\\target\\classes";
     String TEST_DRIVER_LIBRARY_FOLDER = PROJECT_ROOT_DRIVE + "\\src\\main\\resources\\testDriverLibraries";
     String UPLOADED_PROJECT_CLASSPATH = TEST_DRIVER_FOLDER + "\\target\\classes";

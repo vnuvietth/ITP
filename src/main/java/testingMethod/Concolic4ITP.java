@@ -160,6 +160,8 @@ public class Concolic4ITP {
         int simpleUnitCountForProjectWithException = 0;
         int testDataCountForProject = 0;
 
+        boolean checkSimpleUnit = false;
+
         double totalCoverage = 0;
 
         StringBuilder resultString = new StringBuilder();
@@ -233,7 +235,6 @@ public class Concolic4ITP {
 
                 boolean isSimpleUnit = ITP4JavaTestDriverGenerator.isSimpleUnit((MethodDeclaration)method);
 
-                boolean checkSimpleUnit = false;
                 if (isSimpleUnit)
                 {
                     simpleUnitList.append(methodName).append("\n");
@@ -373,9 +374,9 @@ public class Concolic4ITP {
         System.out.println("Concolic4ITP: testedUnitList: \n" + testedUnitList.toString());
         System.out.println("exceptionUnitList: " + exceptionUnitList.toString());
 
-
-
-        System.out.println("simpleUnitCount = " + simpleUnitCount + "; \n simpleUnitList: \n" + simpleUnitList.toString());
+        if (checkSimpleUnit) {
+            System.out.println("simpleUnitCount = " + simpleUnitCount + "; \n simpleUnitList: \n" + simpleUnitList.toString());
+        }
     }
 
 //    public static ConcolicTestResult runFullConcolic(String path, String methodName, String className,
