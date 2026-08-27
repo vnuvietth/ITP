@@ -195,6 +195,21 @@ public class ITPUtils {
         bypassMethodList.add("numberOfChild");
         bypassMethodList.add("hammingDistance");
         bypassMethodList.add("tribonacci");
+        bypassMethodList.add("rangeBitwiseAnd");
+        bypassMethodList.add("numberOfMatches");
+        bypassMethodList.add("findDelayedArrivalTime");
+        bypassMethodList.add("canBeEqual");
+        bypassMethodList.add("squareIsWhite");
+        bypassMethodList.add("findLUSlength");
+        bypassMethodList.add("minimizedStringLength");
+        bypassMethodList.add("isUgly");
+        bypassMethodList.add("poorPigs");
+        bypassMethodList.add("bulbSwitch");
+        bypassMethodList.add("concatenatedBinary");
+        bypassMethodList.add("getMoneyAmount");
+        bypassMethodList.add("findContestMatch");
+        bypassMethodList.add("helper");
+
 
 
         //Refactored-TheAlgorithms-Java
