@@ -33,6 +33,8 @@ import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import static utils.common.constants.TEST_DRIVER_CLASSPATH_FOLDER;
+
 public class Concolic4ITPController implements Initializable {
 
     private FileChooser fileChooser = new FileChooser();
@@ -159,7 +161,8 @@ public class Concolic4ITPController implements Initializable {
             long startTime = System.nanoTime();
 
             CloneProjectUtil.deleteFilesInDirectory(FilePath.uploadedProjectPath);
-//            NTDUploadUtil.javaUnzipFile(choseFile.getPath(), FilePath.uploadedProjectPath);
+            CloneProjectUtil.deleteFilesInDirectory(FilePath.clonedProjectPath);
+            CloneProjectUtil.deleteFilesInDirectory(TEST_DRIVER_CLASSPATH_FOLDER);
             NTDUploadUtil.javaUnzipFile(filePreview.getText(), FilePath.uploadedProjectPath);
 
             String javaDirPath = CloneProjectUtil.getJavaDirPath(FilePath.uploadedProjectPath);

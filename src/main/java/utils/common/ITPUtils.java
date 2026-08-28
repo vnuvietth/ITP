@@ -211,6 +211,7 @@ public class ITPUtils {
         bypassMethodList.add("helper");
         bypassMethodList.add("commonFactors");
         bypassMethodList.add("getShiftedChar");
+        bypassMethodList.add("trailingZeroes");
 
 
         //Refactored-TheAlgorithms-Java
