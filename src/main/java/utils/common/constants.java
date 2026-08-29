@@ -24,7 +24,7 @@ public interface constants {
 
     //https://github.com/HarryDulaney/intro-to-java-programming/tree/master
 
-    int NUMBER_OF_RUNTIMES = 10;
+    int NUMBER_OF_RUNTIMES = 1;
 
     String INSTRUMENTED_TESTING_UNIT_PLACEHOLDER = "%%INSTRUMENTED_TESTING_UNIT_PLACEHOLDER%%";
     String UNIT_CALLING_PLACEHOLDER = "%%UNIT_CALLING_PLACEHOLDER%%";
