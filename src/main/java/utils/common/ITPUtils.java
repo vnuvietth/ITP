@@ -87,6 +87,9 @@ public class ITPUtils {
         bypassMethodList.add("twoProductLow");
         bypassMethodList.add("twoSquareLow");
         bypassMethodList.add("highPart");
+        bypassMethodList.add("checkIndex");
+
+
 
         //Algorithms-master
         bypassMethodList.add("getAt");
@@ -94,6 +97,7 @@ public class ITPUtils {
         bypassMethodList.add("calculate1");
         bypassMethodList.add("divideIterative");
         bypassMethodList.add("merge");
+        bypassMethodList.add("calculate");
 
 
         //java-algorithms-implementation-master
@@ -118,6 +122,7 @@ public class ITPUtils {
         bypassMethodList.add("parenthesesCorrespondantes");
         bypassMethodList.add("performOperation");
         bypassMethodList.add("isOperator");
+        bypassMethodList.add("findSteps");
 
 
         //LeetCode-Java-Solutions-master
@@ -212,6 +217,17 @@ public class ITPUtils {
         bypassMethodList.add("commonFactors");
         bypassMethodList.add("getShiftedChar");
         bypassMethodList.add("trailingZeroes");
+        bypassMethodList.add("divisorGame");
+        bypassMethodList.add("generateMatrix");
+        bypassMethodList.add("countAndSay");
+        bypassMethodList.add("isVowel");
+        bypassMethodList.add("maxA");
+        bypassMethodList.add("numTrees");
+
+
+
+
+
 
 
         //Refactored-TheAlgorithms-Java
@@ -241,13 +257,88 @@ public class ITPUtils {
         bypassMethodList.add("checkLetter");
         bypassMethodList.add("getLastComparisons");
         bypassMethodList.add("appendCount");
+        bypassMethodList.add("uniquePaths2");
+        bypassMethodList.add("pascal");
+        bypassMethodList.add("power");
+        bypassMethodList.add("checkChar");
+        bypassMethodList.add("leonardoNumber");
+        bypassMethodList.add("bruteforce");
+        bypassMethodList.add("getKey");
+        bypassMethodList.add("bitwiseConversion");
+        bypassMethodList.add("getProcessId");
+        bypassMethodList.add("getArrivalTime");
+        bypassMethodList.add("getBurstTime");
+        bypassMethodList.add("getWaitingTime");
+        bypassMethodList.add("getTurnAroundTimeTime");
+        bypassMethodList.add("setProcessId");
+        bypassMethodList.add("setArrivalTime");
+        bypassMethodList.add("setBurstTime");
+        bypassMethodList.add("setWaitingTime");
+        bypassMethodList.add("setTurnAroundTimeTime");
+        bypassMethodList.add("minTrials");
+        bypassMethodList.add("getCost");
+        bypassMethodList.add("printTrinomial");
+        bypassMethodList.add("getWrongMess");
+        bypassMethodList.add("getWrongMessCaught");
+        bypassMethodList.add("getWrongMessNotCaught");
+        bypassMethodList.add("getCorrectMess");
+        bypassMethodList.add("refactor");
+        bypassMethodList.add("generateRandomMess");
+        bypassMethodList.add("getRandomScores");
+        bypassMethodList.add("isCapitalLatinLetter");
+        bypassMethodList.add("isSmallLatinLetter");
+        bypassMethodList.add("findNthCatalan");
+        bypassMethodList.add("nthManShanksPrime");
 
 
-        //JOML
-        bypassMethodList.add("testPoint");
-        bypassMethodList.add("testSphere");
-        bypassMethodList.add("intersectSphere");
-
+        //intro-to-java-programming-master
+        bypassMethodList.add("isPrime3");
+        bypassMethodList.add("zellersAlgo");
+        bypassMethodList.add("getCardValue");
+        bypassMethodList.add("checkIfinside");
+        bypassMethodList.add("getHand");
+        bypassMethodList.add("getGameStatus");
+        bypassMethodList.add("roleDie1");
+        bypassMethodList.add("roleDie2");
+        bypassMethodList.add("roleDie1");
+        bypassMethodList.add("roleDie2");
+        bypassMethodList.add("startGames");
+        bypassMethodList.add("convertGMT2EST");
+        bypassMethodList.add("getNumLeapYears");
+        bypassMethodList.add("monthName");
+        bypassMethodList.add("daysInMonth");
+        bypassMethodList.add("getRandomCharacter");
+        bypassMethodList.add("gcd7");
+        bypassMethodList.add("getShuffledDeck");
+        bypassMethodList.add("makeDeck");
+        bypassMethodList.add("getRandom");
+        bypassMethodList.add("valueOf");
+        bypassMethodList.add("charValue");
+        bypassMethodList.add("isUpperCase");
+        bypassMethodList.add("isLetter");
+        bypassMethodList.add("compare");
+        bypassMethodList.add("checkHexChar");
+        bypassMethodList.add("getMonthName");
+        bypassMethodList.add("getTotalNumberOfDays");
+        bypassMethodList.add("isValid");
+        bypassMethodList.add("isPair");
+        bypassMethodList.add("operate2");
+        bypassMethodList.add("getOp");
+        bypassMethodList.add("getExpressionString");
+        bypassMethodList.add("calcFibIndexes40to45");
+        bypassMethodList.add("isLowerCase");
+        bypassMethodList.add("isDigit");
+        bypassMethodList.add("hashCode");
+        bypassMethodList.add("hexCharToDecimal");
+        bypassMethodList.add("displayPattern");
+        bypassMethodList.add("numberOfDaysInAYear");
+        bypassMethodList.add("printMatrix");
+        bypassMethodList.add("numberOfDaysInAYear");
+        bypassMethodList.add("getNumberOfDaysInMonth");
+        bypassMethodList.add("getNumberOfDaysInMonth");
+        bypassMethodList.add("checkPrime1");
+        bypassMethodList.add("gcd8");
+        bypassMethodList.add("gcd2");
 
         return bypassMethodList;
     }
