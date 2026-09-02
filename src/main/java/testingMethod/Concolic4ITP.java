@@ -37,6 +37,7 @@ import java.nio.file.Paths;
 import java.util.*;
 
 import static testingMethod.ITPTestDriver.ITP4JavaTestDriverGenerator.*;
+import static utils.common.constants.NUMBER_OF_RUNTIMES_NEW;
 
 public class Concolic4ITP {
     private static CompilationUnit compilationUnit;
@@ -61,69 +62,97 @@ public class Concolic4ITP {
             IllegalAccessException, ClassNotFoundException, NoSuchFieldException,
             InterruptedException {
 
+        runTestDurationTong = 0;
+        totalTimeForDriverGnerationTong = 0;
+        totalTimeForDriverCompilationTong = 0;
+        totalTimeForTestDataExecutionTong = 0;
+        totalTimeForCoverageAnalysisTong = 0;
+        totalTimeForNewTestDataGenerationTong = 0;
+        totalTimeForOthersTong = 0;
 
-        totalTimeForDriverGneration = 0;
-        totalTimeForDriverCompilation = 0;
-        totalTimeForTestDataExecution = 0;
-        totalTimeForCoverageAnalysis = 0;
-        totalTimeForNewTestDataGeneration = 0;
-        totalTimeForOthers = 0;
-//        setup(path, className, methodName);
-//        setupCfgTree(coverage);
-//        setupParameters(methodName);
-
-        totalUsedMem = 0;
-        tickCount = 0;
-        Timer T = new Timer(true);
-
-        TimerTask memoryTask = new TimerTask() {
-            @Override
-            public void run() {
-                totalUsedMem += (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory());
-                tickCount += 1;
-            }
-        };
-
-        T.scheduleAtFixedRate(memoryTask, 0, 1); //0 delay and 5 ms tick
-
-        long startRunTestTime = System.nanoTime();
 
         writeDataToFile("Concolic4ITP: Test result for the selected project: " + path + "\n", constants.ITP_TEST_RESULT_FILEPATH, false);
         writeDataToFile("Coverage: " + coverage.name() + "\n", constants.ITP_TEST_RESULT_FILEPATH, true);
 
 
-        Concolic4ITP_GenerateTestDataForProject(path, coverage, importStatement);
+        for (int i = 0; i < NUMBER_OF_RUNTIMES_NEW; i++) {
+            writeDataToFile("================ o0o \"================\n", constants.ITP_TEST_RESULT_FILEPATH, true);
+
+            writeDataToFile("Lần chạy thứ " + i + "\n", constants.ITP_TEST_RESULT_FILEPATH, true);
 
 
-        long endRunTestTime = System.nanoTime();
+            totalTimeForDriverGneration = 0;
+            totalTimeForDriverCompilation = 0;
+            totalTimeForTestDataExecution = 0;
+            totalTimeForCoverageAnalysis = 0;
+            totalTimeForNewTestDataGeneration = 0;
+            totalTimeForOthers = 0;
+//        setup(path, className, methodName);
+//        setupCfgTree(coverage);
+//        setupParameters(methodName);
 
-        double runTestDuration = (endRunTestTime - startRunTestTime) / 1000000.0;
-        float usedMem = ((float) totalUsedMem) / tickCount / 1024 / 1024;
+            totalUsedMem = 0;
+            tickCount = 0;
+            Timer T = new Timer(true);
 
-        writeDataToFile("***************** o0o *****************\n", constants.ITP_TEST_RESULT_FILEPATH, true);
-        writeDataToFile("Concolic4ITP: usedMem: " + usedMem + " (MB)\n", constants.ITP_TEST_RESULT_FILEPATH, true);
+            TimerTask memoryTask = new TimerTask() {
+                @Override
+                public void run() {
+                    totalUsedMem += (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory());
+                    tickCount += 1;
+                }
+            };
+
+            T.scheduleAtFixedRate(memoryTask, 0, 1); //0 delay and 5 ms tick
+
+            long startRunTestTime = System.nanoTime();
+//
+//            writeDataToFile("Concolic4ITP: Test result for the selected project: " + path + "\n", constants.ITP_TEST_RESULT_FILEPATH, false);
+//            writeDataToFile("Coverage: " + coverage.name() + "\n", constants.ITP_TEST_RESULT_FILEPATH, true);
+//
+
+            Concolic4ITP_GenerateTestDataForProject(path, coverage, importStatement);
 
 
-        writeDataToFile("\n", constants.ITP_TEST_RESULT_FILEPATH, true);
-        writeDataToFile("***************** o0o *****************\n", constants.ITP_TEST_RESULT_FILEPATH, true);
+            long endRunTestTime = System.nanoTime();
+
+            double runTestDuration = (endRunTestTime - startRunTestTime) / 1000000.0;
+            float usedMem = ((float) totalUsedMem) / tickCount / 1024 / 1024;
+
+            writeDataToFile("***************** o0o *****************\n", constants.ITP_TEST_RESULT_FILEPATH, true);
+            writeDataToFile("Concolic4ITP: usedMem: " + usedMem + " (MB)\n", constants.ITP_TEST_RESULT_FILEPATH, true);
 
 
-        writeDataToFile("Concolic4ITP: runTestDuration: " + (runTestDuration/(double)constants.NUMBER_OF_RUNTIMES) + " (ms)\n", constants.ITP_TEST_RESULT_FILEPATH, true);
-        writeDataToFile("totalTimeForDriverGneration: " + (totalTimeForDriverGneration/(double)constants.NUMBER_OF_RUNTIMES) + " (ms)\n", constants.ITP_TEST_RESULT_FILEPATH, true);
-        writeDataToFile("totalTimeForDriverCompilation: " + (totalTimeForDriverCompilation/(double)constants.NUMBER_OF_RUNTIMES) + " (ms)\n", constants.ITP_TEST_RESULT_FILEPATH, true);
-        writeDataToFile("totalTimeForTestDataExecution: " + (totalTimeForTestDataExecution/(double)constants.NUMBER_OF_RUNTIMES) + " (ms)\n", constants.ITP_TEST_RESULT_FILEPATH, true);
-        writeDataToFile("totalTimeForCoverageAnalysis: " + (totalTimeForCoverageAnalysis/(double)constants.NUMBER_OF_RUNTIMES) + " (ms)\n", constants.ITP_TEST_RESULT_FILEPATH, true);
-        writeDataToFile("totalTimeForNewTestDataGeneration: " + (totalTimeForNewTestDataGeneration/(double)constants.NUMBER_OF_RUNTIMES) + " (ms)\n", constants.ITP_TEST_RESULT_FILEPATH, true);
+            writeDataToFile("\n", constants.ITP_TEST_RESULT_FILEPATH, true);
+            writeDataToFile("***************** o0o *****************\n", constants.ITP_TEST_RESULT_FILEPATH, true);
 
-        totalTimeForOthers = runTestDuration - totalTimeForDriverGneration - totalTimeForDriverCompilation
-                                    - totalTimeForTestDataExecution - totalTimeForCoverageAnalysis
-                                    - totalTimeForNewTestDataGeneration;
-        writeDataToFile("totalTimeForOthers: " + (totalTimeForOthers/(double)constants.NUMBER_OF_RUNTIMES) + " (ms)\n", constants.ITP_TEST_RESULT_FILEPATH, true);
 
-        int z = 0;
+            writeDataToFile("Concolic4ITP: runTestDuration: " + (runTestDuration / (double) constants.NUMBER_OF_RUNTIMES) + " (ms)\n", constants.ITP_TEST_RESULT_FILEPATH, true);
+            writeDataToFile("totalTimeForDriverGneration: " + (totalTimeForDriverGneration / (double) constants.NUMBER_OF_RUNTIMES) + " (ms)\n", constants.ITP_TEST_RESULT_FILEPATH, true);
+            writeDataToFile("totalTimeForDriverCompilation: " + (totalTimeForDriverCompilation / (double) constants.NUMBER_OF_RUNTIMES) + " (ms)\n", constants.ITP_TEST_RESULT_FILEPATH, true);
+            writeDataToFile("totalTimeForTestDataExecution: " + (totalTimeForTestDataExecution / (double) constants.NUMBER_OF_RUNTIMES) + " (ms)\n", constants.ITP_TEST_RESULT_FILEPATH, true);
+            writeDataToFile("totalTimeForCoverageAnalysis: " + (totalTimeForCoverageAnalysis / (double) constants.NUMBER_OF_RUNTIMES) + " (ms)\n", constants.ITP_TEST_RESULT_FILEPATH, true);
+            writeDataToFile("totalTimeForNewTestDataGeneration: " + (totalTimeForNewTestDataGeneration / (double) constants.NUMBER_OF_RUNTIMES) + " (ms)\n", constants.ITP_TEST_RESULT_FILEPATH, true);
 
-//        result.setTestingTime(runTestDuration);
-//        result.setUsedMemory(usedMem);
+            totalTimeForOthers = runTestDuration - totalTimeForDriverGneration - totalTimeForDriverCompilation
+                    - totalTimeForTestDataExecution - totalTimeForCoverageAnalysis
+                    - totalTimeForNewTestDataGeneration;
+            writeDataToFile("totalTimeForOthers: " + (totalTimeForOthers / (double) constants.NUMBER_OF_RUNTIMES) + " (ms)\n", constants.ITP_TEST_RESULT_FILEPATH, true);
+
+            int z = 0;
+        }
+
+
+        writeDataToFile("ITP4Java: ================== o0o ================== \n\n", constants.ITP_TEST_RESULT_FILEPATH, true);
+
+        writeDataToFile("ITP4Java: runTestDurationTong: " + (runTestDurationTong / (double) NUMBER_OF_RUNTIMES_NEW)+ " (ms)\n", constants.ITP_TEST_RESULT_FILEPATH, true);
+        writeDataToFile("ITP4Java: totalTimeForDriverGnerationTong: " + (totalTimeForDriverGnerationTong/ (double) NUMBER_OF_RUNTIMES_NEW) + " (ms)\n", constants.ITP_TEST_RESULT_FILEPATH, true);
+        writeDataToFile("ITP4Java: totalTimeForDriverCompilationTong: " + (totalTimeForDriverCompilationTong/ (double) NUMBER_OF_RUNTIMES_NEW) + " (ms)\n", constants.ITP_TEST_RESULT_FILEPATH, true);
+        writeDataToFile("ITP4Java: totalTimeForTestDataExecutionTong: " + (totalTimeForTestDataExecutionTong/ (double) NUMBER_OF_RUNTIMES_NEW) + " (ms)\n", constants.ITP_TEST_RESULT_FILEPATH, true);
+        writeDataToFile("ITP4Java: totalTimeForCoverageAnalysisTong: " + (totalTimeForCoverageAnalysisTong/ (double) NUMBER_OF_RUNTIMES_NEW) + " (ms)\n", constants.ITP_TEST_RESULT_FILEPATH, true);
+        writeDataToFile("ITP4Java: totalTimeForNewTestDataGenerationTong: " + (totalTimeForNewTestDataGenerationTong/ (double) NUMBER_OF_RUNTIMES_NEW) + " (ms)\n", constants.ITP_TEST_RESULT_FILEPATH, true);
+        writeDataToFile("ITP4Java: totalTimeForOthersTong: " + (totalTimeForOthersTong/ (double) NUMBER_OF_RUNTIMES_NEW) + " (ms)\n", constants.ITP_TEST_RESULT_FILEPATH, true);
+//        return result;
 
 //        return result;
     }
@@ -144,6 +173,20 @@ public class Concolic4ITP {
     static  double totalTimeForNewTestDataGeneration = 0;
     // (6) others
     static  double totalTimeForOthers = 0; //random test data generation, file processing, report producing, v.v.
+
+        static double runTestDurationTong = 0;
+        // (1) driver generation,
+        static double totalTimeForDriverGnerationTong = 0;
+        // (2) compilation,
+        static double totalTimeForDriverCompilationTong = 0;
+        // (3) execution,
+        static double totalTimeForTestDataExecutionTong = 0;
+        // (4) coverage analysis,
+        static double totalTimeForCoverageAnalysisTong = 0;
+        // (5) new test data generation and
+        static double totalTimeForNewTestDataGenerationTong = 0;
+        // (6) others
+        static double totalTimeForOthersTong = 0; //random test data generation, file processing, report producing, v.v.
 
     static final int MICRO_SECONDS = 1000000;
 

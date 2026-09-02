@@ -340,6 +340,12 @@ public class ITPUtils {
         bypassMethodList.add("gcd8");
         bypassMethodList.add("gcd2");
 
+
+        //chạy 10 lần,
+
+        bypassMethodList.add("sumBase");
+        bypassMethodList.add("numWaterBottles");
+
         return bypassMethodList;
     }
 
