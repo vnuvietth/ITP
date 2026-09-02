@@ -151,15 +151,15 @@ public class Concolic4ITP {
         }
 
 
-        writeDataToFile("ITP4Java: ================== o0o ================== \n\n", constants.ITP_TEST_RESULT_FILEPATH, true);
+        writeDataToFile("\n\nConcolic4ITP: ================== o0o ================== \n\n", constants.ITP_TEST_RESULT_FILEPATH, true);
 
-        writeDataToFile("ITP4Java: runTestDurationTong: " + (runTestDurationTong / (double) NUMBER_OF_RUNTIMES_NEW)+ " (ms)\n", constants.ITP_TEST_RESULT_FILEPATH, true);
-        writeDataToFile("ITP4Java: totalTimeForDriverGnerationTong: " + (totalTimeForDriverGnerationTong/ (double) NUMBER_OF_RUNTIMES_NEW) + " (ms)\n", constants.ITP_TEST_RESULT_FILEPATH, true);
-        writeDataToFile("ITP4Java: totalTimeForDriverCompilationTong: " + (totalTimeForDriverCompilationTong/ (double) NUMBER_OF_RUNTIMES_NEW) + " (ms)\n", constants.ITP_TEST_RESULT_FILEPATH, true);
-        writeDataToFile("ITP4Java: totalTimeForTestDataExecutionTong: " + (totalTimeForTestDataExecutionTong/ (double) NUMBER_OF_RUNTIMES_NEW) + " (ms)\n", constants.ITP_TEST_RESULT_FILEPATH, true);
-        writeDataToFile("ITP4Java: totalTimeForCoverageAnalysisTong: " + (totalTimeForCoverageAnalysisTong/ (double) NUMBER_OF_RUNTIMES_NEW) + " (ms)\n", constants.ITP_TEST_RESULT_FILEPATH, true);
-        writeDataToFile("ITP4Java: totalTimeForNewTestDataGenerationTong: " + (totalTimeForNewTestDataGenerationTong/ (double) NUMBER_OF_RUNTIMES_NEW) + " (ms)\n", constants.ITP_TEST_RESULT_FILEPATH, true);
-        writeDataToFile("ITP4Java: totalTimeForOthersTong: " + (totalTimeForOthersTong/ (double) NUMBER_OF_RUNTIMES_NEW) + " (ms)\n", constants.ITP_TEST_RESULT_FILEPATH, true);
+        writeDataToFile("Concolic4ITP: runTestDurationTong: " + (runTestDurationTong / (double) NUMBER_OF_RUNTIMES_NEW)+ " (ms)\n", constants.ITP_TEST_RESULT_FILEPATH, true);
+        writeDataToFile("Concolic4ITP: totalTimeForDriverGnerationTong: " + (totalTimeForDriverGnerationTong/ (double) NUMBER_OF_RUNTIMES_NEW) + " (ms)\n", constants.ITP_TEST_RESULT_FILEPATH, true);
+        writeDataToFile("Concolic4ITP: totalTimeForDriverCompilationTong: " + (totalTimeForDriverCompilationTong/ (double) NUMBER_OF_RUNTIMES_NEW) + " (ms)\n", constants.ITP_TEST_RESULT_FILEPATH, true);
+        writeDataToFile("Concolic4ITP: totalTimeForTestDataExecutionTong: " + (totalTimeForTestDataExecutionTong/ (double) NUMBER_OF_RUNTIMES_NEW) + " (ms)\n", constants.ITP_TEST_RESULT_FILEPATH, true);
+        writeDataToFile("Concolic4ITP: totalTimeForCoverageAnalysisTong: " + (totalTimeForCoverageAnalysisTong/ (double) NUMBER_OF_RUNTIMES_NEW) + " (ms)\n", constants.ITP_TEST_RESULT_FILEPATH, true);
+        writeDataToFile("Concolic4ITP: totalTimeForNewTestDataGenerationTong: " + (totalTimeForNewTestDataGenerationTong/ (double) NUMBER_OF_RUNTIMES_NEW) + " (ms)\n", constants.ITP_TEST_RESULT_FILEPATH, true);
+        writeDataToFile("Concolic4ITP: totalTimeForOthersTong: " + (totalTimeForOthersTong/ (double) NUMBER_OF_RUNTIMES_NEW) + " (ms)\n", constants.ITP_TEST_RESULT_FILEPATH, true);
 //        return result;
 
 //        return result;
