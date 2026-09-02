@@ -136,12 +136,12 @@ public class ITP4Java {
 
 
             runTestDurationTong += (runTestDuration / (double) constants.NUMBER_OF_RUNTIMES);
-            totalTimeForDriverGnerationTong = (totalTimeForDriverGneration / (double) constants.NUMBER_OF_RUNTIMES);
-            totalTimeForDriverCompilationTong = (totalTimeForDriverCompilation / (double) constants.NUMBER_OF_RUNTIMES);
-            totalTimeForTestDataExecutionTong = (totalTimeForTestDataExecution / (double) constants.NUMBER_OF_RUNTIMES);
-            totalTimeForCoverageAnalysisTong = (totalTimeForCoverageAnalysis / (double) constants.NUMBER_OF_RUNTIMES);
-            totalTimeForNewTestDataGenerationTong = (totalTimeForNewTestDataGeneration / (double) constants.NUMBER_OF_RUNTIMES);
-            totalTimeForOthersTong = (totalTimeForOthers / (double) constants.NUMBER_OF_RUNTIMES);
+            totalTimeForDriverGnerationTong += (totalTimeForDriverGneration / (double) constants.NUMBER_OF_RUNTIMES);
+            totalTimeForDriverCompilationTong += (totalTimeForDriverCompilation / (double) constants.NUMBER_OF_RUNTIMES);
+            totalTimeForTestDataExecutionTong += (totalTimeForTestDataExecution / (double) constants.NUMBER_OF_RUNTIMES);
+            totalTimeForCoverageAnalysisTong += (totalTimeForCoverageAnalysis / (double) constants.NUMBER_OF_RUNTIMES);
+            totalTimeForNewTestDataGenerationTong += (totalTimeForNewTestDataGeneration / (double) constants.NUMBER_OF_RUNTIMES);
+            totalTimeForOthersTong += (totalTimeForOthers / (double) constants.NUMBER_OF_RUNTIMES);
 
         }
 

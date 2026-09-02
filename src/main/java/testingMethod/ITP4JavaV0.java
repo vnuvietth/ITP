@@ -138,6 +138,13 @@ public class ITP4JavaV0 {
                     - totalTimeForNewTestDataGeneration;
             writeDataToFile("totalTimeForOthers: " + (totalTimeForOthers / (double) constants.NUMBER_OF_RUNTIMES) + " (ms)\n", constants.ITP_TEST_RESULT_FILEPATH, true);
 
+            runTestDurationTong += (runTestDuration / (double) constants.NUMBER_OF_RUNTIMES);
+            totalTimeForDriverGnerationTong += (totalTimeForDriverGneration / (double) constants.NUMBER_OF_RUNTIMES);
+            totalTimeForDriverCompilationTong += (totalTimeForDriverCompilation / (double) constants.NUMBER_OF_RUNTIMES);
+            totalTimeForTestDataExecutionTong += (totalTimeForTestDataExecution / (double) constants.NUMBER_OF_RUNTIMES);
+            totalTimeForCoverageAnalysisTong += (totalTimeForCoverageAnalysis / (double) constants.NUMBER_OF_RUNTIMES);
+            totalTimeForNewTestDataGenerationTong += (totalTimeForNewTestDataGeneration / (double) constants.NUMBER_OF_RUNTIMES);
+            totalTimeForOthersTong += (totalTimeForOthers / (double) constants.NUMBER_OF_RUNTIMES);
 
         }
 
