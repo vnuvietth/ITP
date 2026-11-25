@@ -36,7 +36,7 @@ import java.util.*;
 import static testingMethod.Concolic4ITP.MICRO_SECONDS;
 import static testingMethod.ITPTestDriver.ITP4JavaTestDriverGenerator.*;
 import static testingMethod.ITPTestDriver.ITP4JavaTestDriverRunner.runTestDriver;
-import static utils.common.constants.NUMBER_OF_RUNTIMES_NEW;
+import static utils.common.constants.NUMBER_OF_RUNTIMES;
 
 public class ITP4Java {
     private static CompilationUnit compilationUnit;
@@ -74,7 +74,7 @@ public class ITP4Java {
         totalTimeForNewTestDataGenerationTong = 0;
         totalTimeForOthersTong = 0;
 
-        for (int i = 0; i < NUMBER_OF_RUNTIMES_NEW; i++) {
+        for (int i = 0; i < NUMBER_OF_RUNTIMES; i++) {
             writeDataToFile("Lần chạy thứ " + i + "\n", constants.ITP_TEST_RESULT_FILEPATH, true);
 
 
@@ -114,7 +114,7 @@ public class ITP4Java {
             float usedMem = ((float) totalUsedMem) / tickCount / 1024 / 1024;
 
             writeDataToFile("***************** o0o *****************\n", constants.ITP_TEST_RESULT_FILEPATH, true);
-            writeDataToFile("runTestDuration: " + (runTestDuration / (double) constants.NUMBER_OF_RUNTIMES) + " (ms)\n", constants.ITP_TEST_RESULT_FILEPATH, true);
+            writeDataToFile("runTestDuration: " + (runTestDuration) + " (ms)\n", constants.ITP_TEST_RESULT_FILEPATH, true);
             writeDataToFile("usedMem: " + usedMem + " (MB)\n", constants.ITP_TEST_RESULT_FILEPATH, true);
 
 
@@ -122,38 +122,41 @@ public class ITP4Java {
             writeDataToFile("***************** o0o *****************\n", constants.ITP_TEST_RESULT_FILEPATH, true);
 
 
-            writeDataToFile("ITP4Java: runTestDuration: " + (runTestDuration / (double) constants.NUMBER_OF_RUNTIMES) + " (ms)\n", constants.ITP_TEST_RESULT_FILEPATH, true);
-            writeDataToFile("totalTimeForDriverGneration: " + (totalTimeForDriverGneration / (double) constants.NUMBER_OF_RUNTIMES) + " (ms)\n", constants.ITP_TEST_RESULT_FILEPATH, true);
-            writeDataToFile("totalTimeForDriverCompilation: " + (totalTimeForDriverCompilation / (double) constants.NUMBER_OF_RUNTIMES) + " (ms)\n", constants.ITP_TEST_RESULT_FILEPATH, true);
-            writeDataToFile("totalTimeForTestDataExecution: " + (totalTimeForTestDataExecution / (double) constants.NUMBER_OF_RUNTIMES) + " (ms)\n", constants.ITP_TEST_RESULT_FILEPATH, true);
-            writeDataToFile("totalTimeForCoverageAnalysis: " + (totalTimeForCoverageAnalysis / (double) constants.NUMBER_OF_RUNTIMES) + " (ms)\n", constants.ITP_TEST_RESULT_FILEPATH, true);
-            writeDataToFile("totalTimeForNewTestDataGeneration: " + (totalTimeForNewTestDataGeneration / (double) constants.NUMBER_OF_RUNTIMES) + " (ms)\n", constants.ITP_TEST_RESULT_FILEPATH, true);
+            writeDataToFile("ITP4Java: runTestDuration: " + (runTestDuration) + " (ms)\n", constants.ITP_TEST_RESULT_FILEPATH, true);
+            writeDataToFile("totalTimeForDriverGneration: " + (totalTimeForDriverGneration ) + " (ms)\n", constants.ITP_TEST_RESULT_FILEPATH, true);
+            writeDataToFile("totalTimeForDriverCompilation: " + (totalTimeForDriverCompilation ) + " (ms)\n", constants.ITP_TEST_RESULT_FILEPATH, true);
+            writeDataToFile("totalTimeForTestDataExecution: " + (totalTimeForTestDataExecution ) + " (ms)\n", constants.ITP_TEST_RESULT_FILEPATH, true);
+            writeDataToFile("totalTimeForCoverageAnalysis: " + (totalTimeForCoverageAnalysis ) + " (ms)\n", constants.ITP_TEST_RESULT_FILEPATH, true);
+            writeDataToFile("totalTimeForNewTestDataGeneration: " + (totalTimeForNewTestDataGeneration ) + " (ms)\n", constants.ITP_TEST_RESULT_FILEPATH, true);
 
             totalTimeForOthers = runTestDuration - totalTimeForDriverGneration - totalTimeForDriverCompilation
                     - totalTimeForTestDataExecution - totalTimeForCoverageAnalysis
                     - totalTimeForNewTestDataGeneration;
-            writeDataToFile("totalTimeForOthers: " + (totalTimeForOthers / (double) constants.NUMBER_OF_RUNTIMES) + " (ms)\n", constants.ITP_TEST_RESULT_FILEPATH, true);
+            writeDataToFile("totalTimeForOthers: " + (totalTimeForOthers ) + " (ms)\n", constants.ITP_TEST_RESULT_FILEPATH, true);
 
 
-            runTestDurationTong += (runTestDuration / (double) constants.NUMBER_OF_RUNTIMES);
-            totalTimeForDriverGnerationTong += (totalTimeForDriverGneration / (double) constants.NUMBER_OF_RUNTIMES);
-            totalTimeForDriverCompilationTong += (totalTimeForDriverCompilation / (double) constants.NUMBER_OF_RUNTIMES);
-            totalTimeForTestDataExecutionTong += (totalTimeForTestDataExecution / (double) constants.NUMBER_OF_RUNTIMES);
-            totalTimeForCoverageAnalysisTong += (totalTimeForCoverageAnalysis / (double) constants.NUMBER_OF_RUNTIMES);
-            totalTimeForNewTestDataGenerationTong += (totalTimeForNewTestDataGeneration / (double) constants.NUMBER_OF_RUNTIMES);
-            totalTimeForOthersTong += (totalTimeForOthers / (double) constants.NUMBER_OF_RUNTIMES);
+            runTestDurationTong += (runTestDuration );
+            totalTimeForDriverGnerationTong += (totalTimeForDriverGneration );
+            totalTimeForDriverCompilationTong += (totalTimeForDriverCompilation );
+            totalTimeForTestDataExecutionTong += (totalTimeForTestDataExecution );
+            totalTimeForCoverageAnalysisTong += (totalTimeForCoverageAnalysis);
+            totalTimeForNewTestDataGenerationTong += (totalTimeForNewTestDataGeneration);
+            totalTimeForOthersTong += (totalTimeForOthers);
 
+            T.cancel(); //hủy timer đo bộ nhớ
+
+            System.gc();
         }
 
         writeDataToFile("\n\nITP4Java: ================== o0o ================== \n\n", constants.ITP_TEST_RESULT_FILEPATH, true);
 
-        writeDataToFile("ITP4Java: runTestDurationTong: " + (runTestDurationTong / (double) NUMBER_OF_RUNTIMES_NEW)+ " (ms)\n", constants.ITP_TEST_RESULT_FILEPATH, true);
-        writeDataToFile("ITP4Java: totalTimeForDriverGnerationTong: " + (totalTimeForDriverGnerationTong/ (double) NUMBER_OF_RUNTIMES_NEW) + " (ms)\n", constants.ITP_TEST_RESULT_FILEPATH, true);
-        writeDataToFile("ITP4Java: totalTimeForDriverCompilationTong: " + (totalTimeForDriverCompilationTong/ (double) NUMBER_OF_RUNTIMES_NEW) + " (ms)\n", constants.ITP_TEST_RESULT_FILEPATH, true);
-        writeDataToFile("ITP4Java: totalTimeForTestDataExecutionTong: " + (totalTimeForTestDataExecutionTong/ (double) NUMBER_OF_RUNTIMES_NEW) + " (ms)\n", constants.ITP_TEST_RESULT_FILEPATH, true);
-        writeDataToFile("ITP4Java: totalTimeForCoverageAnalysisTong: " + (totalTimeForCoverageAnalysisTong/ (double) NUMBER_OF_RUNTIMES_NEW) + " (ms)\n", constants.ITP_TEST_RESULT_FILEPATH, true);
-        writeDataToFile("ITP4Java: totalTimeForNewTestDataGenerationTong: " + (totalTimeForNewTestDataGenerationTong/ (double) NUMBER_OF_RUNTIMES_NEW) + " (ms)\n", constants.ITP_TEST_RESULT_FILEPATH, true);
-        writeDataToFile("ITP4Java: totalTimeForOthersTong: " + (totalTimeForOthersTong/ (double) NUMBER_OF_RUNTIMES_NEW) + " (ms)\n", constants.ITP_TEST_RESULT_FILEPATH, true);
+        writeDataToFile("ITP4Java: runTestDurationTong: " + (runTestDurationTong / (double) NUMBER_OF_RUNTIMES)+ " (ms)\n", constants.ITP_TEST_RESULT_FILEPATH, true);
+        writeDataToFile("ITP4Java: totalTimeForDriverGnerationTong: " + (totalTimeForDriverGnerationTong/ (double) NUMBER_OF_RUNTIMES) + " (ms)\n", constants.ITP_TEST_RESULT_FILEPATH, true);
+        writeDataToFile("ITP4Java: totalTimeForDriverCompilationTong: " + (totalTimeForDriverCompilationTong/ (double) NUMBER_OF_RUNTIMES) + " (ms)\n", constants.ITP_TEST_RESULT_FILEPATH, true);
+        writeDataToFile("ITP4Java: totalTimeForTestDataExecutionTong: " + (totalTimeForTestDataExecutionTong/ (double) NUMBER_OF_RUNTIMES) + " (ms)\n", constants.ITP_TEST_RESULT_FILEPATH, true);
+        writeDataToFile("ITP4Java: totalTimeForCoverageAnalysisTong: " + (totalTimeForCoverageAnalysisTong/ (double) NUMBER_OF_RUNTIMES) + " (ms)\n", constants.ITP_TEST_RESULT_FILEPATH, true);
+        writeDataToFile("ITP4Java: totalTimeForNewTestDataGenerationTong: " + (totalTimeForNewTestDataGenerationTong/ (double) NUMBER_OF_RUNTIMES) + " (ms)\n", constants.ITP_TEST_RESULT_FILEPATH, true);
+        writeDataToFile("ITP4Java: totalTimeForOthersTong: " + (totalTimeForOthersTong/ (double) NUMBER_OF_RUNTIMES) + " (ms)\n", constants.ITP_TEST_RESULT_FILEPATH, true);
 //        return result;
         return null;
     }
@@ -293,12 +296,12 @@ public class ITP4Java {
 
                     writeDataToFile("", constants.EXECUTION_RESULT_PATH, false);//clear file
 
+
+                    Timer T4Unit = new Timer(true);
                     try {
 
                         totalUsedMemForUnit = 0;
                         tickCountForUnit = 0;
-
-                        Timer T4Unit = new Timer(true);
 
                         TimerTask memoryTaskForUnit = new TimerTask() {
                             @Override
@@ -324,7 +327,7 @@ public class ITP4Java {
 //                        System.out.println("simpleUnitCountForProject = " + simpleUnitCountForProject);
 //                        System.out.println("simpleUnitCountForFile = " + simpleUnitCountForFile);
 
-                        ConcolicTestResult[] testResult = new ConcolicTestResult[constants.NUMBER_OF_RUNTIMES];
+                        ConcolicTestResult testResult = new ConcolicTestResult();
                         int testDataCountForUnit = 0;
 
                         resultString.append("\n**********************\n");
@@ -336,22 +339,17 @@ public class ITP4Java {
                         double tempTotalCoverageForFile = 0;
                         int tempTestDataCountForUnit = 0;
 
-                        for (int i = 0; i < constants.NUMBER_OF_RUNTIMES; i++)
-                        {
-                            resultString.append("i = " + i + "\n");
+                        testResult = startGeneratingForOneUnit(file.getAbsolutePath(), (MethodDeclaration) method, coverage);
 
-                            testResult[i] = startGeneratingForOneUnit(file.getAbsolutePath(), (MethodDeclaration) method, coverage);
+                        testedUnitList.append(methodName).append("\n");
 
-                            testedUnitList.append(methodName).append("\n");
+                        tempTotalCoverage += testResult.getFullCoverage();
 
-                            tempTotalCoverage += testResult[i].getFullCoverage();
+                        tempTotalCoverageForFile += testResult.getFullCoverage();
 
-                            tempTotalCoverageForFile += testResult[i].getFullCoverage();
+                        tempTestDataCountForUnit += testResult.getFullTestData().size();
 
-                            tempTestDataCountForUnit += testResult[i].getFullTestData().size();
-
-                            resultString.append(testResult[i].getStringResult()).append("\n");
-                        }
+                        resultString.append(testResult.getStringResult()).append("\n");
 
                         isException = false;
 
@@ -368,17 +366,17 @@ public class ITP4Java {
 
                         long endRunTestTimeForUnit = System.nanoTime();
 
-                        double runTestDurationForUnit = (endRunTestTimeForUnit - startRunTestTimeForUnit) / 1000000.0/(double)constants.NUMBER_OF_RUNTIMES;
-                        float usedMemForUnit = ((float) totalUsedMemForUnit) / tickCountForUnit / 1024 / 1024/(float)constants.NUMBER_OF_RUNTIMES;
+                        double runTestDurationForUnit = (endRunTestTimeForUnit - startRunTestTimeForUnit) / 1000000.0;
+                        float usedMemForUnit = ((float) totalUsedMemForUnit) / tickCountForUnit / 1024 / 1024;
 
 
 //                        System.out.println("testDataCountForUnit = " + testDataCountForUnit/constants.NUMBER_OF_RUNTIMES);
 
-                        testDataCountForProject += testDataCountForUnit/constants.NUMBER_OF_RUNTIMES;
+                        testDataCountForProject += testDataCountForUnit;
 
 //                        System.out.println("testDataCountForProject = " + testDataCountForProject);
 
-                        resultString.append("testDataCountForUnit: " + (testDataCountForUnit/constants.NUMBER_OF_RUNTIMES) + "\n");
+                        resultString.append("testDataCountForUnit: " + (testDataCountForUnit) + "\n");
                         resultString.append("runTestDurationForUnit: " + runTestDurationForUnit + " (ms)\n");
                         resultString.append("usedMemForUnit: " + usedMemForUnit + " (MB)\n");
                         resultString.append("***************** o0o *****************\n");
@@ -396,6 +394,9 @@ public class ITP4Java {
                         e.printStackTrace();
 
                         writeDataToFile(methodName + "\n", constants.ITP_EXCEPTION_UNIT_FILEPATH, true);
+                    }
+                    finally {
+                        T4Unit.cancel(); //hủy timer đo bộ nhớ
                     }
                 }
                 else
@@ -418,10 +419,10 @@ public class ITP4Java {
                 writeDataToFile("unitCountForFile: " + unitCountForFile  + "\n", constants.ITP_TEST_RESULT_FILEPATH, true);
                 writeDataToFile("simpleUnitCountForFile: " + simpleUnitCountForFile  + "\n", constants.ITP_TEST_RESULT_FILEPATH, true);
                 writeDataToFile("simpleUnitCountForFileWithException: " + simpleUnitCountForFileWithException  + "\n", constants.ITP_TEST_RESULT_FILEPATH, true);
-                writeDataToFile("totalCoverageForFile: " + (totalCoverageForFile/(double)constants.NUMBER_OF_RUNTIMES)  + "\n", constants.ITP_TEST_RESULT_FILEPATH, true);
+                writeDataToFile("totalCoverageForFile: " + (totalCoverageForFile)  + "\n", constants.ITP_TEST_RESULT_FILEPATH, true);
                 writeDataToFile("simpleUnitCountForFile - simpleUnitCountForFileWithException: " + (simpleUnitCountForFile - simpleUnitCountForFileWithException)  + "\n", constants.ITP_TEST_RESULT_FILEPATH, true);
 
-                writeDataToFile("averageCoverageForFile: " + file.getName() + ": " + (totalCoverageForFile /(simpleUnitCountForFile - simpleUnitCountForFileWithException)/(double)constants.NUMBER_OF_RUNTIMES)  + "%\n", constants.ITP_TEST_RESULT_FILEPATH, true);
+                writeDataToFile("averageCoverageForFile: " + file.getName() + ": " + (totalCoverageForFile /(simpleUnitCountForFile - simpleUnitCountForFileWithException))  + "%\n", constants.ITP_TEST_RESULT_FILEPATH, true);
             }
 //            break;
 
@@ -431,11 +432,11 @@ public class ITP4Java {
         writeDataToFile("unitCountForProject: " + unitCountForProject + "\n", constants.ITP_TEST_RESULT_FILEPATH, true);
         writeDataToFile("simpleUnitCountForProject: " + simpleUnitCountForProject + "\n", constants.ITP_TEST_RESULT_FILEPATH, true);
         writeDataToFile("simpleUnitCountForProjectWithException: " + simpleUnitCountForProjectWithException + "\n", constants.ITP_TEST_RESULT_FILEPATH, true);
-        writeDataToFile("totalCoverage: " + (totalCoverage/(double)constants.NUMBER_OF_RUNTIMES) + "\n", constants.ITP_TEST_RESULT_FILEPATH, true);
+        writeDataToFile("totalCoverage: " + (totalCoverage) + "\n", constants.ITP_TEST_RESULT_FILEPATH, true);
         writeDataToFile("simpleUnitCountForProject - simpleUnitCountForProjectWithException: " + (simpleUnitCountForProject - simpleUnitCountForProjectWithException) + "\n", constants.ITP_TEST_RESULT_FILEPATH, true);
         writeDataToFile("testDataCountForProject: " + testDataCountForProject + "\n", constants.ITP_TEST_RESULT_FILEPATH, true);
         writeDataToFile("Test data/(simpleUnitCountForProject - simpleUnitCountForProjectWithException): " + ((double)(testDataCountForProject/((double)(simpleUnitCountForProject - simpleUnitCountForProjectWithException)))) + "\n", constants.ITP_TEST_RESULT_FILEPATH, true);
-        writeDataToFile("totalAverageCoverage: " + (totalCoverage/(double)constants.NUMBER_OF_RUNTIMES /(simpleUnitCountForProject - simpleUnitCountForProjectWithException ))  + "%\n", constants.ITP_TEST_RESULT_FILEPATH, true);
+        writeDataToFile("totalAverageCoverage: " + (totalCoverage /(simpleUnitCountForProject - simpleUnitCountForProjectWithException ))  + "%\n", constants.ITP_TEST_RESULT_FILEPATH, true);
 
 
         System.out.println("ITP: testedUnitList: \n" + testedUnitList.toString());

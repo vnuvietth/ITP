@@ -18,14 +18,13 @@ public interface constants {
 //    String TEST_FOLDER = "\\sample\\Algorithms-master.zip";
 
     //https://github.com/pedrovgs/Algorithms
-    String TEST_FOLDER = "\\sample\\java-algorithms-implementation-master.zip";
+    String TEST_FOLDER = "\\sample\\LeetCode-Java-Solutions-master.zip";
 
     //https://github.com/jdereg/java-util/tree/master
 
     //https://github.com/HarryDulaney/intro-to-java-programming/tree/master
 
-    int NUMBER_OF_RUNTIMES = 1;
-    int NUMBER_OF_RUNTIMES_NEW = 10;
+    int NUMBER_OF_RUNTIMES = 10;
 
     String INSTRUMENTED_TESTING_UNIT_PLACEHOLDER = "%%INSTRUMENTED_TESTING_UNIT_PLACEHOLDER%%";
     String UNIT_CALLING_PLACEHOLDER = "%%UNIT_CALLING_PLACEHOLDER%%";

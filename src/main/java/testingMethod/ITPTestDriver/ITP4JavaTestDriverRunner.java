@@ -54,22 +54,47 @@ public final class ITP4JavaTestDriverRunner {
     private static int executeCommand(String command) throws IOException, InterruptedException {
         Process p = Runtime.getRuntime().exec(command, null, new File(constants.TEST_DRIVER_FOLDER));
 
-        p.waitFor();
+        try {
+            String stdOut = new String(p.getInputStream().readAllBytes());
+            String stdErr = new String(p.getErrorStream().readAllBytes());
+            int exitCode = p.waitFor();
+            if (exitCode != 0) {
+                System.out.println("Executing command: " + command + "\n error = " + stdErr);
+            }
+            else
+            {
+                System.out.println("Executing command: " + command + "\n stdOut = " + stdOut);
+            }
 
-        if (p.exitValue() != 0)
-        {
-            String result = new String(p.getErrorStream().readAllBytes());
-            System.out.println("Executing command: " + command);
-            System.out.println(" result = " + result);
+            return exitCode;
+            // (Với ITP4JavaTestDriverRunner thì return exitCode;)
+        } finally {
+            p.getInputStream().close();
+            p.getErrorStream().close();
+            p.getOutputStream().close();
+            p.destroy();
+        }
 
-            return p.exitValue();
-        }
-        else {
-            String result = new String(p.getInputStream().readAllBytes());
-            System.out.println("Executing command: " + command);
-            System.out.println(" result = " + result);
-            return 0;
-        }
+//        p.waitFor();
+//
+//        if (p.exitValue() != 0)
+//        {
+//            String result = new String(p.getErrorStream().readAllBytes());
+//            System.out.println("Executing command: " + command);
+//            System.out.println(" result = " + result);
+//
+//            p.destroy();
+//
+//            return p.exitValue();
+//        }
+//        else {
+//            String result = new String(p.getInputStream().readAllBytes());
+//            System.out.println("Executing command: " + command);
+//            System.out.println(" result = " + result);
+//
+//            p.destroy();
+//            return 0;
+//        }
     }
 
     private static List<MarkedStatement> getMarkedStatement() {
