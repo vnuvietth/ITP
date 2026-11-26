@@ -36,37 +36,36 @@ public final class Concolic4ITPTestDriverRunner {
         return getMarkedStatement();
     }
 
+    public static List<MarkedStatement> runTestDriver() throws IOException, InterruptedException {
+
+//        executeCommand("cd " + constants.CONCOLIC_TEST_DRIVER_FOLDER);
+//        executeCommand(constants.CONCOLIC_TEST_DRIVER_ROOT_DRIVE);
+
+        String buildCommand = constants.CONCOLIC_4ITP_BUILD_COMMAND;
+
+//        System.out.println(buildCommand);
+
+        executeCommand(buildCommand);
+
+        String runCommand = constants.CONCOLIC_4ITP_RUN_COMMAND;
+
+//        System.out.println(runCommand);
+
+        executeCommand(runCommand);
+
+        return getMarkedStatement();
+    }
+
     private static void executeCommand(String command) throws IOException, InterruptedException {
         Process p = Runtime.getRuntime().exec(command, null, new File(constants.TEST_DRIVER_FOLDER));
 
-        try {
-            String stdOut = new String(p.getInputStream().readAllBytes());
-            String stdErr = new String(p.getErrorStream().readAllBytes());
-            int exitCode = p.waitFor();
-            if (exitCode != 0) {
-                System.out.println("Executing command: " + command + "\n error = " + stdErr);
-            }
-            else
-            {
-                System.out.println("Executing command: " + command + "\n stdOut = " + stdOut);
-            }
+        p.waitFor();
 
-            // (Với ITP4JavaTestDriverRunner thì return exitCode;)
-        } finally {
-            p.getInputStream().close();
-            p.getErrorStream().close();
-            p.getOutputStream().close();
-            p.destroy();
+        if (p.exitValue() != 0)
+        {
+            String result = new String(p.getErrorStream().readAllBytes());
+            System.out.println("Executing test driver, result = " + result);
         }
-//        p.waitFor();
-//
-//        if (p.exitValue() != 0)
-//        {
-//            String result = new String(p.getErrorStream().readAllBytes());
-//            System.out.println("Executing test driver, result = " + result);
-//        }
-//
-//        p.destroy();
 
     }
 
