@@ -586,10 +586,22 @@ public class Concolic4ITP {
 
             totalTimeForDriverGneration += (System.nanoTime() - startTimeTestDriverGeneration2)/MICRO_SECONDS;
 
+            long startTimeTestDriverCompilation2 = System.nanoTime();
+
+            ITPUtils.writeToFile("", constants.EXECUTION_RESULT_PATH, false);
+
+            Concolic4ITPTestDriverRunner.buildTestDriverConcolic4ITP();
+
+            totalTimeForDriverCompilation += (System.nanoTime() - startTimeTestDriverCompilation2)/MICRO_SECONDS;
 
             long startTimeTestDataExecution2 = System.nanoTime();
 
-            markedStatements = Concolic4ITPTestDriverRunner.runTestDriver();
+            Concolic4ITPTestDriverRunner.runTestDriverConcolic4ITP();
+
+            totalTimeForTestDataExecution += (System.nanoTime() - startTimeTestDataExecution2)/MICRO_SECONDS;
+
+//            writeDataToFile("Step 12: " + ((System.nanoTime() - startTime)/1000000) + " (ms)\n", constants.ITP_TEST_RESULT_FILEPATH, true);
+            markedStatements = Concolic4ITPTestDriverRunner.getMarkedStatementConcolic4ITP();
 
             totalTimeForTestDataExecution += (System.nanoTime() - startTimeTestDataExecution2)/MICRO_SECONDS;
 
